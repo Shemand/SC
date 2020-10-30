@@ -1,0 +1,5 @@
+/dev-frontend/node_modules/
+/dev-frontend/.idea/
+/backend/venv/
+/backend/dist/
+/backend/.idea/
