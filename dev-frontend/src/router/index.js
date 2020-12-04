@@ -25,7 +25,7 @@ const routes = [
     component : () => import('../views/Devices.vue')
   },
   {
-    path : '/*',
+    path : '*',
     name : 'notFound',
     component : () => import('../views/Not-found.vue')
   }

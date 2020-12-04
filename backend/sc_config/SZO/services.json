@@ -1,0 +1,395 @@
+[
+  {
+    "connection_name" : "ad_one",
+    "connection_ip" : "10.3.128.4",
+    "connection_port" : 389,
+    "type" : "active_directory",
+    "active" : true,
+    "specific_data" : {
+      "username" : "rosgvard\\shemakovnd",
+      "password" : "SHema98rg",
+      "main_container_path" : "ou=SZO,ou=FSVNG,dc=rosgvard,dc=ru",
+      "begin_node" : "SZO",
+      "end_nodes" : ["2659", "3526", "3644", "3693", "3705", "3727", "3798", "5134", "5402", "5565", "6716",
+                    "6717", "6821", "6832", "6944", "T210", "T211", "T229", "T235", "T239", "T251", "T253",
+                    "T260", "T278", "T283", "upr", "upr-varshavskaya", "upr2"]
+    }
+  },
+  {
+    "connection_name" : "kaspersky_2659",
+    "connection_ip" : "10.3.130.4",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "2659"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_3526",
+    "connection_ip" : "10.3.132.7",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "3526"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_3644",
+    "connection_ip" : "10.3.138.132",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "3644"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_3705",
+    "connection_ip" : "11.196.4.140",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "3705"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_3798",
+    "connection_ip" : "10.3.138.87",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "3798"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_5134",
+    "connection_ip" : "10.3.137.7",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "5134"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_6716",
+    "connection_ip" : "10.3.134.250",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "6716"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_6717",
+    "connection_ip" : "11.196.3.130",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "6717"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_6821",
+    "connection_ip" : "10.3.133.132",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "6821"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_6832",
+    "connection_ip" : "10.3.136.6",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "6832"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_6944",
+    "connection_ip" : "10.3.131.73",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "6944"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_T210",
+    "connection_ip" : "10.222.110.187",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "T210"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_T211",
+    "connection_ip" : "10.222.111.240",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "T211"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_T229",
+    "connection_ip" : "10.222.129.98",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "T229"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_T235",
+    "connection_ip" : "10.222.135.106",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "T235"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_T239",
+    "connection_ip" : "10.3.134.250",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "T239"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_T251-1",
+    "connection_ip" : "10.222.151.201",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "T251"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_T253",
+    "connection_ip" : "10.222.153.8",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "T253"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_T278",
+    "connection_ip" : "10.222.198.4",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "T278"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_UVO",
+    "connection_ip" : "10.222.235.200",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "UVO"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_T283",
+    "connection_ip" : "10.222.183.3",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "T283"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_T260",
+    "connection_ip" : "10.222.60.8",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "T260"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_6931",
+    "connection_ip" : "10.3.141.4",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "6931"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_SZO-1",
+    "connection_ip" : "10.3.128.23",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "SZO"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_SZO-2",
+    "connection_ip" : "10.3.128.28",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : true,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "SZO_new"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_5402",
+    "connection_ip" : "10.3.140.77",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "5402_new"
+    }
+  },
+  {
+    "connection_name" : "kaspersky_T251-2",
+    "connection_ip" : "11.198.152.172",
+    "connection_port" : 13299,
+    "type" : "kaspersky",
+    "active" : false,
+    "specific_data" : {
+      "login" : "ksc-szo-001",
+      "password" : "#00ktnCG<!!!",
+      "server" : "T251_new"
+    }
+  },
+  {
+    "connection_name" : "dallas_lock_vch",
+    "connection_ip" : "10.3.128.233",
+    "connection_port" : 5000,
+    "type" : "dallas_lock",
+    "active" : true,
+    "specific_data" : {
+      "server" : "vch"
+    }
+  },
+  {
+    "connection_name" : "dallas_lock_001",
+    "connection_ip" : "",
+    "connection_port" : 0,
+    "type" : "dallas_lock",
+    "active" : false,
+    "specific_data" : {
+      "server" : ""
+    }
+  },
+  {
+    "connection_name" : "dallas_lock_002",
+    "connection_ip" : "",
+    "connection_port" : 0,
+    "type" : "dallas_lock",
+    "active" : false,
+    "specific_data" : {
+      "server" : ""
+    }
+  },
+  {
+    "connection_name" : "dallas_lock_TERO",
+    "connection_ip" : "",
+    "connection_port" : 0,
+    "type" : "dallas_lock",
+    "active" : false,
+    "specific_data" : {
+      "server" : ""
+    }
+  },
+  {
+    "connection_name" : "database_main",
+    "connection_ip" : "10.3.128.105",
+    "connection_port" : 3306,
+    "type" : "database",
+    "active" : false,
+    "specific_data" : {
+      "database_name" : "secure_center",
+      "drivername" : "mysql",
+      "username" : "root",
+      "password" : "qwerty"
+    }
+  }
+]

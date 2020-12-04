@@ -1,0 +1,158 @@
+{
+  "2659" : {
+    "caption" : "Воинская часть 2659",
+    "dallas_containers" : ["2659"],
+    "active_directory_containers" : ["2659"],
+    "kaspersky_services" : ["kaspersky_2659"]
+  },
+  "3526" : {
+    "caption" : "Воинская часть 3526",
+    "dallas_containers" : ["3526"],
+    "active_directory_containers" : ["3526"],
+    "kaspersky_services" : ["kaspersky_3526"]
+  },
+  "3644" : {
+    "caption" : "Воинская часть 6944",
+    "dallas_containers" : ["3644"],
+    "active_directory_containers" : ["3644"],
+    "kaspersky_services" : ["kaspersky_3644"]
+  },
+  "3693" : {
+    "caption" : "Воинская часть 3693",
+    "dallas_containers" : ["3693"],
+    "active_directory_containers" : ["3693"],
+    "kaspersky_services" : ["kaspersky_3693"]
+  },
+  "3705" : {
+    "caption" : "Воинская часть 3705",
+    "dallas_containers" : ["3705"],
+    "active_directory_containers" : ["3705"],
+    "kaspersky_services" : ["kaspersky_3705"]
+  },
+  "3727" : {
+    "caption" : "Воинская часть 3727",
+    "dallas_containers" : ["3727"],
+    "active_directory_containers" : ["3727"],
+    "kaspersky_services" : ["kaspersky_3727"]
+  },
+  "3798" : {
+    "caption" : "Воинская часть 3798",
+    "dallas_containers" : ["3798"],
+    "active_directory_containers" : ["3798"],
+    "kaspersky_services" : ["kaspersky_3798"]
+  },
+  "5134" : {
+    "caption" : "Воинская часть 5134",
+    "dallas_containers" : ["5134"],
+    "active_directory_containers" : ["5134"],
+    "kaspersky_services" : ["kaspersky_5134"]
+  },
+  "5402" : {
+    "caption" : "Воинская часть 5402",
+    "dallas_containers" : ["5402"],
+    "active_directory_containers" : ["5402"],
+    "kaspersky_services" : ["kaspersky_5402-1","kaspersky_5402-2"]
+  },
+  "5565" : {
+    "caption" : "Воинская часть 5565",
+    "dallas_containers" : ["5565"],
+    "active_directory_containers" : ["5565"],
+    "kaspersky_services" : ["kaspersky_5565"]
+  },
+  "6716" : {
+    "caption" : "Воинская часть 6716",
+    "dallas_containers" : ["6716"],
+    "active_directory_containers" : ["6716"],
+    "kaspersky_services" : ["kaspersky_6716"]
+  },
+  "6717" : {
+    "caption" : "Воинская часть 6717",
+    "dallas_containers" : ["6717"],
+    "active_directory_containers" : ["6717"],
+    "kaspersky_services" : ["kaspersky_6717"]
+  },
+  "6821" : {
+    "caption" : "Воинская часть 6821",
+    "dallas_containers" : ["6821"],
+    "active_directory_containers" : ["6821"],
+    "kaspersky_services" : ["kaspersky_6821"]
+  },
+  "6832" : {
+    "caption" : "Воинская часть 6832",
+    "dallas_containers" : ["6832"],
+    "active_directory_containers" : ["6832"],
+    "kaspersky_services" : ["kaspersky_6832"]
+  },
+  "6944" : {
+    "caption" : "Воинская часть 6944",
+    "dallas_containers" : ["6944"],
+    "active_directory_containers" : ["6944"],
+    "kaspersky_services" : ["kaspersky_6944"]
+  },
+  "T210" : {
+    "caption" : "210 Территориальный округ",
+    "dallas_containers" : ["T210", "ОВО 210", "Упр 210"],
+    "active_directory_containers" : ["T210"],
+    "kaspersky_services" : ["kaspersky_T210"]
+  },
+  "T211" : {
+    "caption" : "211 Территориальный округ",
+    "dallas_containers" : ["T211", "ОВО 211", "Упр 211"],
+    "active_directory_containers" : ["T211"],
+    "kaspersky_services" : ["kaspersky_T211"]
+  },
+  "T229" : {
+    "caption" : "229 Территориальный округ",
+    "dallas_containers" : ["T229", "ОВО 229", "Упр 229"],
+    "active_directory_containers" : ["T229"],
+    "kaspersky_services" : ["kaspersky_T229"]
+  },
+  "T235" : {
+    "caption" : "235 Территориальный округ",
+    "dallas_containers" : ["T235"],
+    "active_directory_containers" : ["T235"],
+    "kaspersky_services" : ["kaspersky_T235"]
+  },
+  "T239" : {
+    "caption" : "239 Территориальный округ",
+    "dallas_containers" : ["T239", "ОВО 239", "Упр 239"],
+    "active_directory_containers" : ["T239"],
+    "kaspersky_services" : ["kaspersky_T239"]
+  },
+  "T251" : {
+    "caption" : "251 Территориальный округ",
+    "dallas_containers" : ["T251", "ОВО 251", "Упр 251"],
+    "active_directory_containers" : ["T251"],
+    "kaspersky_services" : ["kaspersky_T251"]
+  },
+  "T253" : {
+    "caption" : "253 Территориальный округ",
+    "dallas_containers" : ["T253", "ОВО 253", "Упр 253"],
+    "active_directory_containers" : ["T253"],
+    "kaspersky_services" : ["kaspersky_T253"]
+  },
+  "T260" : {
+    "caption" : "260 Территориальный округ",
+    "dallas_containers" : ["T260", "ОВО 260", "Упр 260"],
+    "active_directory_containers" : ["T260"],
+    "kaspersky_services" : ["kaspersky_T260"]
+  },
+  "T278" : {
+    "caption" : "278 Территориальный округ",
+    "dallas_containers" : ["T278", "ОВО 278", "Упр 278"],
+    "active_directory_containers" : ["T278"],
+    "kaspersky_services" : ["kaspersky_T278"]
+  },
+  "T283" : {
+    "caption" : "283 Территориальный округ",
+    "dallas_containers" : ["T283", "ОВО 283", "Упр 283"],
+    "active_directory_containers" : ["T283"],
+    "kaspersky_services" : ["kaspersky_T283"]
+  },
+  "upr" : {
+    "caption" : "Управление СЗО",
+    "dallas_containers" : ["SZO"],
+    "active_directory_containers" : ["upr", "upr2", "upr-varshavskaya"],
+    "kaspersky_services" : ["kaspersky_SZO-1", "kaspersky_SZO-2"]
+  }
+}

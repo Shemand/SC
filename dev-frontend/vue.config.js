@@ -1,5 +1,5 @@
 module.exports = {
-    outputDir : './../backend/dist/',
+    outputDir : './../backend/frontend/',
     indexPath : './index.html',
     assetsDir : './static/'
 }
