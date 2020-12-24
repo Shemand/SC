@@ -18,12 +18,6 @@
         </div>
         <div class="submit-block row s8 offset-s2">
           <div class="row"><button type="submit" class="btn">Войти</button></div>
-          <div>
-            <router-link
-                tag="a"
-                to="/registration"
-            ><a class="waves-effect waves-teal btn-flat blue-text text-darken-3">У меня нет аккаунта.</a></router-link>
-          </div>
         </div>
       </form>
     </div>

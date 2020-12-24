@@ -1,5 +1,6 @@
 <template>
   <div id="computers_table"></div>
+  <h1>Computers</h1>
 </template>
 
 <script>

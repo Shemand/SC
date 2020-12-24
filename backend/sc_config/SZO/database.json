@@ -1,0 +1,9 @@
+{
+  "name" : "secure_center",
+  "ip" : "localhost",
+  "port" : 3306,
+  "database" : "sc",
+  "driver" : "mysql",
+  "username" : "root",
+  "password" : "qwerty"
+}

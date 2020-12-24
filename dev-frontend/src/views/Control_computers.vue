@@ -1,4 +1,5 @@
 <template>
+  <h1>Control_computers</h1>
   <div>
     <button></button>
     <button></button>

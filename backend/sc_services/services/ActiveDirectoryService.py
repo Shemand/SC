@@ -4,7 +4,6 @@ from typing import Any, List
 import ldap3
 from ldap3 import Connection, Server, AUTO_BIND_NO_TLS, SUBTREE
 
-from backend.sc_config.config import config
 from backend.sc_common.functions import reformat_computer_name, transformate_time
 from backend.sc_services.ServiceAbstract import ServiceAbstract
 
@@ -23,7 +22,6 @@ class ActiveDirectoryService(ServiceAbstract):
         self._server = Server(self.configuration['ip'],
                               port=self.configuration['port'],
                               use_ssl=False)
-        self.create_connection()
 
     def create_connection(self) -> Any:
         print('connection create')

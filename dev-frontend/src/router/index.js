@@ -9,11 +9,11 @@ const routes = [
     name : 'main',
     component : () => import('../views/Main.vue')
   },
-  {
-    path : '/registration',
-    name : 'registration',
-    component : () => import('../views/Registration.vue')
-  },
+  // {
+  //   path : '/registration',
+  //   name : 'registration',
+  //   component : () => import('../views/Registration.vue')
+  // },
   {
     path : '/Authorization',
     name : 'authorization',

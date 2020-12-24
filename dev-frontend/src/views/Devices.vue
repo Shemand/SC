@@ -1,6 +1,7 @@
 <template>
   <div>
     <Navbar></Navbar>
+    <h1>Devices</h1>
   </div>
 </template>
 

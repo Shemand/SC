@@ -43,11 +43,11 @@ class KasperskyService(ServiceAbstract):
         self.ip = configurations['ip']
         self.port = configurations['port']
         self.server = configurations['server']
-        self.login = configurations['login']
-        self.login = base64.b64encode(self.login.encode("UTF-8")).decode("UTF-8")
+        self.username = configurations['username']
+        self.username = base64.b64encode(self.username.encode("UTF-8")).decode("UTF-8")
         self.password = configurations['password']
         self.password = base64.b64encode(self.password.encode("UTF-8")).decode("UTF-8")
-        self.auth_headers = {"Authorization": 'KSCBasic user="' + self.login + '", pass="' + self.password + '"',
+        self.auth_headers = {"Authorization": 'KSCBasic user="' + self.username + '", pass="' + self.password + '"',
                              "Content-Type": "application/json",
                              "Content-Length": "2"}
         self.common_headers = {"Content-Type": "application/json"}
