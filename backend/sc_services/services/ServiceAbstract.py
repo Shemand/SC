@@ -3,6 +3,12 @@ from typing import Any
 
 class ServiceAbstract:
 
+    DISABLED = 'disabled'
+    INACTIVE = 'inactive'
+    INWORK = 'inwork'
+    ACTIVE = 'active'
+    STATUSES = [DISABLED, INACTIVE, INWORK, ACTIVE]
+
     _name: str = ''
     _connection: Any
     _configuration: dict
@@ -11,6 +17,11 @@ class ServiceAbstract:
         self._name = connection_name
         self._configuration = configuration
         self._connection = None
+        self._status = 'inactive'
+
+    @property
+    def status(self):
+        return self._status
 
     def create_connection(self) -> Any:
         assert False, 'Method must be released!'

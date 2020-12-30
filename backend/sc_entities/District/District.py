@@ -30,6 +30,22 @@ class District:
         self._crypto_gateways = self.__transformation_data_to_crypto_gateways(self.__read_csv_config(CRYPTO_GATEWAYS, '/'))
         self.__appoint_cg_to_units()
 
+    @property
+    def services(self):
+        return self._services
+
+    @property
+    def units(self):
+        return self._units
+
+    @property
+    def database(self):
+        return self._database
+
+    @property
+    def crypto_gateways(self):
+        return self._crypto_gateways
+
     def get_file_path(self, config_name):
         path = os.getcwd()
         path = join_path(path, 'sc_config')
@@ -64,7 +80,7 @@ class District:
             if service['active'] == False:
                 continue
             settings = self.__prepare_service_data(service)
-            district_services.add_service(self.__get_service_instance(service['type'], settings))
+            district_services.add_service(service['type'], settings)
         return district_services
 
     def __transformation_data_to_database(self, database):
@@ -92,16 +108,6 @@ class District:
             cg = self._crypto_gateways[cg_name]
             assert cg.unit in self._units, f'__Appoint_cg_to_units. CryptoGateway ({cg.name}) have not existing unit ({cg.unit})'
             self._units[cg.unit].append_crypto_gateway(cg)
-
-
-    def __get_service_instance(self, type, settings):
-        if type == DistrictServices.AD:
-            return ActiveDirectoryService(settings)
-        if type == DistrictServices.DALLAS:
-            return DallasLockService(settings)
-        if type == DistrictServices.KASPERSKY:
-            return KasperskyService(settings)
-        assert False, f'Unknown DistinctServices.TYPE in service with name: "{settings["name"]}"'
 
     def __prepare_service_data(self, service):
         settings = {
