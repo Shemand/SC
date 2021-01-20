@@ -1,4 +1,3 @@
-from backend.sc_database.model.Addresses import Addresses
 from .DatabaseActionsAbstract import DatabaseActionsAbstract
 
 

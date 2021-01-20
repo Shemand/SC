@@ -49,6 +49,7 @@ class District:
     def get_file_path(self, config_name):
         path = os.getcwd()
         path = join_path(path, 'sc_config')
+        path = join_path(path, 'districts')
         path = join_path(path, self.name)
         return join_path(path, config_name)
 
@@ -131,10 +132,6 @@ class District:
         else:
             assert False, f'Unknown DistinctServices.TYPE in service with name: "{service["connection_name"]}"'
         return settings
-
-    @property
-    def database(self):
-        return self._database
 
     def __getitem__(self, unit_name):
         return self._units[unit_name]

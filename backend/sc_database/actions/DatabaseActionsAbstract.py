@@ -1,5 +1,3 @@
-from backend.sc_database.database import DatabaseClass
-from backend.sc_database.model.BaseModel import BaseModel
 
 class DatabaseActionsAbstract:
 
@@ -8,33 +6,34 @@ class DatabaseActionsAbstract:
         self.model = model
         self.requires = {}
         self.primary = {}
-        self._initialize_primary_and_requires()
+        self.unique = {}
+        self._initialize_columns_settings()
 
-    def get(self, database: DatabaseClass, **params):
-        params = self._filter_primary(**params)
+    def get(self, database, **params):
+        params = self._filter_unique(**params)
         if params:
-            instance = database.query(self).filter_by(**params).first()
+            instance = database.query(self.model).filter_by(**params).first()
             if instance:
                 return instance
         return None
 
-    def get_or_create(self, database: DatabaseClass, **params):
-        primary = self._filter_primary(**params)
-        instance = self.get(database, **primary)
+    def get_or_create(self, database, **params):
+        unique = self._filter_unique(**params)
+        instance = self.get(database, **unique)
         if instance:
             return instance
         instance = self.create_minimal_obj(database, **params)
         return instance
 
-    def exists(self, database: DatabaseClass, params) -> bool:
-        instance = self.get(database, params)
+    def exists(self, database, **params) -> bool:
+        instance = self.get(database, **params)
         if instance:
             return True
         return False
 
-    def create_minimal_obj(self, database: DatabaseClass, **params):
+    def create_minimal_obj(self, database, **params):
         if self._requires_exists(**params):
-            instance = self.table(**params)
+            instance = self.model(**params)
             database.add(instance)
             database.commit()
             return instance
@@ -48,6 +47,15 @@ class DatabaseActionsAbstract:
                     to_return[key] = params[key]
             return to_return
         raise Exception('_filter_primary: not all primary keys exist')
+
+    def _filter_unique(self, **params):
+        if self._least_one_unique(**params):
+            to_return = {}
+            for key in params:
+                if key in self.unique:
+                    to_return[key] = params[key]
+            return to_return
+        raise Exception('_filter_unique: no one unique columns no exist')
 
     def _filter_require(self, **params):
         if self._requires_exists(**params):
@@ -64,16 +72,23 @@ class DatabaseActionsAbstract:
                 return False
         return True
 
+    def _least_one_unique(self, **params):
+        for key in self.unique:
+            if key in params:
+                return True
+        return False
+
     def _requires_exists(self, **params):
         for key in self.requires:
             if key not in params:
                 return False
         return True
 
-    def _initialize_primary_and_requires(self):
+    def _initialize_columns_settings(self):
         self.requires = {}
         self.primary = {}
-        columns = self.table.__table__.c
+        self.unique = {}
+        columns = self.model.__table__.c
         for col in columns:
             if not col.nullable\
                 and not col.default\
@@ -81,3 +96,5 @@ class DatabaseActionsAbstract:
                 self.requires[col.key] = col
             if col.primary_key:
                 self.primary[col.key] = col
+            if col.unique or col.primary_key:
+                self.unique[col.key] = col

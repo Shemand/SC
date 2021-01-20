@@ -67,10 +67,10 @@ class UrlPaths:
                 for name in json_dict['urls']:
                     self.modules[name] = ModuleUrls(module_name, json_dict['urls'][name])
 
-
     def __get_file_path(self, file_name):
         abs_path = os.getcwd()
         file_path = os.path.join(abs_path, 'sc_config')
+        file_path = os.path.join(file_path, 'urls')
         file_path = os.path.join(file_path, file_name)
         return file_path
 

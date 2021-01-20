@@ -5,7 +5,7 @@ import ldap3
 from ldap3 import Connection, Server, AUTO_BIND_NO_TLS, SUBTREE
 
 from backend.sc_common.functions import reformat_computer_name, transformate_time
-from backend.sc_services.ServiceAbstract import ServiceAbstract
+from backend.sc_services.services.ServiceAbstract import ServiceAbstract
 
 
 class ActiveDirectoryService(ServiceAbstract):

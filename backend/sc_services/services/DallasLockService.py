@@ -2,7 +2,7 @@ import json
 
 import requests
 
-from backend.sc_services.ServiceAbstract import ServiceAbstract
+from backend.sc_services.services.ServiceAbstract import ServiceAbstract
 
 
 class DallasLockService(ServiceAbstract):

@@ -12,7 +12,7 @@ class Computers(BaseModel):
     __tablename__ = 'Computers'
 
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
-    name = Column(String(128), nullable=False)
+    name = Column(String(128), nullable=False, unique=True)
     comment = Column(Text)
     created = Column(DateTime, nullable=False, default=datetime.now())
 

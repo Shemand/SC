@@ -2,7 +2,7 @@ from flask import Blueprint
 
 
 class BlueprintAttacherAbstract:
-    def __init__(self,mod: Blueprint, base_name:str) -> None:
+    def __init__(self,mod: Blueprint, base_name :str) -> None:
         self.base_path = '/' + base_name + '/'
         self.mod = mod
         self.attach_to_blueprint(self.mod)

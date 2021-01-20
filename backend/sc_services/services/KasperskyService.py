@@ -11,7 +11,7 @@ from urllib3.exceptions import MaxRetryError, NewConnectionError
 import json
 
 from backend.sc_common.functions import reformat_computer_name
-from backend.sc_services.ServiceAbstract import ServiceAbstract
+from backend.sc_services.services.ServiceAbstract import ServiceAbstract
 
 
 class KasperskyService(ServiceAbstract):

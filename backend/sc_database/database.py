@@ -63,7 +63,7 @@ class DatabaseClass(object):
         self.__session = Session(bind=self.engine)
         self.session.commit()
         self.Addresses = AddressActions(self, DatabaseClass.Addresses)
-        self.Computers = ComputerActions(self, DatabaseClass.Addresses)
+        self.Computers = ComputerActions(self, DatabaseClass.Computers)
 
     @property
     def engine(self) -> Engine:

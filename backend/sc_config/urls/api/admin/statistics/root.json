@@ -1,0 +1,12 @@
+{
+  "description" : "Здесь описывается структура запросов к API сервиса",
+  "GET" : {
+            "name" : "district_statistic",
+            "description" : "Метод получения короткой информации о статистики в округе",
+            "isAuth" : "admin",
+            "data" : {}
+  },
+  "POST" : {},
+  "PUT" : {},
+  "DELETE" : {}
+}

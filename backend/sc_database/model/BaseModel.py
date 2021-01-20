@@ -1,8 +1,7 @@
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.declarative import as_declarative
 
-BasicModel = declarative_base()
-
-class BaseModel(BasicModel):
+@as_declarative()
+class BaseModel(object):
 
     PRIMARY_COLUMNS = []
     REQUIRE_COLUMNS = []
