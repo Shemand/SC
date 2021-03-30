@@ -13,6 +13,7 @@ class Users(BaseModel):
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
     username = Column(String(256), nullable=False)
     full_name = Column(String(256))
+    privileges = Column(Integer, nullable=False, default=1) # 0 - is blocked, 1 - is active,
     created = Column(DateTime, nullable=False, default=datetime.now())
 
     logons = relationship('Logons', back_populates='user')

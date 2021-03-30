@@ -22,11 +22,11 @@ class Configuration:
             self.districts[district_name] = District(district_name)
 
         self.kaspersky = {
-            "win_agent" : configuration['kaspersky']['win_agent_versions'],
-            "win_security" : configuration['kaspersky']['win_security_versions'],
-            "linux_agent" : configuration['kaspersky']['linux_agent_versions'],
-            "linux_security" : configuration['kaspersky']['linux_security_versions'],
-            "right_agent" : configuration['kaspersky']['right_agent_versions'],
+            "win_agent": configuration['kaspersky']['win_agent_versions'],
+            "win_security": configuration['kaspersky']['win_security_versions'],
+            "linux_agent": configuration['kaspersky']['linux_agent_versions'],
+            "linux_security": configuration['kaspersky']['linux_security_versions'],
+            "right_agent": configuration['kaspersky']['right_agent_versions'],
             "right_security": configuration['kaspersky']['right_security_versions'],
         }
 

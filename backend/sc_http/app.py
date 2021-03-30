@@ -1,17 +1,19 @@
-from flask import Blueprint, g, request, session
-from .ApiComputersRoutes import ApiComputersRoutes
-from ...sc_entities.RequrestTuner import RequestTuner
+from flask import Blueprint
 
-mod = Blueprint('api', __name__, url_prefix='/api/')
+from backend.sc_http.api_v1.routes.CommonsRoutes import CommonsRoutes
+from backend.sc_http.api_v1.routes.ComputersRoutes import ComputersRoutes
+from backend.sc_http.api_v1.routes.CryptoGatewaysRoutes import CryptoGatewaysRoutes
+from backend.sc_http.api_v1.routes.DevicesRoutes import DevicesRoutes
+from backend.sc_http.api_v1.routes.LogsRoutes import LogsRoutes
+from backend.sc_http.api_v1.routes.StatisticsRoutes import StatisticsRoutes
+from backend.sc_http.api_v1.routes.UsersRoutes import UsersRoutes
 
-@mod.before_request
-def attach_tuner():
-    if 'user_id' in session and 'district_name' in session:
-        g.loggined = True
-        g.user = None
-        g.district = None
-        g.user_role = None
-    else:
-        g.loggined = False
+api_v1_mod = Blueprint('api', __name__, url_prefix='/api/v1/')
 
-ApiComputersRoutes(mod, 'computers')
+ComputersRoutes(api_v1_mod, 'computers')
+CryptoGatewaysRoutes(api_v1_mod, 'crypto_gateways')
+DevicesRoutes(api_v1_mod, 'devices')
+LogsRoutes(api_v1_mod, 'logs')
+StatisticsRoutes(api_v1_mod, 'statistics')
+CommonsRoutes(api_v1_mod, 'common')
+UsersRoutes(api_v1_mod, 'users')

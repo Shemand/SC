@@ -35,7 +35,7 @@ export default {
   },
   methods : {
     authUser : () => {
-      console.log('jjj')
+      
     }
   }
 }

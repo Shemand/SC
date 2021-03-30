@@ -2,12 +2,20 @@
 class DatabaseActionsAbstract:
 
     def __init__(self, database, model):
-        self.database = database
-        self.model = model
+        self._database = database
+        self._model = model
         self.requires = {}
         self.primary = {}
         self.unique = {}
         self._initialize_columns_settings()
+
+    @property
+    def database(self):
+        return self._database
+
+    @property
+    def model(self):
+        return self._model
 
     def get(self, database, **params):
         params = self._filter_unique(**params)
@@ -17,12 +25,12 @@ class DatabaseActionsAbstract:
                 return instance
         return None
 
-    def get_or_create(self, database, **params):
+    def get_or_create(self, **params):
         unique = self._filter_unique(**params)
-        instance = self.get(database, **unique)
+        instance = self.get(**unique)
         if instance:
             return instance
-        instance = self.create_minimal_obj(database, **params)
+        instance = self.create_minimal_obj(**params)
         return instance
 
     def exists(self, database, **params) -> bool:
@@ -31,11 +39,11 @@ class DatabaseActionsAbstract:
             return True
         return False
 
-    def create_minimal_obj(self, database, **params):
+    def create_minimal_obj(self, **params):
         if self._requires_exists(**params):
             instance = self.model(**params)
-            database.add(instance)
-            database.commit()
+            self.database.add(instance)
+            self.database.commit()
             return instance
         assert False, 'not all columns of requires was gave in params of create_minimal_obj'
 

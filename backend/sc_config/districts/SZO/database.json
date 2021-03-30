@@ -1,9 +1,9 @@
 {
-  "name": "secure_center",
+  "name": "sс",
   "ip": "localhost",
-  "port": 3306,
+  "port": 5432,
   "database": "sc",
-  "driver": "mysql",
-  "username": "root",
+  "driver": "postgresql+psycopg2",
+  "username": "shemand",
   "password": "qwerty"
 }

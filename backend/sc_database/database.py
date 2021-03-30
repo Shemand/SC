@@ -22,9 +22,6 @@ from .model.Units import Units
 from .model.Users import Users
 from .model.Users_ActiveDirectory import Users_ActiveDirectory
 
-from .actions.AddressActions import AddressActions
-from .actions.ComputerActions import ComputerActions
-
 class DatabaseClass(object):
 
     __metadata: MetaData
@@ -55,15 +52,16 @@ class DatabaseClass(object):
             'drivername': database_config['driver'],
             'username': database_config['username'],
             'password': database_config['password'],
-            'host': database_config['ip'],
-            'query': {'charset': 'utf8'}
+            'host': database_config['ip']
         }
         self.__engine = create_engine(URL(**db_url), echo=False, encoding="utf8", pool_size=10)
         self.__metadata = BaseModel.metadata.create_all(self.engine)
         self.__session = Session(bind=self.engine)
         self.session.commit()
-        self.Addresses = AddressActions(self, DatabaseClass.Addresses)
-        self.Computers = ComputerActions(self, DatabaseClass.Computers)
+        # self.ac_Addresses = AddressActions(self, DatabaseClass)
+        # self.ac_Computers = ComputerActions(self, DatabaseClass)
+        # self.ac_Users = ComputerActions(self, DatabaseClass)
+        # self.up_Computers = ComputersUpdater(self, DatabaseClass.ac_Computers)
 
     @property
     def engine(self) -> Engine:
@@ -76,6 +74,9 @@ class DatabaseClass(object):
     @property
     def session(self) -> Session:
         return self.__session
+
+    def get_local_session(self):
+        return Session(bind=self.engine)
 
     def commit(self):
         return self.session.commit()

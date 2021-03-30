@@ -292,19 +292,7 @@
     }
   },
   {
-    "connection_name" : "kaspersky_SZO-1",
-    "connection_ip" : "10.3.128.23",
-    "connection_port" : 13299,
-    "type" : "kaspersky",
-    "active" : false,
-    "specific_data" : {
-      "username" : "ksc-szo-001",
-      "password" : "#00ktnCG<!!!",
-      "server" : "SZO"
-    }
-  },
-  {
-    "connection_name" : "kaspersky_SZO-2",
+    "connection_name" : "kaspersky_SZO",
     "connection_ip" : "10.3.128.28",
     "connection_port" : 13299,
     "type" : "kaspersky",

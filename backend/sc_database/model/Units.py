@@ -9,7 +9,7 @@ class Units(BaseModel):
     __tablename__ = 'Units'
 
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
-    name = Column(String(64), nullable=False, default=datetime.now())
+    name = Column(String(64), nullable=False, unique=True, default=datetime.now())
     root_id = Column(Integer)
 
     def __repr__(self):
