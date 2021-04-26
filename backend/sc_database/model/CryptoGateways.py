@@ -11,7 +11,7 @@ class CryptoGateways(BaseModel):
     address = Column(String(16), nullable=False)
     mask = Column(Integer, nullable=False)
     caption = Column(String(128), nullable=False)
-    name = Column(String(5), nullable=False)
+    name = Column(String(5), nullable=False, index=True)
 
     def __repr__(self):
         return f'<CryptoGateways ({self.name})>'

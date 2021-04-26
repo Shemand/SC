@@ -11,12 +11,12 @@ class Puppets(BaseModel):
 
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
     Computers_id = Column(Integer, ForeignKey('Computers.id'), nullable=False)
-    enviroment = Column(String(64), nullable=False)
+    environment = Column(String(64), nullable=False)
     last_visible = Column(DateTime, nullable=False, default=datetime.now())
     updated = Column(DateTime, nullable=False, default=datetime.now())
     created = Column(DateTime, nullable=False, default=datetime.now())
 
-    computer = relationship('Computers', backref='puppet')
+    # computer = relationship('Computers', backref='puppet')
 
     def __repr__(self):
         return f'<Puppets ({self.computer.name})>'

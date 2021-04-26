@@ -11,7 +11,7 @@ from urllib3.exceptions import MaxRetryError, NewConnectionError
 import json
 
 from backend.sc_common.functions import reformat_computer_name
-from backend.sc_services.services.ServiceAbstract import ServiceAbstract
+from backend.sc_services.ServiceAbstract import ServiceAbstract
 
 
 class KasperskyService(ServiceAbstract):
@@ -38,14 +38,13 @@ class KasperskyService(ServiceAbstract):
     def get_url(self, url):
         return f'https://{self.ip}:{self.port}/{KasperskyService.URLS[url]}'
 
-    def __init__(self, configurations: dict) -> None:
-        super().__init__(configurations['name'], configurations)
-        self.ip = configurations['ip']
-        self.port = configurations['port']
-        self.server = configurations['server']
-        self.username = configurations['username']
+    def __init__(self, district, main_config, specific_data) -> None:
+        super().__init__(district, main_config, specific_data)
+        self.session = None
+        self.server = self.configuration['server']
+        self.username = self.configuration['username']
         self.username = base64.b64encode(self.username.encode("UTF-8")).decode("UTF-8")
-        self.password = configurations['password']
+        self.password = self.configuration['password']
         self.password = base64.b64encode(self.password.encode("UTF-8")).decode("UTF-8")
         self.auth_headers = {"Authorization": 'KSCBasic user="' + self.username + '", pass="' + self.password + '"',
                              "Content-Type": "application/json",
@@ -59,6 +58,13 @@ class KasperskyService(ServiceAbstract):
         session.mount("http://", adapter)
         session.headers = self.common_headers
         return session
+
+    def check_connection(self) -> bool:
+        if not self.session:
+            self.create_connection()
+        if self.session:
+            return True
+        return False
 
     def create_connection(self):
         self.session = self._tune_session()
@@ -140,7 +146,7 @@ class KasperskyService(ServiceAbstract):
                             if "KLHST_WKS_LAST_SYSTEM_START" in record else None
             }
             if not name in data:
-                data[reformat_computer_name(name)] = info
+                data[name] = info
             else:
                 data[name] = self._compare_duplicates(data[name], info)
         return data

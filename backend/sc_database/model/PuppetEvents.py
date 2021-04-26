@@ -10,7 +10,7 @@ class PuppetEvents(BaseModel):
 
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
     Puppets_id = Column(Integer, ForeignKey('Puppets.id'), nullable=False)
-    title = Column(String(256), nullable=False)
+    title = Column(String(256), nullable=False, index=True)
     message = Column(Text)
     created = Column(DateTime, nullable=False, default=datetime.now())
 

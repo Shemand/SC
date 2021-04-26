@@ -46,7 +46,8 @@ class DatabaseClass(object):
     Users = Users
     Users_ActiveDirectory = Users_ActiveDirectory
 
-    def __init__(self, database_config) -> None:
+    def __init__(self, district, database_config) -> None:
+        self.district = district
         db_url = {
             'database': database_config['database'],
             'drivername': database_config['driver'],
@@ -54,14 +55,10 @@ class DatabaseClass(object):
             'password': database_config['password'],
             'host': database_config['ip']
         }
-        self.__engine = create_engine(URL(**db_url), echo=False, encoding="utf8", pool_size=10)
+        self.__engine = create_engine(URL.create(**db_url), echo=False, encoding="utf8", pool_size=10)
         self.__metadata = BaseModel.metadata.create_all(self.engine)
         self.__session = Session(bind=self.engine)
         self.session.commit()
-        # self.ac_Addresses = AddressActions(self, DatabaseClass)
-        # self.ac_Computers = ComputerActions(self, DatabaseClass)
-        # self.ac_Users = ComputerActions(self, DatabaseClass)
-        # self.up_Computers = ComputersUpdater(self, DatabaseClass.ac_Computers)
 
     @property
     def engine(self) -> Engine:
@@ -86,39 +83,3 @@ class DatabaseClass(object):
 
     def add(self, query_obj):
         return self.session.add(query_obj)
-
-    def get(self, db_model, name=None, id=None):
-        assert not (name and id), 'Arguments of get must have only one argument for search id or name'
-        params = self.__tune_params(id, name)
-        instance = self.session.query(db_model.TABLE).filer_by(**params).first()
-        return instance
-
-    def get_or_create(self, db_model, name):
-        instance = None
-        params = {db_model.MAIN_COLUMN:name}
-        if name:
-            instance = self.session.query(db_model.TABLE).filter_by(**params).first()
-        if instance:
-            return instance
-        return self.__create_minimal_obj(self, **params)
-
-    def __create_minimal_obj(self, db_model, **kwargs):
-        instance = db_model.TABLE(**kwargs)
-        self.add(instance)
-        self.commit()
-        return instance
-
-    def exists(self, db_model, id: int = None, name: str = None) -> bool:
-        params = db_model.__tune_params(id, name)
-        instance = self.query(db_model.TABLE).filer_by(**params).first()
-        if instance:
-            return True
-        return False
-
-    def __tune_params(self, db_model, id: int = None, name: str = None):
-        params = {
-            db_model.MAIN_COLUMN : name,
-            db_model.ID_COLUMN : id
-        }
-        params = {key : params[key] for key in params if params[key] is not None}
-        return params

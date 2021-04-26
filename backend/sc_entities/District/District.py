@@ -1,4 +1,3 @@
-import ipaddress
 import json
 import os
 from os.path import join as join_path
@@ -7,28 +6,32 @@ from backend.sc_database.database import DatabaseClass
 from backend.sc_entities.District.CryptoGateway import CryptoGateway
 from backend.sc_entities.District.DistrictServices import DistrictServices
 from backend.sc_entities.District.DistrictUnit import DistrictUnit
-from backend.sc_services.services.ActiveDirectoryService import ActiveDirectoryService
-from backend.sc_services.services.DallasLockService import DallasLockService
-from backend.sc_services.services.KasperskyService import KasperskyService
+from backend.sc_services.ActiveDirectoryService import ActiveDirectoryService
+from backend.sc_services.ServiceFactory import ServiceFactory
 
 SERVICES = 'services.json'
-UNITS = 'units.json'
+UNITS = 'new_unit.json'
 MAIN = 'main.json'
 DATABASE = 'database.json'
+STRUCTURE = 'structure.json'
+NEW_UNITS = 'new_unit.json'
 CRYPTO_GATEWAYS = 'crypto_gateways.txt'
-JSON_CONFIG_NAMES = [SERVICES, UNITS, MAIN, DATABASE]
+JSON_CONFIG_NAMES = [NEW_UNITS, SERVICES, UNITS, MAIN, DATABASE]
 CSV_CONFIG_NAMES = [CRYPTO_GATEWAYS]
 
 class District:
 
     def __init__(self, district_name):
         self.name = district_name
-        self._services = self.__transformation_data_to_services(self.__read_json_config(SERVICES))
-        self._units = self.__transformation_data_to_units(self.__read_json_config(UNITS))
+        self._structure = self.__extract_structures(self.__read_json_config(NEW_UNITS))
+        self._services = self.__load_services(self.__read_json_config(SERVICES))
+        self._units = self.__load_units(self.__read_json_config(UNITS))
         self._main = self.__read_json_config(MAIN)
-        self._database = self.__transformation_data_to_database(self.__read_json_config(DATABASE))
-        self._crypto_gateways = self.__transformation_data_to_crypto_gateways(self.__read_csv_config(CRYPTO_GATEWAYS, '/'))
+        self._database = self.__load_database(self.__read_json_config(DATABASE))
+        self._crypto_gateways = self.__load_crypto_gateways(self.__read_csv_config(CRYPTO_GATEWAYS, '/'))
         self.__appoint_cg_to_units()
+
+# -------- PROPERTIES -----------
 
     @property
     def services(self):
@@ -46,12 +49,22 @@ class District:
     def crypto_gateways(self):
         return self._crypto_gateways
 
-    def get_file_path(self, config_name):
-        path = os.getcwd()
-        path = join_path(path, 'sc_config')
-        path = join_path(path, 'districts')
-        path = join_path(path, self.name)
-        return join_path(path, config_name)
+    @property
+    def structure(self):
+        return self._structure
+
+# -------- PUBLIC ---------------
+
+    def get_available_containers(self, container_name):
+        return self._get_available_containers(container_name, self._structure)
+
+    def get_available_units(self, unit_name):
+        return {name : unit for name, unit in self.units.items()
+                if name in self._get_available_containers(unit_name)}
+
+    def get_active_directory_services(self):
+        return [service for service in self.services if isinstance(service, ActiveDirectoryService)]
+# -------- READERS --------------
 
     def __read_json_config(self, config_name):
         assert config_name in JSON_CONFIG_NAMES, 'Unknown config_type in __read_json_config'
@@ -69,40 +82,14 @@ class District:
             information.append(parts)
         return information
 
-    def __transformation_data_to_units(self, units):
-        units_objects = {}
-        for unit_name in units:
-            units_objects[unit_name] = DistrictUnit(self, unit_name, units[unit_name])
-        return units_objects
+# -------- PRIVATE --------------
 
-    def __transformation_data_to_services(self, services):
-        district_services = DistrictServices(self.name)
-        for service in services:
-            if service['active'] == False:
-                continue
-            settings = self.__prepare_service_data(service)
-            district_services.add_service(service['type'], settings)
-        return district_services
-
-    def __transformation_data_to_database(self, database):
-        return DatabaseClass(database_config=database)
-
-    def __transformation_data_to_crypto_gateways(self, crypto_gateways):
-        district_cg = {}
-        for cg in crypto_gateways:
-            if cg[5] == '-':
-                continue
-            information = {
-                "address" : cg[0],
-                "mask" : cg[1],
-                "unit" : cg[2],
-                "caption" : cg[3],
-                "name" : cg[4]
-            }
-            district_cg[ information['name'] ] = CryptoGateway(self,
-                                                               information['name'],
-                                                               information)
-        return district_cg
+    def get_file_path(self, config_name):
+        path = os.getcwd()
+        path = join_path(path, 'sc_config')
+        path = join_path(path, 'districts')
+        path = join_path(path, self.name)
+        return join_path(path, config_name)
 
     def __appoint_cg_to_units(self):
         for cg_name in self._crypto_gateways:
@@ -133,8 +120,68 @@ class District:
             assert False, f'Unknown DistinctServices.TYPE in service with name: "{service["connection_name"]}"'
         return settings
 
+    def _get_available_containers(self, container_name, root_children, flag=False):
+        available_containers = []
+        for unit_name, children in root_children.items():
+            if unit_name == container_name:
+                flag = True
+            if flag:
+                available_containers.append(unit_name)
+            if children != {}:
+                available_containers.extend(self._get_available_containers(container_name, children, flag))
+        return available_containers
+
+# -------- LOADRES --------------
+
+    def __extract_structures(self, units):
+        root_units = {}
+        for unit_name, values in units.items():
+            if values['children'] != {}:
+                root_units[unit_name] = self.__extract_structures(values['children'])
+            else:
+                root_units[unit_name] = {}
+        return root_units
+
+    def __load_units(self, config_dict):
+        units_objects = {}
+        for unit_name, data in config_dict.items():
+            if data['children'] != {}:
+                units_objects = {**units_objects, **self.__load_units(data['children'])}
+            units_objects[unit_name] = DistrictUnit(self, unit_name, config_dict[unit_name])
+        return units_objects
+
+    def __load_services(self, config_dict):
+        district_services = DistrictServices(self.name)
+        for service in config_dict:
+            if service['active'] == False:
+                continue
+            district_services.add_service(ServiceFactory.create_service(self, service))
+        return district_services
+
+    def __load_database(self, config_dict):
+        return DatabaseClass(self, database_config=config_dict)
+
+    def __load_crypto_gateways(self, crypto_gateways):
+        district_cg = {}
+        for cg in crypto_gateways:
+            if cg[5] == '-':
+                continue
+            information = {
+                "address" : cg[0],
+                "mask" : cg[1],
+                "unit" : cg[2],
+                "caption" : cg[3],
+                "name" : cg[4]
+            }
+            district_cg[ information['name'] ] = CryptoGateway(self,
+                                                               information['name'],
+                                                               information)
+        return district_cg
+
+# --------- MAGIC METHODS ------------
+
     def __getitem__(self, unit_name):
-        return self._units[unit_name]
+        return self.units[unit_name]
 
     def __repr__(self):
         return f'<District (name: {self.name})>'

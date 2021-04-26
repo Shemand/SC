@@ -16,10 +16,11 @@ class Kaspersky(BaseModel):
     agent_version = Column(String(32))
     security_version = Column(String(32))
     server = Column(String(32), nullable=False)
+    isDeleted = Column(DateTime)
     updated = Column(DateTime, nullable=False, default=datetime.now())
     created = Column(DateTime, nullable=False, default=datetime.now())
 
-    computer = relationship('Computers', backref='kaspersky')
+    # computer = relationship('Computers', backref='kaspersky')
 
     def __repr__(self):
         return f'<Kaspersky ({self.computer.name})>'

@@ -1,6 +1,8 @@
 import json
 
 from backend.sc_actions.computers import get_computers, get_or_create_computer
+from backend.sc_actions.active_directory import update_computers_from_ad
+from backend.sc_actions.kaspersky import update_computers_from_kaspersky
 from backend.sc_entities.Entities import Entities
 from .BlueprintAttacher import BlueprintAttacher
 
@@ -17,11 +19,14 @@ class ComputersRoutes(BlueprintAttacher):
             district = Entities().get_district(res.district.name)
             database = district.database
             print(get_or_create_computer(database, 'SZO-ASTRA-GLOG'))
-            return f'hello world'
+            update_computers_from_kaspersky(database, district)
+            res = res.success({'status' : 'awesome'})
+            return res.get()
 
-        @route('/<computer_id>/comment/', methods=['PUT'])
-        def set_computer_comment(res):
+        @route('/<computer_id>/comment', methods=['GET'])
+        def set_computer_comment(res, computer_id):
             """Function for changing comment of computer"""
+            get_available_units(res.district.database, computer_id)
             return '{}'
 
         @route('<computer_name>/type/<type>', methods=['PUT'])

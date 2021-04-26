@@ -149,7 +149,7 @@
     "active_directory_containers" : ["T283"],
     "kaspersky_services" : ["kaspersky_T283"]
   },
-  "upr" : {
+  "SZO" : {
     "caption" : "Управление СЗО",
     "dallas_containers" : ["SZO"],
     "active_directory_containers" : ["upr", "upr2", "upr-varshavskaya"],

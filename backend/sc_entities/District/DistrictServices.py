@@ -1,77 +1,45 @@
-from backend.sc_services.services.ServiceAbstract import ServiceAbstract
-from backend.sc_services.services.ActiveDirectoryService import ActiveDirectoryService
-from backend.sc_services.services.DallasLockService import DallasLockService
-from backend.sc_services.services.KasperskyService import KasperskyService
+from backend.sc_services.ActiveDirectoryService import ActiveDirectoryService
+from backend.sc_services.DallasLockService import DallasLockService
+from backend.sc_services.KasperskyService import KasperskyService
 
 
-class DistrictServices:
-    AD = 'active_directory'
-    DALLAS = 'dallas_lock'
-    KASPERSKY = 'kaspersky'
+class DistrictServices():
+    def __init__(self, district):
+        self.all = {}
+        self.kaspersky = []
+        self.ad = []
+        self.dallas = []
+        self.services_status = {}
+        self.district = district
 
-    TYPES = {
-        AD : ActiveDirectoryService,
-        DALLAS : DallasLockService,
-        KASPERSKY : KasperskyService
-    }
+    def add_service(self, service):
+        if isinstance(service, ActiveDirectoryService):
+            self.ad.append(service)
+        elif isinstance(service, KasperskyService):
+            self.kaspersky.append(service)
+        elif isinstance(service, DallasLockService):
+            self.dallas.append(service)
+        else:
+            raise RuntimeError('Unknown type of service')
+        self.all[service.name] = service
 
-    def __init__(self, name):
-        self._name: str = name
-        self._all: dict = {}
-        self._ad: dict = {}
-        self._kaspersky: dict = {}
-        self._dallas_lock: dict = {}
-        self._database: dict = {}
+    def get_service(self, service_name):
+        return self.all[service_name]
 
-    @property
-    def name(self):
-        return self._name
+    def get_active_directory_services(self):
+        return self.ad
 
-    @property
-    def all(self):
-        return self._all
+    def get_dallas_lock_services(self):
+        return self.dallas
 
-    @property
-    def ad(self):
-        return self._ad
+    def get_kaspersky_services(self):
+        return self.kaspersky
 
-    @property
-    def kaspersky(self):
-        return self._kaspersky
-
-    @property
-    def dallas_lock(self):
-        return self._dallas_lock
-
-    @property
-    def database(self):
-        return self._database
-
-    def __get_service_instance(self, type: str, settings) -> ServiceAbstract:
-        assert type in DistrictServices.TYPES, f'Unknown DistinctServices.TYPE in service with name: "{settings["name"]}"'
-        return DistrictServices.TYPES[type](settings)
-
-    def add_service(self, object_type, settings) -> bool:
-        service_object = self.__get_service_instance(object_type, settings)
-        if service_object.name in self.all:
-            assert 'Connection name(' + service_object.name + ') of service has duplicated. Edit configuration file.'
-            return False
-        if isinstance(service_object, ActiveDirectoryService):
-            self.ad[service_object.name] = service_object
-            self.all[service_object.name] = self.ad[service_object.name]
-            return True
-        if isinstance(service_object, KasperskyService):
-            self.kaspersky[service_object.name] = service_object
-            self.all[service_object.name] = self.kaspersky[service_object.name]
-            return True
-        if isinstance(service_object, DallasLockService):
-            self.dallas_lock[service_object.name] = service_object
-            self.all[service_object.name] = self.dallas_lock[service_object.name]
-            return True
+    def authenticate_user(self, login, base64_password):
+        for service in self.get_active_directory_services():
+            if service.authenticate_user(login, base64_password):
+                return True
         return False
 
-    def get_service(self, service_name: str) -> ServiceAbstract:
-        if service_name in self.all:
-            return self.all[service_name]
-        assert 'You attempt get service with unknown name.'
-        # return None
+    def __dict__(self, service_name):
+        return self.get_service(service_name)

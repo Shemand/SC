@@ -1,11 +1,9 @@
-from datetime import datetime
-from typing import Any, List
+from typing import Any
 
-import ldap3
 from ldap3 import Connection, Server, AUTO_BIND_NO_TLS, SUBTREE
 
 from backend.sc_common.functions import reformat_computer_name, transformate_time
-from backend.sc_services.services.ServiceAbstract import ServiceAbstract
+from backend.sc_services.ServiceAbstract import ServiceAbstract
 
 
 class ActiveDirectoryService(ServiceAbstract):
@@ -14,31 +12,36 @@ class ActiveDirectoryService(ServiceAbstract):
     _begin_node: str
     _end_nodes: [str]
 
-    def __init__(self, configurations: dict) -> None:
-        super().__init__(configurations['name'], configurations)
-        self._catalog_path = configurations['path']
-        self._begin_node = configurations['begin_node']
-        self._end_nodes = configurations['end_nodes']
-        self._server = Server(self.configuration['ip'],
-                              port=self.configuration['port'],
+    def __init__(self, district, main_config, specific_data) -> None:
+        super().__init__(district, main_config, specific_data)
+        self._catalog_path = self.configuration['path']
+        self._begin_node = self.configuration['begin_node']
+        self._end_nodes = self.configuration['end_nodes']
+        self._server = Server(self.ip,
+                              port=self.port,
                               use_ssl=False)
 
     def create_connection(self) -> Any:
-        print('connection create')
+        print('creating connection with active directory')
         self._connection = Connection(self._server,
                                       auto_bind=AUTO_BIND_NO_TLS,
                                       user=self.configuration['username'],
                                       password=self.configuration['password'])
-        if self._connection:
+        if self._connection and self._connection.result['description'] == 'success':
             return self._connection
         else:
-            assert 'Could create new connection for Active Directory (' + self._name + ')'
-            return None
+            raise ConnectionError(f'Could create new connection for Active Directory ({self._name})')
 
     def check_connection(self) -> bool:
-        pass
+        try:
+            if self.create_connection():
+                return True
+            else:
+                return False
+        except:
+            return False
 
-# Computers manipulations
+    # Computers manipulations
 
     def _get_computers_raw(self, size_limit=0):
         self.connection.search(search_base=self._catalog_path,
@@ -71,7 +74,7 @@ class ActiveDirectoryService(ServiceAbstract):
         self.connection.search(search_base=self._catalog_path,
                                search_filter=' (sAMAccountType=805306368)', # or (&(objectCategory=person)(objectClass=user))
                                search_scope=SUBTREE,
-                               attributes=["name", "distinguishedName", "badPasswordTime",
+                               attributes=["name", "sAMAccountName", "distinguishedName", "badPasswordTime",
                                            "lastLogonTimestamp", "mail", "mailNickname",
                                            "objectGUID", "objectSid", "sAMAccountName",
                                            "telephoneNumber", "targetAddress", "userAccountControl",
@@ -82,7 +85,8 @@ class ActiveDirectoryService(ServiceAbstract):
     def get_users(self):
         raw_data = self._get_users_raw()
         users = [ {
-            "name": reformat_computer_name(record['attributes']['name']),
+            "name": record['attributes']['name'],
+            "account_name" : record['attributes']['sAMAccountName'].lower(),
             "dn": [ list(reversed(dn.split('=')))[0] for dn in reversed(record['attributes']['distinguishedName'].split(',')) ],
             "last_logon": transformate_time(record['attributes']['lastLogonTimestamp']),
             "bad_password_time" : transformate_time(record['attributes']['badPasswordTime']),
@@ -137,6 +141,7 @@ class ActiveDirectoryService(ServiceAbstract):
             self._recursive_build(sub_tree[node], nodes)
 
     def authenticate_user(self, login: str, password: str) -> bool:
+        login = f'rosgvard\\{login}'
         c = Connection(self._server, user=login, password=password)
         if not c.bind():
             return False

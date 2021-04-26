@@ -1,16 +1,18 @@
 from flask import Flask, render_template
-from backend.sc_database.actions.ComputerActions import ComputerActions
-from backend.sc_entities.District.ServiceManager import ServiceManager
-from backend.sc_entities.Entities import Entities
-from backend.sc_http.app import api_v1_mod
+from backend.sc_http.app import api_v1_mod, api_v2_mod
 
-from backend.sc_config.config import config
 
-app = Flask(__name__,
-            static_folder = "./frontend/static",
-            template_folder = "./frontend")
-app.config['SECRET_KEY'] = 'ccb711f092ac8ef1805b5045fab7e8a6189cb97ad04565e21b5fbcfc9e542e42'
-app.register_blueprint(api_v1_mod)
+def create_app():
+    app = Flask(__name__,
+                static_folder="./frontend/static",
+                template_folder="./frontend")
+    app.config['SECRET_KEY'] = 'ccb711f092ac8ef1805b5045fab7e8a6189cb97ad04565e21b5fbcfc9e542e42'
+    app.register_blueprint(api_v1_mod)
+    app.register_blueprint(api_v2_mod)
+    return app
+
+
+app = create_app()
 
 
 @app.route('/', defaults={'path': ''})
@@ -20,4 +22,5 @@ def catch_all(path):
 
 
 if __name__ == '__main__':
+    create_app()
     app.run(host='0.0.0.0', port=7598)

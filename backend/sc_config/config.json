@@ -7,16 +7,5 @@
     "right_agent_versions" : ["11.0.0.29", "11.0.0.1131", "11.0.0.1131"],
     "right_security_versions" : ["10.1.1.6421", "11.1.1.126", "10.1.2.996", "11.0.0.1131"]
   },
-  "districts" : ["SZO"],
-  "api" : {
-    "urls" : {
-      "auth" : {
-        "methods" : [],
-        "data" : []
-      },
-      "computers" : {
-
-      }
-    }
-  }
+  "districts" : ["SZO"]
 }

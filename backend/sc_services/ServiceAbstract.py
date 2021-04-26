@@ -13,20 +13,40 @@ class ServiceAbstract:
     _connection: Any
     _configuration: dict
 
-    def __init__(self, connection_name: str, configuration: dict):
-        self._name = connection_name
-        self._configuration = configuration
+    def __init__(self, district, main_config, specific_data):
+        self._district = district
+        self._name = main_config['connection_name']
+        self._ip = main_config['connection_ip']
+        self._port = main_config['connection_port']
+        self._configuration = specific_data
         self._connection = None
         self._status = 'inactive'
+
+    @property
+    def configuration(self):
+        return self._configuration
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def ip(self):
+        return self._ip
+
+    @property
+    def port(self):
+        return self._port
+
+    @property
+    def district(self):
+        return self._district
 
     @property
     def status(self):
         return self._status
 
     def create_connection(self) -> Any:
-        assert False, 'Method must be released!'
-
-    def check_connection(self) -> bool:
         assert False, 'Method must be released!'
 
     @property
@@ -38,10 +58,5 @@ class ServiceAbstract:
             raise BaseException('Connection with (' + self.name + ') was failed.')
         self.check_connection()
 
-    @property
-    def configuration(self):
-        return self._configuration
-
-    @property
-    def name(self):
-        return self._name
+    def check_connection(self) -> bool:
+        assert False, 'Method must be released!'

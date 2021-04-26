@@ -9,10 +9,10 @@ class Addresses(BaseModel):
 
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
     CryptoGateways_id = Column(Integer, ForeignKey('CryptoGateways.id'))
-    ipv4 = Column(String(16), nullable=False, unique=True)
+    ipv4 = Column(String(16), nullable=False, unique=True, index=True)
     isAllowed = Column(DateTime)
 
-    computers = relationship('Adapters', back_populates='address')
+    # computers = relationship('Adapters', back_populates='address')
 
     def __repr__(self):
         return f'<Addresses (ip: {self.ipv4})>'

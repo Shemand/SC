@@ -28,6 +28,9 @@ def reformat_computer_name(name):
             edited = True
     return name
 
+def reformat_unit_name(name):
+    return name.upper()
+
 def transformate_time(value):
     if isinstance(value, List) and len(value) > 0:
         value =  datetime.utcfromtimestamp(int(value[0])).replace(tzinfo=None)
@@ -42,3 +45,9 @@ def transformate_time(value):
         if value < datetime.now():
             return value
     return None
+
+def extract_unit_from_name(computer_name):
+    end = computer_name.find('-')
+    if end != -1:
+        return reformat_unit_name(computer_name[:end])
+    return 'UNKNOWN'

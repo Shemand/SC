@@ -11,7 +11,7 @@ class DistrictUnit:
         self._caption = information['caption']
         self._dallas_containers = information['dallas_containers']
         self._active_directory_containers = information['active_directory_containers']
-        self._kaspersky_services_name = information['kaspersky_services']
+        self._services_name = information['services']
         self._services = self.__initialize_services()
 
     @property
@@ -48,7 +48,7 @@ class DistrictUnit:
 
     def __initialize_services(self):
         services = {}
-        for service_name in self._kaspersky_services_name:
+        for service_name in self._services_name:
             all_services = self.district._services.all
             if service_name in all_services:
                 services[service_name] = all_services[service_name]

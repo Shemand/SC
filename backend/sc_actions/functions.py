@@ -8,3 +8,12 @@ def rows_to_dicts(rows):
         if '_sa_instance_state' in rows.__dict__:
             del rows.__dict__['_sa_instance_state']
         return dict(rows.__dict__)
+
+def delete_from_list_by_hash(array, element):
+    hash = id(element)
+    index = 0
+    for element in array:
+        if id(element) == hash:
+            array.pop(index)
+            break
+        index += 1

@@ -10,5 +10,3 @@ class OperationSystems(BaseModel):
     name = Column(String(64), nullable=False)
     isUnix = Column(Boolean, nullable=False)
 
-    def __repr__(self):
-        return f'<OperationSystems ({self.name})>'

@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from backend.sc_actions.units import build_structure
 from .BlueprintAttacher import BlueprintAttacher
 
 
@@ -21,3 +22,11 @@ class CommonsRoutes(BlueprintAttacher):
         @route('/now', methods=['GET'])
         def get_now(res):
             return str(int(datetime.now().timestamp() * 1000))
+
+        @route('/reset/structure', methods=['GET'])
+        def reset_structure(res):
+            district = res.district
+            database = district.database
+            structure = district.structure
+            build_structure(database, structure)
+            return res.success(data={}).get()

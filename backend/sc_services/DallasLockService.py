@@ -2,16 +2,14 @@ import json
 
 import requests
 
-from backend.sc_services.services.ServiceAbstract import ServiceAbstract
+from backend.sc_services.ServiceAbstract import ServiceAbstract
 
 
 class DallasLockService(ServiceAbstract):
 
-    def __init__(self, configurations: dict) -> None:
-        super().__init__(configurations['name'], configurations)
-        self._ip = configurations['ip']
-        self._port = configurations['port']
-        self._server = configurations['server']
+    def __init__(self, district, main_config, specific_data) -> None:
+        super().__init__(district, main_config, specific_data)
+        self.server = self.configuration['server']
 
     def create_connection(self):
         pass
