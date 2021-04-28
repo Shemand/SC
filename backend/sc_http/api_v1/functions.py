@@ -1,3 +1,4 @@
+from flask import g
 from functools import wraps
 
 # ----- COMMON FUNCTIONS -----
@@ -5,10 +6,12 @@ from functools import wraps
 
 
 # ----- DECORATORS -----
+
+
 def required_auth(func):
     @wraps(func)
     def decorated_function(*args, **kwargs):
-        if g.loggined:
-            return True
-        return False
+        if g.response.loggined:
+            return func(*args, **kwargs)
+        return g.response.unauth().get()
     return decorated_function

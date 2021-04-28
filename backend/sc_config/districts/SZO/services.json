@@ -17,6 +17,23 @@
     }
   },
   {
+    "owner" : "SZO",
+    "connection_name" : "puppet_one",
+    "connection_ip" : "10.2.202.203",
+    "connection_port" : 8080,
+    "type" : "puppet",
+    "active" : true,
+    "specific_data" : {
+      "fields" : ["ipaddress", "os", "boardserialnumber", "astra_update_version",
+                  "domain", "serial_number","is_virtual", "macaddress",
+                  "kesl_astra_version", "klnagent_astra_version", "uptime_seconds"],
+      "prefixes" : ["2659", "3526", "3644", "3693", "3705", "3727", "3798", "5134", "5402", "5565", "6716",
+                    "6717", "6821", "6832", "6944", "T210", "T211", "T229", "T235", "T239", "T251", "T253",
+                    "T260", "T278", "T283", "SZO", "6931", "6899"]
+
+    }
+  },
+  {
     "owner" : "2659",
     "connection_name" : "kaspersky_2659",
     "connection_ip" : "10.3.130.4",

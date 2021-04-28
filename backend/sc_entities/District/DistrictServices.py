@@ -1,6 +1,7 @@
 from backend.sc_services.ActiveDirectoryService import ActiveDirectoryService
 from backend.sc_services.DallasLockService import DallasLockService
 from backend.sc_services.KasperskyService import KasperskyService
+from backend.sc_services.PuppetServices import PuppetService
 
 
 class DistrictServices():
@@ -9,6 +10,7 @@ class DistrictServices():
         self.kaspersky = []
         self.ad = []
         self.dallas = []
+        self.puppet = []
         self.services_status = {}
         self.district = district
 
@@ -19,6 +21,8 @@ class DistrictServices():
             self.kaspersky.append(service)
         elif isinstance(service, DallasLockService):
             self.dallas.append(service)
+        elif isinstance(service, PuppetService):
+            self.puppet.append(service)
         else:
             raise RuntimeError('Unknown type of service')
         self.all[service.name] = service
@@ -34,6 +38,9 @@ class DistrictServices():
 
     def get_kaspersky_services(self):
         return self.kaspersky
+
+    def get_puppet_services(self):
+        return self.puppet
 
     def authenticate_user(self, login, base64_password):
         for service in self.get_active_directory_services():

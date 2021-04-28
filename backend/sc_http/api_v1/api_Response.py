@@ -1,138 +1,131 @@
 import json
 
+from flask import jsonify
 from sqlalchemy.sql.functions import user
 
 from backend.sc_actions.units import get_unit_by_id, get_available_units_id
 from backend.sc_actions.users import get_user_by_id
+from backend.sc_common.authenticate import read_token
+from backend.sc_database.model.Users import Users
+from backend.sc_entities.District.District import District
 from backend.sc_entities.Entities import Entities
 
 
-class ApiEntity():
-    def __init__(self):
-        pass
-
-    def get(self):
-        return {}
-
-
-class EntityDistrict(ApiEntity):
-    def __init__(self, district):
+class EntityUser():
+    def __init__(self, district: District, user_id):
         super().__init__()
+        if not isinstance(district, District):
+            raise TypeError('EntityUser.__init__: wrong district type')
         self.district = district
-
-    def get(self):
-        return self.district.name
-
-
-class EntityUser(ApiEntity):
-    def __init__(self, user):
-        super().__init__()
-        self._user = user
+        self.database = self.district.database
+        self._set_user(user_id)
         self.unit = None
-        self.available_units = None
+        self.available_units = []
+        if self._user:
+            self._set_unit()
+            self._set_available_units()
 
     @property
     def user_obj(self):
         return self._user
 
-    def set_unit(self, database):
-        self.unit = get_unit_by_id(database, self.user_obj.Units_id)
+    @property
+    def empty(self):
+        if self._user:
+            return False
+        return True
 
-    def set_available_units(self, database):
+    def _set_user(self, user_id):
+        if user_id is None:
+            self._user = None
+            return
+        user = self.database.session.query(Users).filter_by(id=user_id).first()
+        if user:
+            self._user = user
+        else:
+            raise RuntimeError('Unknown user_id')
+
+    def _set_unit(self):
+        self.unit = get_unit_by_id(self.database, self.user_obj.Units_id)
+
+    def _set_available_units(self):
         if self.unit is not None:
-            self.available_units = get_available_units_id(database, self.unit.name)
+            self.available_units = get_available_units_id(self.database, self.unit.name)
 
     def get(self):
-        return {
-            "username" : self.user_obj.username,
-            "full_name" : self.user_obj.full_name,
-            "privileges" : self.user_obj.privileges
-        }
+        if not self.empty:
+            return {
+                "username": self._user.login,
+                "privileges": self._user.privileges
+            }
+        return None
 
     def __repr__(self):
         return json.dumps(self.get())
 
 
-class ApiResponse:
-    def __init__(self, district, user):
-        self.district = EntityDistrict(district)
-        self.user = EntityUser(user)
+class MiddlewareResponse():
+    def __init__(self, district_name, route_name, user_id):
+    # request data
+        self.district = None
+        self.group_name = None
+        self.user = None
+        self.loggined = False
+        self.database = None
+        self._set_district(district_name)
+        self._set_route_group(route_name)
+        self._set_user(user_id)
+    # response data
+        self.status_code = None
         self.messages = []
-        self.data = None
-        self.status_code = 200
+        self.data = {}
+
+    def _set_user(self, user_id):
+        if not self.district:
+            raise RuntimeError('For set user, necessary set district of user.')
+        self.user = EntityUser(self.district, user_id)
+        if self.user.empty:
+            self.loggined = False
+        else:
+            self.loggined = True
+
+    def _set_district(self, district_name):
+        self.district = Entities().get_district(district_name)
+        self.database = self.district.database
+
+    def _set_route_group(self, group_name):
+        self.group_name = group_name
+
+    def set_data(self, key, value):
+        self.data[key] = value
 
     def append_message(self, message):
         self.messages.append(message)
 
+    def success(self):
+        self.status_code = 200
+        return self
+
+    def undefined(self):
+        self.status_code = 404
+        return self
+
+    def error(self, message=None):
+        self.status_code = 500
+        return self
+
+    def unauth(self):
+        self.status_code = 401
+        return self
+
+    def denied(self):
+        self.status_code = 304
+        return self
+
     def get(self):
-        return json.dumps({
-            "district" : self.district.get(),
+        return jsonify({
+            "district" : self.district.name,
             "user" : self.user.get(),
             "messages" : self.messages,
             "data" : self.data
         }), self.status_code
-
-class MiddlewareResponse():
-    def __init__(self):
-        self.user = None
-        self.district = None
-        self.auth = False
-
-    def set_user(self, user_id):
-        if not self.district:
-            raise RuntimeError('For set user, necessary set district of user.')
-        if user_id == None:
-            self.user = None
-        else:
-            self.user = get_user_by_id(self.district.database, user_id)
-
-    def set_district(self, district_name):
-        self.district = Entities().get_district(district_name)
-
-    def set_auth(self, value):
-        self.auth = bool(value)
-
-    def success(self, data={}):
-        return SuccessApiResponse(self.district, self.user, data)
-
-    def undefined(self):
-        return UndefinedApiResponse()
-
-    def error(self):
-        return ErrorApiResponse(self.district, self.user)
-
-    def unauth(self):
-        return UnauthApiResponse()
-
-    def denied(self):
-        return PermissionApiResponse()
-
-class SuccessApiResponse(ApiResponse):
-    def __init__(self, district, user, data):
-        super().__init__(district, user)
-        self.data = data
-        self.status_code = 200
-
-
-class UndefinedApiResponse(ApiResponse):
-    def __init__(self):
-        super().__init__(None, None)
-        self.status_code = 404
-
-
-class ErrorApiResponse(ApiResponse):
-    def __init__(self, district, user):
-        super().__init__(district, user)
-        self.status_code = 500
-
-
-class UnauthApiResponse(ApiResponse):
-    def __init__(self):
-        super().__init__(None, None)
-        self.status_code = 401
-
-
-class PermissionApiResponse(ApiResponse):
-    def __init__(self):
-        super().__init__(None, None)
-        self.status_code = 304

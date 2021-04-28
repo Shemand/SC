@@ -1,7 +1,7 @@
 from flask import g, request
 
 from backend.sc_common.authenticate import read_token
-from backend.sc_http.api_v2.api_Response import MiddlewareResponse
+from backend.sc_http.api_v1.api_Response import MiddlewareResponse
 
 _DISTRICT_NAME = 0
 _GROUP_NAME = 1

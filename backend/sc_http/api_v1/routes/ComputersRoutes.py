@@ -1,45 +1,41 @@
 import json
 
+from flask import g
+
 from backend.sc_actions.computers import get_computers, get_or_create_computer
-from backend.sc_actions.active_directory import update_computers_from_ad
+from backend.sc_actions.functions import rows_to_dicts
 from backend.sc_actions.kaspersky import update_computers_from_kaspersky
 from backend.sc_entities.Entities import Entities
-from .BlueprintAttacher import BlueprintAttacher
+from backend.sc_http.api_v1.functions import required_auth
 
 
-class ComputersRoutes(BlueprintAttacher):
-    def __init__(self, mod, base_name):
-        super().__init__(mod, base_name)
+def attach_computer_routes(mod):
 
-    def _attach(self, route):
+    @mod.route('/<district_name>/computers', methods=['GET'])
+    @required_auth
+    def get_computers_info(district_name):
+        """Function for getting all information about computer"""
+        res = g.response
+        data = rows_to_dicts(get_computers(g.response.database))
+        res.set_data('computers', data)
+        return res.success().get()
 
-        @route('/', methods=['GET'])
-        def get_computers_info(res):
-            """Function for getting all information about computer"""
-            district = Entities().get_district(res.district.name)
-            database = district.database
-            print(get_or_create_computer(database, 'SZO-ASTRA-GLOG'))
-            update_computers_from_kaspersky(database, district)
-            res = res.success({'status' : 'awesome'})
-            return res.get()
+    @mod.route('/<district_name>/computers/<computer_id>/comment', methods=['GET'])
+    def set_computer_comment(district_name, computer_id):
+        """Function for changing comment of computer"""
+        return '{}'
 
-        @route('/<computer_id>/comment', methods=['GET'])
-        def set_computer_comment(res, computer_id):
-            """Function for changing comment of computer"""
-            get_available_units(res.district.database, computer_id)
-            return '{}'
+    @mod.route('/<district_name>/computers/<computer_name>/type/<type>', methods=['PUT'])
+    def change_computer_type(district_name, computer_name, type):
+        """Function for changing type of computer(ARM, Server)"""
+        return '{}'
 
-        @route('<computer_name>/type/<type>', methods=['PUT'])
-        def change_computer_type(res):
-            """Function for changing type of computer(ARM, Server)"""
-            return '{}'
+    @mod.route('/<district_name>/computers/<computer_name>/lock', methods=['PUT'])
+    def lock_computer(district_name, computer_name):
+        """Function for locking computer by computer_name"""
+        return '{}'
 
-        @route('/<computer_name>/lock', methods=['PUT'])
-        def lock_computer(res):
-            """Function for locking computer by computer_name"""
-            return '{}'
-
-        @route('/<computer_name>/unlock', methods=['PUT'])
-        def unlock_computer(res):
-            """Function for unlocking computer by computer_name"""
-            return '{}'
+    @mod.route('/<district_name>/computers/<computer_name>/unlock', methods=['PUT'])
+    def unlock_computer(district_name, computer_name):
+        """Function for unlocking computer by computer_name"""
+        return '{}'

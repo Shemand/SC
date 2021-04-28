@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from backend.sc_http.app import api_v1_mod, api_v2_mod
+from backend.sc_http.app import api_v1_mod
 
 
 def create_app():
@@ -8,7 +8,6 @@ def create_app():
                 template_folder="./frontend")
     app.config['SECRET_KEY'] = 'ccb711f092ac8ef1805b5045fab7e8a6189cb97ad04565e21b5fbcfc9e542e42'
     app.register_blueprint(api_v1_mod)
-    app.register_blueprint(api_v2_mod)
     return app
 
 

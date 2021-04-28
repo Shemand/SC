@@ -1,11 +1,13 @@
 from backend.sc_services.ActiveDirectoryService import ActiveDirectoryService
 from backend.sc_services.DallasLockService import DallasLockService
 from backend.sc_services.KasperskyService import KasperskyService
+from backend.sc_services.PuppetServices import PuppetService
 
 _services_relations = {
     'active_directory' : ActiveDirectoryService,
     'kaspersky' : KasperskyService,
-    'dallas_lock' : DallasLockService
+    'dallas_lock' : DallasLockService,
+    'puppet' : PuppetService
 }
 
 class ServiceFactory:

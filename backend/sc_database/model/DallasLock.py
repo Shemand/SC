@@ -13,6 +13,7 @@ class DallasLock(BaseModel):
     Computers_id = Column(Integer, ForeignKey('Computers.id'), nullable=False)
     status = Column(Integer, nullable=False)
     server = Column(String(64), nullable=False)
+    isDeleted = Column(DateTime)
     updated = Column(DateTime, nullable=False, default=datetime.now())
     created = Column(DateTime, nullable=False, default=datetime.now())
 

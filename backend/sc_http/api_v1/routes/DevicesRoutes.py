@@ -1,40 +1,36 @@
 from .BlueprintAttacher import BlueprintAttacher
 
 
-class DevicesRoutes(BlueprintAttacher):
-    def __init__(self, mod, base_name):
-        super().__init__(mod, base_name)
+def attach_device_routes(mod):
+    @mod.route('/<district_name>/devices', methods=['GET'])
+    def get_devices(district_name):
+        '''Function for getting devices according user privileges'''
+        return '{}'
 
-    def _attach(self, route):
-        @route('/', methods=['GET'])
-        def get_devices(district_name):
-            '''Function for getting devices according user privileges'''
-            return '{}'
+    @mod.route('/<district_name>/devices/add', methods=['PUT'])
+    def add_device(district_name):
+        '''Function for add new device.
 
-        @route('/add', methods=['PUT'])
-        def add_device(res):
-            '''Function for add new device.
+        User can create device only according with him privileges and container.
 
-            User can create device only according with him privileges and container.
+        '''
+        return '{}'
 
-            '''
-            return '{}'
+    @mod.route('/<district_name>/devices/remove/<device_id>', methods=['DELETE'])
+    def remove_device(district_name, device_id):
+        '''Function for removing device.
 
-        @route('/remove/<device_id>', methods=['DELETE'])
-        def remove_device(res):
-            '''Function for removing device.
+        User can see only devices according with him container.
 
-            User can see only devices according with him container.
+        '''
+        return '{}'
 
-            '''
-            return '{}'
+    @mod.route('/<district_name>/devices/<device_id>/comment', methods=['PUT'])
+    def set_device_comment(district_name, device_id):
+        '''Function for changing comment of device.'''
+        return '{}'
 
-        @route('/<device_id>/comment', methods=['PUT'])
-        def set_device_comment(res):
-            '''Function for changing comment of device.'''
-            return '{}'
-
-        @route('/<device_name>/type/<type>', methods=['PUT'])
-        def change_device_type(res):
-            '''Function for changing type of device(ARM, Server)'''
-            return '{}'
+    @mod.route('/<district_name>/devices/<device_name>/type/<type>', methods=['PUT'])
+    def change_device_type(district_name, device_name, type):
+        '''Function for changing type of device(ARM, Server)'''
+        return '{}'

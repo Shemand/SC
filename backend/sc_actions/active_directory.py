@@ -62,7 +62,7 @@ def update_computers_from_ad(database, district):
     ad_rows = _get_ad_computers_rows(database)
     records_ad = []
     for service in ad_services:
-        records_ad.extend(_get_ad_computer_records_from_service(database, service))
+        records_ad.extend(_get_ad_computer_records(database, service))
     inject_row_in_computers_records(database, records_ad)
     for record in records_ad:
         required_ad_row = None
@@ -82,7 +82,7 @@ def update_computers_from_ad(database, district):
     return True
 
 
-def _get_ad_computer_records_from_service(database, ad_service):
+def _get_ad_computer_records(database, ad_service):
     if ad_service.check_connection():
         return ad_service.get_computers()
 
@@ -116,7 +116,7 @@ def update_ad_users(database, district):
     users_rows = {row.login: row for row in get_users(database)}
     records_ad = []
     for service in ad_services:
-        records_ad.extend(_get_ad_users_records_from_service(database, service))
+        records_ad.extend(_get_ad_users_records(database, service))
     for record in records_ad:
         user_name = record['account_name']
         if user_name in ad_rows:
@@ -128,7 +128,7 @@ def update_ad_users(database, district):
     for record in records_ad:
         ad_row = record['ad_row']
         _update_user_ad_row(record)
-    for row in ad_rows:
+    for user_name, row in ad_rows.items():
         row.isDeleted = datetime.now()
     database.session.commit()
     return True
@@ -139,7 +139,7 @@ def update_users_from_ad(database, district):
     ad_rows = get_ad_users(database)
     records_ad = []
     for service in ad_services:
-        records_ad.extend(_get_ad_users_records_from_service(database, service))
+        records_ad.extend(_get_ad_users_records(database, service))
     inject_row_in_users_records(database, records_ad)
     for record in records_ad:
         required_ad_row = None
@@ -159,7 +159,7 @@ def update_users_from_ad(database, district):
     return True
 
 
-def _get_ad_users_records_from_service(database, ad_service):
+def _get_ad_users_records(database, ad_service):
     if ad_service.check_connection():
         return ad_service.get_users()
 
