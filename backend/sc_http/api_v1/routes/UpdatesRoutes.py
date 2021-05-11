@@ -3,6 +3,7 @@ from flask import g
 from backend.sc_actions.active_directory import update_computers_from_ad, update_users_from_ad, update_ad_users as upd_ad_users
 from backend.sc_actions.computers import update_computers_unit
 from backend.sc_actions.dallas_lock import update_computers_from_dallas
+from backend.sc_actions.kaspersky import update_computers_from_kaspersky
 from backend.sc_actions.puppet import update_computers_from_puppet
 from backend.sc_actions.units import build_structure
 from .BlueprintAttacher import BlueprintAttacher
@@ -89,5 +90,5 @@ def attach_update_routes(mod): #todo edit the handlers
         district = res.district
         database = district.database
         build_structure(database, district.structure)
-        update_computers_unit(database)
+        update_computers_from_kaspersky(database, district)
         return res.success().get()

@@ -5,6 +5,8 @@ from sqlalchemy import MetaData, create_engine
 from sqlalchemy.engine.url import URL
 
 # initialize models
+from sqlalchemy_utils import create_view
+
 from .model.BaseModel import BaseModel
 from .model.Adapters import Adapters
 from .model.Computers import Computers
@@ -17,10 +19,11 @@ from .model.Kaspersky import Kaspersky
 from .model.Logons import Logons
 from .model.OperationSystems import OperationSystems
 from .model.PuppetEvents import PuppetEvents
-from .model.Puppets import Puppets
+from .model.Puppets import Puppets, PuppetView
 from .model.Units import Units
 from .model.Users import Users
 from .model.Users_ActiveDirectory import Users_ActiveDirectory
+
 
 class DatabaseClass(object):
 
@@ -45,6 +48,7 @@ class DatabaseClass(object):
     Units = Units
     Users = Users
     Users_ActiveDirectory = Users_ActiveDirectory
+    PuppetView = PuppetView
 
     def __init__(self, district, database_config) -> None:
         self.district = district

@@ -1,9 +1,12 @@
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, ForeignKey, String, DateTime
+from sqlalchemy import Column, Integer, ForeignKey, String, DateTime, select
 from sqlalchemy.orm import relationship
+from sqlalchemy_utils import create_view
 
+from backend.sc_database.model.Addresses import Addresses
 from backend.sc_database.model.BaseModel import BaseModel
+from backend.sc_database.model.OperationSystems import OperationSystems
 
 
 class Kaspersky(BaseModel):
@@ -24,3 +27,21 @@ class Kaspersky(BaseModel):
 
     def __repr__(self):
         return f'<Kaspersky ({self.computer.name})>'
+
+
+class KasperskyView(BaseModel):
+    _create_query = select([
+        Kaspersky.id.label('id'),
+        Kaspersky.Computers_id.label('Computers_id'),
+        Addresses.ipv4.label('kl_ip'),
+        OperationSystems.name.label('kl_os'),
+        Kaspersky.agent_version.label('agent_version'),
+        Kaspersky.security_version.label('security_version'),
+        Kaspersky.server.label('server'),
+        Kaspersky.isDeleted.label('isDeleted'),
+        Kaspersky.updated.label('updated'),
+        Kaspersky.created.label('created')
+    ]).select_from(Kaspersky.__table__.join(Addresses, Kaspersky.Addresses_id == Addresses.id, isouter=True)
+                   .join(OperationSystems, Kaspersky.OperationSystems_id == OperationSystems.id, isouter=True))
+    __tablename__ = 'kasperksy_view'
+    __table__ = create_view('kaspersky_view', _create_query, BaseModel.metadata)
