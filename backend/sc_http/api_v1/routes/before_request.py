@@ -26,7 +26,7 @@ def __extract_token(request):
     auth = auth.split(' ')
     auth_type = auth[_AUTH_TYPE]
     auth_token = auth[_AUTH_TOKEN]
-    if auth_type == 'jwt':
+    if auth_type == 'Bearer':
         auth_data = read_token(auth_token)
     return auth_data
 

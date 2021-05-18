@@ -7,6 +7,7 @@ from sqlalchemy.engine.url import URL
 # initialize models
 from sqlalchemy_utils import create_view
 
+
 from .model.BaseModel import BaseModel
 from .model.Adapters import Adapters
 from .model.Computers import Computers

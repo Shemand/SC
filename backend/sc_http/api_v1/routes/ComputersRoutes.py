@@ -1,8 +1,9 @@
 import json
 
-from flask import g
+from flask import g, request
 
 from backend.sc_actions.computers import get_computers, get_or_create_computer
+from backend.sc_actions.frames import get_computers_frame, FROM_ACTIVE_DIRECTORY, FROM_PUPPET, FROM_KASPERSKY, FROM_DALLAS_LOCK
 from backend.sc_actions.functions import rows_to_dicts
 from backend.sc_actions.kaspersky import update_computers_from_kaspersky
 from backend.sc_entities.Entities import Entities
@@ -16,7 +17,24 @@ def attach_computer_routes(mod):
     def get_computers_info(district_name):
         """Function for getting all information about computer"""
         res = g.response
-        data = rows_to_dicts(get_computers(g.response.database))
+        units = res.user.available_units
+        args = request.args
+        puppet = args['puppet'] if 'puppet' in args else None
+        active_directory = args['active_directory'] if 'active_directory' in args else None
+        dallas_lock = args['dallas_lock'] if 'dallas_lock' in args else None
+        kaspersky = args['kaspersky'] if 'kaspersky' in args else None
+        sources = {}
+        if puppet:
+            sources[FROM_PUPPET] = json.loads(puppet)
+        if active_directory:
+            sources[FROM_ACTIVE_DIRECTORY] = json.loads(active_directory)
+        if kaspersky:
+            sources[FROM_KASPERSKY] = json.loads(kaspersky)
+        if dallas_lock:
+            sources[FROM_DALLAS_LOCK] = json.loads(dallas_lock)
+        data = get_computers_frame(res.database,
+                                   units,
+                                   sources=sources)
         res.set_data('computers', data)
         return res.success().get()
 

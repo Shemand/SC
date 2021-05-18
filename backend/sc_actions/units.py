@@ -86,4 +86,4 @@ def get_available_units_id(database, root_unit_name):
     next_ids.append(get_unit_by_name(database, root_unit_name).id)
     for id in next_ids:
         next_ids.extend([ unit.id for unit in database.session.query(Units).filter_by(root_id=id).all() ])
-    print(next_ids)
+    return next_ids

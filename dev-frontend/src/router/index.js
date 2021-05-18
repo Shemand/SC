@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -7,7 +8,10 @@ const routes = [
   {
     path : '/',
     name : 'main',
-    component : () => import('../views/Main.vue')
+    component : () => import('../views/Main.vue'),
+    meta: {
+        requiresAuth: true
+    }
   },
   // {
   //   path : '/registration',
@@ -15,14 +19,17 @@ const routes = [
   //   component : () => import('../views/Registration.vue')
   // },
   {
-    path : '/Authorization',
+    path : '/Auth',
     name : 'authorization',
     component : () => import('../views/Authorization.vue')
   },
   {
     path : '/Devices',
     name : 'devices',
-    component : () => import('../views/Devices.vue')
+    component : () => import('../views/Devices.vue'),
+    meta: {
+        requiresAuth: true
+    }
   },
   {
     path : '*',
@@ -35,6 +42,20 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if(to.matched.some(record => record.meta.requiresAuth)) {
+    console.log('before')
+    if (store.getters.isLoggedIn) {
+        console.log('after')
+      next()
+      return
+    }
+    next('/auth')
+  } else {
+    next()
+  }
 })
 
 export default router

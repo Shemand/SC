@@ -6,13 +6,13 @@
       <form @submit.prevent="authUser" class="auth-block col s4 offset-s4 center-align grey lighten-5">
         <div class="row">
           <div class="input-field col s12">
-            <input id="login" type="text" class="validate">
+            <input required v-model="login" id="login" type="text" class="validate" >
             <label for="login">Логин</label>
           </div>
         </div>
         <div class="row">
           <div class="input-field col s12">
-            <input id="password" type="password" class="validate">
+            <input required v-model="password" id="password" type="password" class="validate">
             <label for="password">Пароль</label>
           </div>
         </div>
@@ -30,12 +30,17 @@ export default {
   components : { },
   data() {
     return {
-      login : ''
+      login : '',
+      password : ''
     }
   },
   methods : {
-    authUser : () => {
-      
+    authUser : function() {
+        let login = this.login
+        let password = this.password
+        this.$store.dispatch('login', { login, password })
+                   .then(() => this.$router.push('/'))
+                   .catch(err => console.log(err))
     }
   }
 }

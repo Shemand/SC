@@ -1,4 +1,5 @@
 from sqlalchemy import select, and_, or_
+from sqlalchemy.testing import in_
 
 from backend.sc_database.model.Addresses import Addresses
 from backend.sc_database.model.Computers import Computers
@@ -85,14 +86,14 @@ def get_computers_frame(database, units, sources=[], with_fields=[Computers]):
     query = select(_build_select(sources))
     sources_names = [source_name for source_name in sources]
     query = query.select_from(_build_from(sources))
-    where_expression = None
+    where_expression = Units.id.in_(units)
     if where_expression is not None:
         query = query.where(where_expression)
     computers = database.engine.execute(query)
     records = []
     for computer in computers:
         records.append(_format_record(computer, sources))
-    print(computers)
+    return records
 
 
 def _format_record(computer, sources):
