@@ -1,5 +1,13 @@
 <template>
-    <div ref="computers_table"></div>
+    <div>
+        <div class="main_table" ref="computers_table"></div>
+        <div class="modal" ref="computer_modal">
+            <div class="computers-info">Информация не подгрузилась</div>
+            <div class="computers-footer">
+                <a href="#!" class="modal-close waves-effect waves-red btn-flat">Закрыть</a>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -23,6 +31,7 @@ export default {
 //        }
 //    },
     mounted() {
+        let context = this
         this.tabulator = new Tabulator(this.$refs.computers_table, {
             data: this.tableData,
             layout: "fitColumns",
@@ -43,11 +52,20 @@ export default {
                 {title:"PP статус", field:"pp_status"},
                 {title:"ОС", field:"os"}
             ],
+            rowClick:function(e, row) {
+                let el = context.$refs.computer_modal
+                let instance = M.Modal.getInstance(el)
+                let dom_element = instance.$el[0]
+                let content = dom_element.getElementsByClassName("computers-info")[0]
+                content.innerHTML = "Информация не подгрузилась"
+                let computer_id = row.getData().id
+                content.innerHTML = '<p>'+JSON.stringify(context.$store.getters.computer(computer_id), null, '<br>')+'</p>'
+                instance.open()
+            }
         })
         this.tableData = []
-        let context = this
         context.getComputers().then(function(computers){
-            console.log(computers)
+            context.$store.commit('update_computers', computers)
             context.tableData = context.prepareData(computers)
             context.tabulator.setData(context.tableData)
        });
@@ -58,6 +76,7 @@ export default {
             let tableArray = []
             computers.forEach(function(computer){
                 tableArray.push({
+                    id: computer.id,
                     name: computer.name,
                     ad_status: context.make_ad_status(computer),
                     kl_status: context.make_kaspersky_status(computer),
@@ -73,7 +92,7 @@ export default {
             const ALL_RIGHT = 'Отлично'
             const WRONG_AGENT = 'Неправильный агент'
             const WRONG_SECURITY = 'Неправильная защита'
-            const WRONG_ALL = 'Все не правильно'
+            const WRONG_ALL = 'Все неправильно'
             const win_agent_versions = ["11.0.0.1131", "10.5.1781", "10.4.343", "10.2.434"]
             const lin_agent_versions = ["11.0.0.29", "10.5.0.42"]
             const lin_security_versions = ["10.1.1.6421","10.1.0.6077", "10.1.0.6028"]
@@ -98,21 +117,21 @@ export default {
             if (ad.registred)
                 return String(ad.registred)
             else
-                return "Не зарегистрирован"
+                return "Незарегистрирован"
         },
         make_dallas_status(computer) {
             let dallas = computer.dallas_lock
             if (dallas.status)
                 return dallas.status
             else
-                return "Не зарегистрирован"
+                return "Незарегистрирован"
         },
         make_puppet_status(computer) {
             let puppet = computer.puppet
             if (puppet.puppet_ip)
                 return puppet.puppet_ip
             else
-                return "Не зарегистрирован"
+                return "Незарегистрирован"
         },
         make_os_string(computer) {
             let puppet = computer.puppet

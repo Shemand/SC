@@ -1,9 +1,10 @@
 <template>
   <div>
     <Navbar></Navbar>
-    <h1>Main</h1>
-    <div class="main_table"><ComputersTable></ComputersTable></div>
+    <ComputersTable></ComputersTable>
   </div>
+  <!-- Modal Trigger -->
+
 </template>
 
 <script>
@@ -13,7 +14,10 @@ export default {
   name: 'Home',
   components: { Navbar, ComputersTable },
   async mounted() {
-
+      var options = {
+      }
+      var elements = document.querySelectorAll('.modal');
+      var instances = M.Modal.init(elements, options);
   }
 }
 </script>

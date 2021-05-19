@@ -8,11 +8,13 @@ export default new Vuex.Store({
   state: {
     status: '',
     token: localStorage.getItem('token') || '',
-    user : {}
+    user : {},
+    computers: [],
   },
   getters: {
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
+    computer: state => id => state.computers.filter((comp) => {return comp.id == id})[0],
   },
   mutations: {
     auth_request(state){
@@ -30,6 +32,13 @@ export default new Vuex.Store({
         state.status = ''
         state.token = ''
     },
+    update_computers(state, computers) {
+        state.computers = computers
+        console.log(computers)
+//        computers.forEach((computer) => {
+//            state.computers.push(computer)
+//        });
+    }
   },
   actions: {
       login({commit}, user){
