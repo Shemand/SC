@@ -10,21 +10,21 @@
 <script>
 import Navbar from "@/components/Navbar";
 import ComputersTable from "@/components/ComputersTable";
+
 export default {
   name: 'Home',
-  components: { Navbar, ComputersTable },
+  components: {Navbar, ComputersTable},
   async mounted() {
-      var options = {
-      }
-      var elements = document.querySelectorAll('.modal');
-      var instances = M.Modal.init(elements, options);
+    var options = {}
+    var elements = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elements, options);
   }
 }
 </script>
 
 <style lang="scss">
 .main_table {
-    width: 90%;
-    margin: auto;
+  width: 90%;
+  margin: auto;
 }
 </style>

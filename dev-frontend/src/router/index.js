@@ -5,57 +5,57 @@ import store from '../store'
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path : '/',
-    name : 'main',
-    component : () => import('../views/Main.vue'),
-    meta: {
-        requiresAuth: true
+    {
+        path: '/',
+        name: 'main',
+        component: () => import('../views/Main.vue'),
+        meta: {
+            requiresAuth: true
+        }
+    },
+    // {
+    //   path : '/registration',
+    //   name : 'registration',
+    //   component : () => import('../views/Registration.vue')
+    // },
+    {
+        path: '/Auth',
+        name: 'authorization',
+        component: () => import('../views/Authorization.vue')
+    },
+    {
+        path: '/Devices',
+        name: 'devices',
+        component: () => import('../views/Devices.vue'),
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '*',
+        name: 'notFound',
+        component: () => import('../views/Not-found.vue')
     }
-  },
-  // {
-  //   path : '/registration',
-  //   name : 'registration',
-  //   component : () => import('../views/Registration.vue')
-  // },
-  {
-    path : '/Auth',
-    name : 'authorization',
-    component : () => import('../views/Authorization.vue')
-  },
-  {
-    path : '/Devices',
-    name : 'devices',
-    component : () => import('../views/Devices.vue'),
-    meta: {
-        requiresAuth: true
-    }
-  },
-  {
-    path : '*',
-    name : 'notFound',
-    component : () => import('../views/Not-found.vue')
-  }
 ]
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes
 })
 
 router.beforeEach((to, from, next) => {
-  if(to.matched.some(record => record.meta.requiresAuth)) {
-    console.log('before')
-    if (store.getters.isLoggedIn) {
-        console.log('after')
-      next()
-      return
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        console.log('before')
+        if (store.getters.isLoggedIn) {
+            console.log('after')
+            next()
+            return
+        }
+        next('/auth')
+    } else {
+        next()
     }
-    next('/auth')
-  } else {
-    next()
-  }
 })
 
 export default router
