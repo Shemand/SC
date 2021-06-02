@@ -14,6 +14,7 @@ export default new Vuex.Store({
     getters: {
         isLoggedIn: state => !!state.token,
         authStatus: state => state.status,
+        computers: state => state.computers,
         computer: state => id => state.computers.filter((comp) => {
             return comp.id == id
         })[0],
@@ -36,10 +37,6 @@ export default new Vuex.Store({
         },
         update_computers(state, computers) {
             state.computers = computers
-            console.log(computers)
-//        computers.forEach((computer) => {
-//            state.computers.push(computer)
-//        });
         }
     },
     actions: {
@@ -60,6 +57,26 @@ export default new Vuex.Store({
                     reject(err)
                 })
             })
+        },
+        async updateComputers({commit}) {
+            return await axios({
+                url : "/api/v1/SZO/computers?puppet=[]&kaspersky=[]&dallas_lock=[]&active_directory=[]",
+                method : 'GET',
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+                },
+                withCredentials : true
+            }).then(function(res) {
+                let data = res.data
+                let status = res.status
+                if (status === 200) {
+                    commit('update_computers', data.data.computers)
+                } else
+                    console.log('Computers updating status is ' + status)
+                return status
+            }).catch(function(err) {
+                return 0
+            });
         }
     },
     modules: {}

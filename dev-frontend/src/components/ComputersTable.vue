@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="main_table" ref="computers_table"></div>
+    <TableStatistic v-bind:lines="lines"></TableStatistic>
     <ComputerModal v-bind="selectedComputer" ref="computer_modal"></ComputerModal>
   </div>
 </template>
@@ -8,10 +9,11 @@
 <script>
 import GetRequestsMixin from "@/mixins/GetRequestsMixin.js"
 import ComputerModal from "@/components/ComputerModal"
+import TableStatistic from "@/components/TableStatistic"
 import Tabulator from "tabulator-tables"
 
 export default {
-  components: {ComputerModal},
+  components: {ComputerModal, TableStatistic},
   mixins: [GetRequestsMixin],
   data() {
     return {
@@ -23,7 +25,44 @@ export default {
         kaspersky: {},
         active_directory: {},
         dallas_lock: {},
+      },
+      lines: {
+        all_computers: {
+          name: "Всего компьютеров",
+          value: 0
+        },
+        linux: {
+          name: "Linux:",
+          value: 0
+        },
       }
+        // {hidden_name: "windows",
+        //   name: "Windows",
+        //   value: 0},
+        // {hidden_name: "unknown_os",
+        //   name: "Неизвестная ОС",
+        //   value: 0},
+        // {hidden_name: "good_kaspersky",
+        //   name: "Правильный касперский",
+        //   value: 0},
+        // {hidden_name: "with_problem_kaspersky",
+        //   name: "Проблемный касперски",
+        //   value: 0},
+        // {hidden_name: "without_kapspersky",
+        //   name: "Проблемный касперски",
+        //   value: 0},
+        // {hidden_name: "linux_on_puppet",
+        //   name: "Linux на паппет",
+        //   value: 0},
+        // {hidden_name: "all_puppet",
+        //   name: "Всего записей паппет",
+        //   value: 0},
+        // {hidden_name: "without_puppet",
+        //   name: "Не установлен паппет",
+        //   value: 0},
+        // {hidden_name: "with_active_directory",
+        //   name: "Машин в Active Directory",
+        //   value: 0},
     }
   },
 //    watch : {
@@ -65,10 +104,14 @@ export default {
       }
     })
     this.tableData = []
-    context.getComputers().then(function (computers) {
-      context.$store.commit('update_computers', computers)
-      context.tableData = context.prepareData(computers)
-      context.tabulator.setData(context.tableData)
+    this.$store.dispatch('updateComputers').then(function (status) {
+      if (status === 200) {
+        console.log('Data about computers was loaded write!')
+        context.tableData = context.prepareData(context.$store.getters.computers)
+        context.tabulator.setData(context.tableData)
+      } else {
+        console.log('computers gets request have status not equal 200. Check the network in development panel.')
+      }
     });
   },
   methods: {

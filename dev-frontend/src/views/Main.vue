@@ -1,6 +1,7 @@
 <template>
   <div>
     <Navbar></Navbar>
+    <br>
     <ComputersTable></ComputersTable>
   </div>
   <!-- Modal Trigger -->

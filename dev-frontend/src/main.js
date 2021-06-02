@@ -12,11 +12,16 @@ Vue.prototype.$http = Axios;
 const token = localStorage.getItem('token')
 if (token) {
     Vue.prototype.$http.defaults.headers.common['Authorization'] = 'Bearer ' + token
-}
-;
+};
 
 new Vue({
     store,
     router,
     render: h => h(App)
 }).$mount('#app')
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems, options);
+});
