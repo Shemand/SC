@@ -19,6 +19,13 @@ export default {
     var options = {}
     var elements = document.querySelectorAll('.modal');
     var instances = M.Modal.init(elements, options);
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems, options);
+    options = {
+      edge: 'right'
+    }
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems, options);
   }
 }
 </script>

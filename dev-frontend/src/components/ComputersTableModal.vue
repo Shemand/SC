@@ -1,7 +1,7 @@
 <template>
   <div class="modal">
     <h1>{{ name }}</h1>
-    <ul class="collapsible computers-info">
+    <ul class="collapsible">
       <li>
         <div class="collapsible-header">Puppet</div>
         <div class="collapsible-body">
@@ -36,7 +36,7 @@
         <div class="collapsible-body">
           <span>Статус: </span><span>{{ dallas_lock.status }}</span><br>
           <span>Сервер: </span><span>{{ (dallas_lock.server)? "Да" : "Нет" }}</span><br>
-          <span>Удален:</span><span>{{ (dallas_lock.isDeleted)? "Да" : "Нет" }}</span><br>
+          <span>Удален:</span><span>{{ (dallas_lock.isDeleted)? "Да" : "Нет" }}</span><br/**/>
           <span>Последнее изменение: </span><span>{{ dallas_lock.dl_updated }}</span><br>
           <span>Запись создана: </span><span>{{ dallas_lock.dl_created }}</span><br>
         </div>
@@ -64,12 +64,6 @@
 <script>
 export default {
   props: ['unit', 'name', 'puppet', 'kaspersky', 'active_directory', 'dallas_lock'],
-  // computed: {
-  //   puppet: context => context.computer.puppet,
-  //   dallas: context => context.computer.dallas_lock,
-  //   kaspersky: context => context.computer.kaspersky,
-  //   active_directory: context => context.computer.active_directory,
-  // },
 }
 </script>
 

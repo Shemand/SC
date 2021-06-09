@@ -20,8 +20,3 @@ new Vue({
     render: h => h(App)
 }).$mount('#app')
 
-
-document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.collapsible');
-    var instances = M.Collapsible.init(elems, options);
-});

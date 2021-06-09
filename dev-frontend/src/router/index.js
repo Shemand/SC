@@ -32,6 +32,14 @@ const routes = [
         }
     },
     {
+        path: '/admin',
+        name: 'admin',
+        component: () => import('../views/Admin.vue'),
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
         path: '*',
         name: 'notFound',
         component: () => import('../views/Not-found.vue')

@@ -1,19 +1,21 @@
 <template>
   <div>
-    <div class="main_table" ref="computers_table"></div>
-    <TableStatistic v-bind:lines="lines"></TableStatistic>
+    <ComputersTableTabs :table="tabulator"></ComputersTableTabs>
+    <div id="general_table" class="main_table" ref="computers_table"></div>
     <ComputerModal v-bind="selectedComputer" ref="computer_modal"></ComputerModal>
+    <ComputersTableSideNav :lines="lines"></ComputersTableSideNav>
   </div>
 </template>
 
 <script>
 import GetRequestsMixin from "@/mixins/GetRequestsMixin.js"
-import ComputerModal from "@/components/ComputerModal"
-import TableStatistic from "@/components/TableStatistic"
+import ComputerModal from "@/components/ComputersTableModal"
+import ComputersTableSideNav from "@/components/ComputersTableSideNav"
+import ComputersTableTabs from "@/components/ComputersTableTabs"
 import Tabulator from "tabulator-tables"
 
 export default {
-  components: {ComputerModal, TableStatistic},
+  components: {ComputerModal, ComputersTableSideNav, ComputersTableTabs},
   mixins: [GetRequestsMixin],
   data() {
     return {
@@ -32,47 +34,12 @@ export default {
           value: 0
         },
         linux: {
-          name: "Linux:",
+          name: "Linux",
           value: 0
         },
       }
-        // {hidden_name: "windows",
-        //   name: "Windows",
-        //   value: 0},
-        // {hidden_name: "unknown_os",
-        //   name: "Неизвестная ОС",
-        //   value: 0},
-        // {hidden_name: "good_kaspersky",
-        //   name: "Правильный касперский",
-        //   value: 0},
-        // {hidden_name: "with_problem_kaspersky",
-        //   name: "Проблемный касперски",
-        //   value: 0},
-        // {hidden_name: "without_kapspersky",
-        //   name: "Проблемный касперски",
-        //   value: 0},
-        // {hidden_name: "linux_on_puppet",
-        //   name: "Linux на паппет",
-        //   value: 0},
-        // {hidden_name: "all_puppet",
-        //   name: "Всего записей паппет",
-        //   value: 0},
-        // {hidden_name: "without_puppet",
-        //   name: "Не установлен паппет",
-        //   value: 0},
-        // {hidden_name: "with_active_directory",
-        //   name: "Машин в Active Directory",
-        //   value: 0},
     }
   },
-//    watch : {
-//        tableData: {
-//            handler: function(newData) {
-//                this.tabulator.replaceData(newData)
-//            },
-//            deep: true,
-//        }
-//    },
   mounted() {
     let context = this
     this.tabulator = new Tabulator(this.$refs.computers_table, {
