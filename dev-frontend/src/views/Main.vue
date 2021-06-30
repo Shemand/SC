@@ -10,7 +10,7 @@
 
 <script>
 import Navbar from "@/components/Navbar";
-import ComputersTable from "@/components/ComputersTable";
+import ComputersTable from "@/components/computers/ComputersTable";
 
 export default {
   name: 'Home',

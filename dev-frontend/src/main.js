@@ -4,10 +4,13 @@ import router from './router'
 import store from './store'
 import 'materialize-css/dist/js/materialize.min'
 import Axios from 'axios'
+import moment from 'moment'
+import 'moment-timezone'
+
+moment.locale('ru')
 
 Vue.config.productionTip = false
-
-
+window.moment = moment
 Vue.prototype.$http = Axios;
 const token = localStorage.getItem('token')
 if (token) {

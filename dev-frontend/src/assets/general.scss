@@ -1,0 +1,97 @@
+@import "~materialize-css/sass/materialize";
+@import "@/assets/variables";
+/* fallback */
+  @font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url('@/assets/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2') format('woff2');
+  }
+
+  .material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -moz-font-feature-settings: 'liga';
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .self-background {
+    background-color: $self-background-color !important;
+  }
+
+  .self-over-background {
+    background-color: $self-over-background-color !important;
+  }
+
+  .text-on-black {
+    color: $text-on-black-color !important;
+  }
+
+  .text-on-white {
+    color: $text-on-white-color !important;
+  }
+
+  .general-text-color {
+    color: $general-color !important;
+  }
+
+  .general-color {
+    background-color: $general-color !important;
+  }
+
+  .highlight-general-text-color {
+    color: $highlight-general-color !important;
+  }
+
+  .highlight-general-color {
+    background-color: $highlight-general-color !important;
+  }
+
+  .red-color {
+    background-color: $red-color;
+  }
+
+  .red-text-color {
+    color: $red-color;
+  }
+
+  .yellow-color {
+    background-color: $yellow-color;
+  }
+
+  .yellow-text-color {
+    color: $yellow-color;
+  }
+
+  .green-color {
+    background-color: $green-color;
+  }
+
+  .green-text-color {
+    color: $green-color;
+  }
+
+  .brand-logo {
+    font-size: 2em;
+    font-weight: bold;
+  }
+
+  .right_cell {
+    color: $green-color;
+  }
+
+  .warning_cell {
+    color: $yellow-color;
+  }
+
+  .wrong_cell {
+    color: $red-color;
+  }

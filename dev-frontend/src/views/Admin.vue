@@ -25,7 +25,6 @@ export default {
   methods: {
     changePage(pageName) {
       this.currentPage = pageName
-      console.log(this.currentPage)
     },
   },
   mounted() {

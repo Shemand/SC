@@ -56,7 +56,6 @@ export default {
   components : { },
   methods : {
     registerUser : () => {
-      console.log('dfd')
     }
   }
 }

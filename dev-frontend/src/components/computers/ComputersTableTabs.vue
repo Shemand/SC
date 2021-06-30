@@ -1,14 +1,10 @@
 <template>
-  <div class="row">
-    <div class="col s12">
-      <ul class="tabs">
-        <li class="tab col s3"><a id="generalTab" class="tableTab" v-on:click.prevent="showGeneral">Главная</a></li>
-        <li class="tab col s3"><a id="kasperskyTab" class="tableTab" v-on:click.prevent="showKaspersky">Касперский</a></li>
-        <li class="tab col s3"><a id="dallasTab" class="tableTab" v-on:click.prevent="showDallas">Dallas Lock</a></li>
-        <li class="tab col s3"><a id="puppetTab" class="tableTab" v-on:click.prevent="showPuppet">Puppet</a></li>
-      </ul>
-    </div>
-  </div>
+    <ul class="tabs general-color ">
+      <li class="tab"><a id="generalTab" class="tableTab text-on-white waves-effect" v-on:click.prevent="showGeneral">Главная</a></li>
+      <li class="tab"><a id="kasperskyTab" class="tableTab text-on-white waves-effect" v-on:click.prevent="showKaspersky">Касперский</a></li>
+      <li class="tab"><a id="dallasTab" class="tableTab text-on-white waves-effect" v-on:click.prevent="showDallas">Dallas Lock</a></li>
+      <li class="tab"><a id="puppetTab" class="tableTab text-on-white waves-effect" v-on:click.prevent="showPuppet">Puppet</a></li>
+    </ul>
 </template>
 
 <script>
@@ -55,5 +51,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tabs {
+  width: 90%;
+}
+.tab {
+  background-color: #00b0ff;
+  color: #000000;
+  transition: 0.5s ease;
+}
+.tab:hover{
+  background-color: darken(#00b0ff, 15%);
 
+}
+.tableTab:hover {
+  color: #eceff1 !important;
+  font-weight: bold;
+}
+a.active {
+  color: #eceff1 !important;
+  font-weight: bold !important;
+  background-color: darken(#00b0ff, 15%) !important;
+}
 </style>

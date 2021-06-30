@@ -21,32 +21,11 @@ export default {
 </script>
 
 <style lang="scss">
-  @import "~materialize-css/dist/css/materialize.min.css";
+  @import "~materialize-css/sass/materialize";
+  @import "assets/general";
+  @import "assets/tables";
+
   body {
-    background-color: #eee;
+    @extend .self-background;
   }
-  /* fallback */
-    @font-face {
-      font-family: 'Material Icons';
-      font-style: normal;
-      font-weight: 400;
-      src: url('./assets/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2') format('woff2');
-    }
-
-    .material-icons {
-      font-family: 'Material Icons';
-      font-weight: normal;
-      font-style: normal;
-      font-size: 24px;
-      line-height: 1;
-      letter-spacing: normal;
-      text-transform: none;
-      display: inline-block;
-      white-space: nowrap;
-      word-wrap: normal;
-      direction: ltr;
-      -moz-font-feature-settings: 'liga';
-      -moz-osx-font-smoothing: grayscale;
-    }
-
 </style>

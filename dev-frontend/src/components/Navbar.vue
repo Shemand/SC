@@ -1,7 +1,7 @@
 <template>
-  <nav class="blue darken-3">
+  <nav class="self-over-background">
     <div class="nav-wrapper">
-      <router-link to="/" class="brand-logo">Secure Center</router-link>
+      <router-link to="/" class="brand-logo general-text-color">Secure Center</router-link>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <router-link
             tag="li"
@@ -19,6 +19,7 @@
             tag="li"
             to="/admin"
             active-class="active"
+            class="general-text-color"
         ><a href="#">Панель администратора</a></router-link>
       </ul>
     </div>
@@ -39,4 +40,5 @@ export default {
   nav {
     padding: 0 2rem;
   }
+
 </style>

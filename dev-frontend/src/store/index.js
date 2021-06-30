@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import sFunctions from '@/store/secondaryFunctions'
 
 Vue.use(Vuex)
 
@@ -36,7 +37,16 @@ export default new Vuex.Store({
             state.token = ''
         },
         update_computers(state, computers) {
-            state.computers = computers
+            state.computers.length = 0
+            state.computers = []
+            computers.forEach((row) => {
+                row.ad_status = sFunctions.buildActiveDirectoryStatus(row)
+                row.kl_status = sFunctions.buildKasperskyStatus(row)
+                row.dl_status = sFunctions.buildDallasStatus(row)
+                row.pp_status = sFunctions.buildPuppetStatus(row)
+                row.os_status = sFunctions.buildOSStatus(row)
+                state.computers.push(row)
+            });
         }
     },
     actions: {
@@ -45,7 +55,6 @@ export default new Vuex.Store({
                 commit('auth_request')
                 axios({url: '/api/v1/SZO/users/auth', data: user, method: 'POST'})
                     .then(resp => {
-                        console.log(resp)
                         const token = resp.data.data.jwt_token
                         localStorage.setItem('token', token)
                         axios.defaults.headers.common['Authorization'] = token
@@ -59,24 +68,21 @@ export default new Vuex.Store({
             })
         },
         async updateComputers({commit}) {
-            return await axios({
+            let res = await axios({
                 url : "/api/v1/SZO/computers?puppet=[]&kaspersky=[]&dallas_lock=[]&active_directory=[]",
                 method : 'GET',
                 headers: {
                     'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
                 },
                 withCredentials : true
-            }).then(function(res) {
-                let data = res.data
-                let status = res.status
-                if (status === 200) {
-                    commit('update_computers', data.data.computers)
-                } else
-                    console.log('Computers updating status is ' + status)
-                return status
-            }).catch(function(err) {
-                return 0
             });
+            if (res.status === 200) {
+                commit('update_computers', res.data.data.computers)
+                return res.status
+            } else {
+                console.log('Computers updating status is ' + res.status)
+                return res.status
+            }
         }
     },
     modules: {}
