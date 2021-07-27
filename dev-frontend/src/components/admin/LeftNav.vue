@@ -1,9 +1,10 @@
 <template>
   <ul id="admin-sidenav" class="sidenav self-over-background text-on-black">
     <li><div>
-      <h1 class="center-align"><router-link to="/" class="brand-logo general-text-color">SC</router-link></h1>
+      <h1 class="center-align"><router-link to="/" class="brand-logo general-text-color"><img :src="logo_img" alt="SC" class="general-text-color"></router-link></h1>
     </div></li>
     <li><a class="admin-tab waves-effect active" href="MainControl" v-on:click.prevent="changePage"><i class="material-icons text-on-black">computer</i>Панель управления</a></li>
+    <li><a class="admin-tab waves-effect" href="UsersControl" v-on:click.prevent="changePage"><i class="material-icons text-on-black">person</i>Пользователи</a></li>
     <li><div class="divider general-color"></div></li>
     <li><a class="subheader text-on-black"><i class="material-icons text-on-black">storage</i>Логи</a></li>
     <li><a class="admin-tab waves-effect" href="UpdateLogs" v-on:click.prevent="changePage">Обновления</a></li>
@@ -16,12 +17,14 @@
 </template>
 
 <script>
+import logo_img from "@/assets/sc_logo_2.svg";
 export default {
   name: "LeftNav",
   components : {},
   data() {
     return {
       tabs: undefined,
+      logo_img,
     }
   },
   props : ['currentPage'],
@@ -45,15 +48,6 @@ export default {
   mounted() {
     let tabs = document.getElementsByClassName('admin-tab')
     this.tabs = Array.from(tabs)
-    // this.tabs = tabs
-    // tabs.forEach((tab) => {
-    //   tab.addEventListener('click', (event) => {
-    //     let target = event.target
-    //     this.clearActive()
-    //     target.classList.add('active')
-    //     this.currentPage = target.attributes.href.value
-    //   });
-    // });
   }
 }
 </script>
@@ -76,7 +70,7 @@ export default {
 .admin-tab:hover {
   @extend .general-text-color;
 }
-.brand-logo {
-  text-shadow: 1px 1px 4px black;
+img {
+  width: 15rem;
 }
 </style>

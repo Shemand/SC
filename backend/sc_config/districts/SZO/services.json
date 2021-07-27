@@ -39,7 +39,7 @@
     "connection_ip" : "10.3.130.4",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -52,7 +52,7 @@
     "connection_ip" : "10.3.132.7",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -78,7 +78,7 @@
     "connection_ip" : "11.196.4.140",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -91,7 +91,7 @@
     "connection_ip" : "10.3.138.87",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -104,7 +104,7 @@
     "connection_ip" : "10.3.137.7",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -117,7 +117,7 @@
     "connection_ip" : "10.3.134.250",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -138,7 +138,6 @@
     }
   },
   {
-    "6821" : "6821",
     "connection_name" : "kaspersky_6821",
     "connection_ip" : "10.3.133.132",
     "connection_port" : 13299,
@@ -168,7 +167,7 @@
     "connection_ip" : "10.3.131.73",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -181,7 +180,7 @@
     "connection_ip" : "10.222.110.187",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -194,7 +193,7 @@
     "connection_ip" : "10.222.111.240",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -207,7 +206,7 @@
     "connection_ip" : "10.222.129.98",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -220,7 +219,7 @@
     "connection_ip" : "10.222.135.106",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -233,7 +232,7 @@
     "connection_ip" : "10.3.134.250",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -246,7 +245,7 @@
     "connection_ip" : "10.222.151.201",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -259,7 +258,7 @@
     "connection_ip" : "10.222.153.8",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -272,7 +271,7 @@
     "connection_ip" : "10.222.198.4",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -285,7 +284,7 @@
     "connection_ip" : "10.222.235.200",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -297,7 +296,7 @@
     "connection_ip" : "10.222.183.3",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -310,7 +309,7 @@
     "connection_ip" : "10.222.60.8",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -323,7 +322,7 @@
     "connection_ip" : "10.3.141.4",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -349,7 +348,7 @@
     "connection_ip" : "10.3.140.77",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -362,7 +361,7 @@
     "connection_ip" : "11.198.152.172",
     "connection_port" : 13299,
     "type" : "kaspersky",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
       "username" : "ksc-szo-001",
       "password" : "#00ktnCG<!!!",
@@ -386,9 +385,9 @@
     "connection_ip" : "",
     "connection_port" : 0,
     "type" : "dallas_lock",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
-      "server" : ""
+      "server" : "001"
     }
   },
   {
@@ -397,9 +396,9 @@
     "connection_ip" : "",
     "connection_port" : 0,
     "type" : "dallas_lock",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
-      "server" : ""
+      "server" : "002"
     }
   },
   {
@@ -408,9 +407,9 @@
     "connection_ip" : "",
     "connection_port" : 0,
     "type" : "dallas_lock",
-    "active" : false,
+    "active" : true,
     "specific_data" : {
-      "server" : ""
+      "server" : "TERO"
     }
   }
 ]

@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <LeftNav :currentPage="currentPage" v-on:change-page="changePage" class="container"></LeftNav>
+  <div class="row">
+    <LeftNav :currentPage="currentPage" v-on:change-page="changePage" class="col s2"></LeftNav>
     <keep-alive>
-      <component :is="currentPage" class="container"></component>
+      <component :is="currentPage" class="col s10 offset-s2"></component>
     </keep-alive>
   </div>
 </template>
@@ -14,9 +14,10 @@ import ComputersStatistics from "@/components/admin/ComputersStatistics";
 import UpdateLogs from "@/components/admin/UpdateLogs";
 import InternalLogs from "@/components/admin/InternalLogs";
 import KasperskyStatistics from "@/components/admin/KasperskyStatistics";
+import UsersControl from "@/components/admin/UsersControl";
 
 export default {
-  components: {LeftNav, MainControl, ComputersStatistics, UpdateLogs, InternalLogs, KasperskyStatistics},
+  components: {LeftNav, MainControl, ComputersStatistics, UpdateLogs, InternalLogs, KasperskyStatistics, UsersControl},
   data() {
     return {
       currentPage: 'MainControl',

@@ -1,9 +1,9 @@
-<template>
+<template xmlns="http://www.w3.org/1999/html">
   <div>
     <ul id="slide-out" class="sidenav self-background">
       <li>
         <div>
-          <h1 class="center-align"><span class="general-text-color brand-logo">SC</span></h1>
+          <h1 class="center-align"><img :src="logo_img" alt="SC" class="general-text-color brand-logo"></h1>
         </div>
       </li>
       <li class="self-over-background"><a class="sidenav-close waves-effect text-on-black" href="#!"
@@ -16,15 +16,24 @@
           </tr>
         </table>
       </li>
+      <li class="center-align text-on-black">Скачать</li>
+        <ul>
+          <li class="center-align"><a class="download-button waves-effect waves-light btn green-color text-on-white" v-on:click.prevent="downloadTableXLSX">XLSX</a></li>
+          <li class="center-align"><a class="download-button waves-effect waves-light btn yellow-color text-on-white" v-on:click.prevent="downloadTableXLSX">CSV</a></li>
+          <li class="center-align"><a class="download-button waves-effect waves-light btn red-color text-on-white" v-on:click.prevent="downloadTableXLSX">JSON</a></li>
+        </ul>
     </ul>
 
     <div class="fixed-action-btn"><a href="#" data-target="slide-out"
                                      class="sidenav-trigger waves-effect waves-light btn-large btn-floating self-over-background"><i
         class="floating-icon material-icons general-text-color">dehaze</i></a></div>
+<!--    <a class="waves-effect waves-light btn right red-color text-on-white" v-on:click.prevent="$emit('openCloseFilters')">Скрыть</a>-->
+<!--    <a class="waves-effect waves-light btn right yellow-color text-on-white" v-on:click.prevent="clearFilters">Очистить</a>-->
   </div>
 </template>
 
 <script>
+import logo_img from "@/assets/sc_logo_2.svg";
 export default {
   name: "ComputersTableSideNav",
   props: {
@@ -33,6 +42,7 @@ export default {
   },
   data() {
     return {
+      logo_img: logo_img,
       statistics: {
         all_computers: {
           name: "Всего компьютеров",
@@ -135,6 +145,9 @@ export default {
           this.statistics.unknown.total_value++;
       });
     },
+    downloadTableXLSX() {
+      this.table.download("xlsx", "data.xlsx", {sheetName:"MyData"});j
+    }
   },
   watch : {
     updates_count(val) {
@@ -147,11 +160,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/variables";
 .statistic-td {
   padding: 0px 5px;
 }
 
 .floating-icon {
   font-size: 2em;
+}
+.download-block {
+  h4 {
+    margin: auto;
+  }
+  a {
+    margin: auto;
+  }
+}
+img {
+  width: 15rem;
 }
 </style>

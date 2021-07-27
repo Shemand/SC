@@ -39,7 +39,7 @@ export default {
         let login = this.login
         let password = this.password
         this.$store.dispatch('login', { login, password })
-                   .then(() => this.$router.push('/'))
+                   .then(() => this.$router.push({path : '/'}))
                    .catch(err => console.log(err))
     }
   }

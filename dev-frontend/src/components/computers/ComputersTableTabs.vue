@@ -1,33 +1,41 @@
 <template>
-    <ul class="tabs general-color ">
+    <ul class="tabs general-color">
       <li class="tab"><a id="generalTab" class="tableTab text-on-white waves-effect" v-on:click.prevent="showGeneral">Главная</a></li>
       <li class="tab"><a id="kasperskyTab" class="tableTab text-on-white waves-effect" v-on:click.prevent="showKaspersky">Касперский</a></li>
       <li class="tab"><a id="dallasTab" class="tableTab text-on-white waves-effect" v-on:click.prevent="showDallas">Dallas Lock</a></li>
       <li class="tab"><a id="puppetTab" class="tableTab text-on-white waves-effect" v-on:click.prevent="showPuppet">Puppet</a></li>
+      <a id="filterTab" class="text-on-white waves-effect right" v-on:click.prevent="$emit('openCloseFilters')"><i class="material-icons">tune</i></a>
     </ul>
 </template>
 
 <script>
 export default {
   name: "ComputersTableTabs",
-  props: ['table'],
+  props: ['table, isFiltersShowed'],
   data() {
     return {
-      activeTab : "generalTab"
+      activeTab : "generalTab",
     }
   },
   methods: {
+    changeTab() {
+      this.$emit('tabChanged' , this.activeTab)
+    },
     showGeneral() {
       this.activeTab = "generalTab"
+      this.changeTab()
     },
     showKaspersky() {
       this.activeTab = "kasperskyTab"
+      this.changeTab()
     },
     showDallas() {
       this.activeTab = "dallasTab"
+      this.changeTab()
     },
     showPuppet() {
       this.activeTab = "puppetTab"
+      this.changeTab()
     },
   },
   mounted() {
@@ -51,6 +59,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/variables";
 .tabs {
   width: 90%;
 }
@@ -71,5 +80,14 @@ a.active {
   color: #eceff1 !important;
   font-weight: bold !important;
   background-color: darken(#00b0ff, 15%) !important;
+}
+#filterTab {
+  margin: 10px 20px;
+  i {
+    font-size: 2em;
+    &:hover {
+      color: $text-on-black-color;
+    }
+  }
 }
 </style>

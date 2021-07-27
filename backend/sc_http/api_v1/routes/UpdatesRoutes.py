@@ -79,10 +79,10 @@ def attach_update_routes(mod): #todo edit the handlers
         return res.success().get()
 
     @mod.route('/<district_name>/update/kaspersky', methods=['POST'])
-    def update_kaspersky(district_name):
+    def update_kaspersky_computers(district_name):
         '''
 
-        EN:Function for updating information about computers from all active Kasperksy Service.
+        EN:Function for updating information about computers from all active Kaspersky Service.
         RU:Функция обноления данных из всех активных сервисов Касперского.
 
         '''
@@ -90,5 +90,33 @@ def attach_update_routes(mod): #todo edit the handlers
         district = res.district
         database = district.database
         build_structure(database, district.structure)
-        update_computers_from_kaspersky(database, district)
+        try:
+            update_computers_from_kaspersky(database, district)
+        except Exception as e:
+            print(e)
+            res.error().get()
         return res.success().get()
+
+    @mod.route('/<district_name>/update/computers', methods=['POST'])
+    def update_computers(district_name):
+        try:
+            update_ad_status = update_ad_computers(district_name)
+        except Exception as e:
+            update_ad_status = e
+        try:
+            update_kaspersky_status = update_kaspersky_computers(district_name)
+        except Exception as e:
+            update_kaspersky_status = e
+        try:
+            update_dallas_status = update_dallas_computers(district_name)
+        except Exception as e:
+            update_dallas_status = e
+        try:
+            update_puppet_status = update_puppet_computers(district_name)
+        except Exception as e:
+            update_puppet_status = e
+        print(update_ad_status)
+        print(update_kaspersky_status)
+        print(update_dallas_status)
+        print(update_puppet_status)
+        return g.response.success().get()

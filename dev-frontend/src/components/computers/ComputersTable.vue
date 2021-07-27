@@ -1,6 +1,7 @@
 <template>
   <div>
-    <ComputersTableTabs :table="tabulator"></ComputersTableTabs>
+    <ComputersTableTabs :table="tabulator" v-on:tabChanged="changeTab"  v-on:openCloseFilters="openCloseFilters"></ComputersTableTabs>
+    <ComputersTableFilters v-show="isFiltersShowed" v-on:openCloseFilters="openCloseFilters" v-on:applyFilters="applyFilters"></ComputersTableFilters>
     <div id="general_table" class="main_table" ref="computers_table"></div>
     <ComputerModal v-bind="selectedComputer" ref="computer_modal"></ComputerModal>
     <ComputersTableSideNav :updates_count="updates_count" :table="tabulator"></ComputersTableSideNav>
@@ -11,10 +12,10 @@
 import ComputerModal from "@/components/computers/ComputersTableModal"
 import ComputersTableSideNav from "@/components/computers/ComputersTableSideNav"
 import ComputersTableTabs from "@/components/computers/ComputersTableTabs"
-import Tabulator from "tabulator-tables"
-
+import ComputersTableFilters from "./ComputersTableFilters";
+import create_computer_table from "@/components/computers/computer_table_creator.js";
 export default {
-  components: {ComputerModal, ComputersTableSideNav, ComputersTableTabs},
+  components: {ComputerModal, ComputersTableSideNav, ComputersTableTabs, ComputersTableFilters},
   data() {
     return {
       tableData: [],
@@ -26,109 +27,62 @@ export default {
         active_directory: {},
         dallas_lock: {},
       },
-      updates_count: 0
+      updates_count: 0,
+      isFiltersShowed: false,
+      filters_expressions : {
+        ad_good : { field : 'ad_status', type : '=', value : 'Не зарегистрирован'},
+        ad_error : { field : 'ad_status', type : '!=', value : 'Не зарегистрирован'},
+        kl_good : { field : 'kl_status', type : '!=', value : 'Все правильно'},
+        kl_warning_agent : { field : 'kl_status', type : '!=', value : 'Неправильный агент'},
+        kl_warning_security : { field : 'kl_status', type : '!=', value : 'Неправильная защита'},
+        kl_error : { field : 'kl_status', type : '!=', value : 'Все неправильно'},
+        pp_good : { field : 'pp_status', type : '=', value : 'Не зарегистрирован'},
+        pp_error : { field : 'pp_status', type : '!=', value : 'Не зарегистрирован'},
+        dl_good : { field : 'dl_status', type : '=', value : 'Не зарегистрирован'},
+        dl_warning : { field : 'dl_status', type : '!=', value : 'Не зарегистрирован'},
+        dl_error : { field : 'dl_status', type : '!=', value : 'Не зарегистрирован'},
+        other_windows : { field : 'os_status', type : '!=', value : 'Windows'},
+        other_linux : { field : 'os_status', type : '!=', value : 'Linux'},
+        other_any_os : { field : 'os_status', type : '!=', value : 'Неизвестно'},
+      }
     }
   },
-  mounted() {
-    let context = this
-    this.tabulator = new Tabulator(this.$refs.computers_table, {
-      data: this.tableData,
-      layout: "fitColumns",
-      tooltips: true,
-      pagination: "local",
-      index: "name",
-      paginationSize: 25,
-      dataFiltered: function () {
-        context.updates_count++;
-      },
-      initialSort: [
-        {column: "name", dir: "asc"},
-      ],
-      rowFormatter(row) {
-        let kl_cell = row.getCell('kl_status')
-        let dl_cell = row.getCell('dl_status')
-        let pp_cell = row.getCell('pp_status')
-        let ad_cell = row.getCell('ad_status')
-        let os_cell = row.getCell('os_status')
-
-        // ad status formatting
-        if (ad_cell.getValue() === 'Не зарегистрирован')
-          ad_cell._cell.element.classList.add('wrong_cell')
-        else
-          ad_cell._cell.element.classList.add('right_cell')
-
-        // kl status formatting
-        if (kl_cell.getValue() === 'Все неправильно')
-          kl_cell._cell.element.classList.add('wrong_cell')
-        else if (kl_cell.getValue() === 'Неправильный агент')
-          kl_cell._cell.element.classList.add('warning_cell')
-        else if (kl_cell.getValue() === 'Неправильный защита')
-          kl_cell._cell.element.classList.add('warning_cell')
-        else
-          kl_cell._cell.element.classList.add('right_cell')
-
-        // dl status formatting
-        if (dl_cell.getValue() === 'Не зарегистрирован' && os_cell.getValue() !== 'Linux')
-          dl_cell._cell.element.classList.add('wrong_cell')
-        else
-          dl_cell._cell.element.classList.add('right_cell')
-
-        // pp status formatting
-        if (pp_cell.getValue() === 'Не зарегистрирован' && os_cell.getValue() !== 'Windows')
-          pp_cell._cell.element.classList.add('wrong_cell')
-        else
-          pp_cell._cell.element.classList.add('right_cell')
-
-        // os status formatting
-        if (os_cell.getValue() === 'Неизвестно')
-          os_cell._cell.element.classList.add('wrong_cell')
-        else
-          os_cell._cell.element.classList.add('right_cell')
-      },
-      reactiveData: true,
-      columns: [
-        {title: "№", formatter: "rownum", width: 49, sorter: false, editor: false},
-        {title: "Имя компьютера", field: "name", sorter: "string", headerFilter: true},
-        {
-          title: "AD статус",
-          field: "ad_status",
-          align: "center",
-          sorter: "string",
-          formatter: "datetime",
-          formatterParams: {
-            outputFormat: "DD/MM/YY HH:mm",
-            timezone: "Europe/Moscow",
-            invalidPlaceholder: "Не зарегистрирован",
-          }
-        },
-        {
-          title: "KL статус",
-          field: "kl_status",
-          align: "center",
-          sorter: "string",
-        },
-        {
-          title: "DL статус",
-          field: "dl_status",
-          align: "center",
-          sorter: "string",
-        },
-        {
-          title: "PP статус",
-          field: "pp_status",
-          align: "center",
-          sorter: "string",
-        },
-        {title: "ОС", field: "os_status", align: "center", sorter: "string", formatter: context.formatter_os_status}
-      ],
-      rowClick: function (e, row) {
-        let el = context.$refs.computer_modal.$el
-        let instance = M.Modal.getInstance(el)
-        let computer_id = row.getData().id
-        context.selectedComputer = context.$store.getters.computer(computer_id)
-        instance.open()
+  methods: {
+    openCloseFilters() {
+      this.isFiltersShowed = !this.isFiltersShowed
+    },
+    applyFilters(filtersNames) {
+      let filters = []
+      filtersNames.forEach((filterName) => {
+        filters.push(this.filters_expressions[filterName]);
+      });
+      this.tabulator.setFilter(filters);
+    },
+    changeTab(tabName) {
+      let filters = []
+      if (tabName === 'generalTab') {
+      } else if (tabName === 'kasperskyTab'){
+        filters.push('kl_good')
+      } else if (tabName === 'dallasTab'){
+        filters.push('dl_good')
+        filters.push('other_linux')
+      } else if (tabName === 'puppetTab'){
+        filters.push('pp_good')
+        filters.push('other_windows')
       }
-    })
+      Array.from(document.getElementsByClassName('filter-checkbox')).forEach((checkbox) => {
+        if (filters.includes(checkbox.id)) {
+          checkbox.checked = true
+        } else {
+          checkbox.checked =false
+        }
+      });
+      this.applyFilters(filters)
+    },
+
+  },
+  mounted() {
+    this.tabulator = create_computer_table(this)
     this.tableData = []
     this.$store.dispatch('updateComputers').then((status) => {
       if (status === 200) {

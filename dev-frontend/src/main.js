@@ -6,11 +6,14 @@ import 'materialize-css/dist/js/materialize.min'
 import Axios from 'axios'
 import moment from 'moment'
 import 'moment-timezone'
+import xlsx from 'xlsx'
 
 moment.locale('ru')
 
 Vue.config.productionTip = false
 window.moment = moment
+window.XLSX = xlsx
+
 Vue.prototype.$http = Axios;
 const token = localStorage.getItem('token')
 if (token) {

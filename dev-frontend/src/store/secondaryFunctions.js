@@ -33,8 +33,8 @@ function buildKasperskyStatus(row) {
 }
 function buildActiveDirectoryStatus(row) {
     let ad = row.active_directory
-    if (ad.registred) {
-        return window.moment(ad.registred)
+    if (ad.registred._isValid) {
+        return ad.registred
     } else {
         return "Не зарегистрирован"
     }

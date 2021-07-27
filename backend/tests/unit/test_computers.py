@@ -10,7 +10,7 @@ def test_request_computers_loggined(test_client):
     user = get_or_create_user(database, 'shemakovnd')
     token = generate_token(user.id)
     response = test_client.get('/api/v1/SZO/computers', headers={
-        "Authorization" : f"jwt {token}"
+        "Authorization" : f"Bearer {token}"
     })
     data = json.loads(response.data)
     assert response.status_code == 200

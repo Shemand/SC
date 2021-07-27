@@ -11,6 +11,9 @@ export default new Vuex.Store({
         token: localStorage.getItem('token') || '',
         user: {},
         computers: [],
+        admin: {
+            users: {},
+        }
     },
     getters: {
         isLoggedIn: state => !!state.token,
@@ -35,11 +38,16 @@ export default new Vuex.Store({
         logout(state) {
             state.status = ''
             state.token = ''
+            localStorage.removeItem('token')
         },
         update_computers(state, computers) {
             state.computers.length = 0
             state.computers = []
             computers.forEach((row) => {
+                row.active_directory.registred = window.moment(row.active_directory.registred)
+                row.active_directory.isDeleted = window.moment(row.active_directory.isDeleted)
+                row.active_directory.last_visible = window.moment(row.active_directory.last_visible)
+                row.dallas_lock.isDeleted = window.moment(row.dallas_lock.isDeleted)
                 row.ad_status = sFunctions.buildActiveDirectoryStatus(row)
                 row.kl_status = sFunctions.buildKasperskyStatus(row)
                 row.dl_status = sFunctions.buildDallasStatus(row)
@@ -55,9 +63,9 @@ export default new Vuex.Store({
                 commit('auth_request')
                 axios({url: '/api/v1/SZO/users/auth', data: user, method: 'POST'})
                     .then(resp => {
-                        const token = resp.data.data.jwt_token
+                        const token = resp.data.data.Bearer
                         localStorage.setItem('token', token)
-                        axios.defaults.headers.common['Authorization'] = token
+                        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
                         commit('auth_success', token, user)
                         resolve(resp)
                     }).catch(err => {
@@ -70,6 +78,23 @@ export default new Vuex.Store({
         async updateComputers({commit}) {
             let res = await axios({
                 url : "/api/v1/SZO/computers?puppet=[]&kaspersky=[]&dallas_lock=[]&active_directory=[]",
+                method : 'GET',
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+                },
+                withCredentials : true
+            });
+            if (res.status === 200) {
+                commit('update_computers', res.data.data.computers)
+                return res.status
+            } else {
+                console.log('Computers updating status is ' + res.status)
+                return res.status
+            }
+        },
+        async updateUsers({commit}) {
+            let res = await axios({
+                url : "/api/v1/SZO/users",
                 method : 'GET',
                 headers: {
                     'content-type': 'application/x-www-form-urlencoded;charset=utf-8'

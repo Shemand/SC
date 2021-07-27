@@ -3,7 +3,7 @@ import json
 from flask import g, request
 
 from backend.sc_actions.computers import get_computers, get_or_create_computer
-from backend.sc_actions.frames import get_computers_frame, FROM_ACTIVE_DIRECTORY, FROM_PUPPET, FROM_KASPERSKY, FROM_DALLAS_LOCK
+from backend.sc_actions.computers_frame import get_computers_frame, FROM_ACTIVE_DIRECTORY, FROM_PUPPET, FROM_KASPERSKY, FROM_DALLAS_LOCK
 from backend.sc_actions.functions import rows_to_dicts
 from backend.sc_actions.kaspersky import update_computers_from_kaspersky
 from backend.sc_entities.Entities import Entities

@@ -14,4 +14,4 @@ def test_request_login(test_client):
         "password": 'SHema98rg'
     })
     assert response.status_code == 200
-    assert json.loads(response.data)['data']['jwt_token'] == generate_token(user.id)
+    assert json.loads(response.data)['data']['Bearer'] == generate_token(user.id)

@@ -1,6 +1,7 @@
 from sqlalchemy import select
 
-from backend.sc_actions.frames import get_computers_frame, FROM_DALLAS_LOCK, FROM_KASPERSKY, FROM_PUPPET, FROM_ACTIVE_DIRECTORY
+from backend.sc_actions.computers_frame import get_computers_frame, FROM_DALLAS_LOCK, FROM_KASPERSKY, FROM_PUPPET, FROM_ACTIVE_DIRECTORY
+
 from backend.sc_entities.Entities import Entities
 
 

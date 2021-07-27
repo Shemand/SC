@@ -19,12 +19,19 @@ const routes = [
     //   component : () => import('../views/Registration.vue')
     // },
     {
-        path: '/Auth',
+        path: '/auth',
         name: 'authorization',
-        component: () => import('../views/Authorization.vue')
+        component: () => import('../views/Authorization.vue'),
+        beforeEnter: (to, from, next) => {
+            if(to.redirectedFrom === '/logout'){
+                console.log('logouted')
+                store.commit('logout')
+            }
+            next()
+        }
     },
     {
-        path: '/Devices',
+        path: '/devices',
         name: 'devices',
         component: () => import('../views/Devices.vue'),
         meta: {
@@ -35,6 +42,14 @@ const routes = [
         path: '/admin',
         name: 'admin',
         component: () => import('../views/Admin.vue'),
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/logout',
+        name: 'logout',
+        redirect: '/auth',
         meta: {
             requiresAuth: true
         }
