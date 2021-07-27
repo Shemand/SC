@@ -3,7 +3,7 @@ from datetime import date
 from flask.json import JSONEncoder
 
 from flask import Flask, render_template
-from sc_http.app import api_v1_mod
+from src.sc_http.app import api_v1_mod
 
 class CustomJSONEncoder(JSONEncoder):
     def default(self, obj):
