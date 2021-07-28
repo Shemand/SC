@@ -15,7 +15,7 @@ let columns = [
         title: "AD статус",
         field: "ad_status",
         align: "center",
-        sorter: "string",
+        sorter: "datetime",
         formatter: "datetime",
         formatterParams: {
             outputFormat: "DD/MM/YY HH:mm",
@@ -268,7 +268,6 @@ function create_computers_table(context) {
             dataFiltered: makeFunctionDataFiltered(context),
             initialSort: [{column: "name", dir: "asc"}],
             rowFormatter: formatterOfRows,
-            reactiveData: true,
             columns: columns,
             rowClick: makeFunctionClickOnRow(context)
         });

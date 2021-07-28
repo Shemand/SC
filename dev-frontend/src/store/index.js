@@ -44,10 +44,10 @@ export default new Vuex.Store({
             state.computers.length = 0
             state.computers = []
             computers.forEach((row) => {
-                row.active_directory.registred = window.moment(row.active_directory.registred)
-                row.active_directory.isDeleted = window.moment(row.active_directory.isDeleted)
-                row.active_directory.last_visible = window.moment(row.active_directory.last_visible)
-                row.dallas_lock.isDeleted = window.moment(row.dallas_lock.isDeleted)
+                row.active_directory.registred = window.moment(row.active_directory.registred).format("DD/MM/YY HH:mm")
+                row.active_directory.isDeleted = window.moment(row.active_directory.isDeleted).format("DD/MM/YY HH:mm")
+                row.active_directory.last_visible = window.moment(row.active_directory.last_visible).format("DD/MM/YY HH:mm")
+                row.dallas_lock.isDeleted = window.moment(row.dallas_lock.isDeleted).format("DD/MM/YY HH:mm")
                 row.ad_status = sFunctions.buildActiveDirectoryStatus(row)
                 row.kl_status = sFunctions.buildKasperskyStatus(row)
                 row.dl_status = sFunctions.buildDallasStatus(row)
