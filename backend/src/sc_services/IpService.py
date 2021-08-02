@@ -1,4 +1,4 @@
-from ..sc_database.model.Addresses import Addresses
+from ..sc_repositories.DatabaseModels.Addresses import Addresses
 
 
 def get_ip_all(database):
@@ -35,14 +35,3 @@ def get_or_create_ip(database, ip):
     if ip_address:
         return ip_address
     return create_ip(database, ip)
-
-
-def is_exists_ip(database, ip_address):
-    ip_address = get_ip_by_address(database, ip_address)
-    if ip_address:
-        return True
-    return False
-
-
-def get_cg_by_ip(database, ip): # todo
-    return None

@@ -1,6 +1,6 @@
-from .units import get_unit_by_name, get_default_unit
-from ..sc_database.model.Users import Users
-from ..sc_database.model.Users_ActiveDirectory import Users_ActiveDirectory
+from .UnitsService import get_unit_by_name, get_default_unit
+from ..sc_repositories.DatabaseModels.Users import Users
+from ..sc_repositories.DatabaseModels.Users_ActiveDirectory import Users_ActiveDirectory
 
 
 def add_user(database, user_name, **params):

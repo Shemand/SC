@@ -3,13 +3,13 @@ from datetime import datetime
 from sqlalchemy import select, and_, or_
 from sqlalchemy.testing import in_
 
-from ..sc_database.model.Addresses import Addresses
-from ..sc_database.model.Computers import Computers
-from ..sc_database.model.Computers_ActiveDirectory import Computers_ActiveDirectory
-from ..sc_database.model.Puppets import PuppetView
-from ..sc_database.model.Kaspersky import  KasperskyView
-from ..sc_database.model.DallasLock import DallasLock
-from ..sc_database.model.Units import Units
+from ..sc_repositories.DatabaseModels.Addresses import Addresses
+from ..sc_repositories.DatabaseModels.Computers import Computers
+from ..sc_repositories.DatabaseModels.Computers_ActiveDirectory import Computers_ActiveDirectory
+from ..sc_repositories.DatabaseModels.Puppets import PuppetView
+from ..sc_repositories.DatabaseModels.Kaspersky import  KasperskyView
+from ..sc_repositories.DatabaseModels.DallasLock import DallasLock
+from ..sc_repositories.DatabaseModels.Units import Units
 
 """"
 

@@ -3,10 +3,10 @@ import json
 from flask import jsonify
 from sqlalchemy.sql.functions import user
 
-from ...sc_actions.units import get_unit_by_id, get_available_units_id
-from ...sc_actions.users import get_user_by_id
+from ...sc_services.UnitsService import get_unit_by_id, get_available_units_id
+from ...sc_services.UsersService import get_user_by_id
 from ...sc_common.authenticate import read_token
-from ...sc_database.model.Users import Users
+from ...sc_repositories.DatabaseModels.Users import Users
 from ...sc_entities.District import District
 from ...sc_entities.Entities import Entities
 

@@ -1,15 +1,15 @@
 from flask import g
 
-from ....sc_actions.active_directory import update_computers_from_ad, update_users_from_ad, update_ad_users as upd_ad_users
-from ....sc_actions.computers import update_computers_unit
-from ....sc_actions.dallas_lock import update_computers_from_dallas
-from ....sc_actions.kaspersky import update_computers_from_kaspersky
-from ....sc_actions.puppet import update_computers_from_puppet
-from ....sc_actions.units import build_structure
+from ....sc_services.ActiveDirectoryService import update_computers_from_ad, update_users_from_ad as upd_ad_users
+from ....sc_services.ComputersService import update_computers_unit
+from ....sc_services.DallasLockService import update_computers_from_dallas
+from ....sc_services.KasperskyService import update_computers_from_kaspersky
+from ....sc_services.PuppetService import update_computers_from_puppet
+from ....sc_services.UnitsService import build_structure
 from .BlueprintAttacher import BlueprintAttacher
 
 
-def attach_update_routes(mod): #todo edit the handlers
+def attach_update_routes(mod):
     @mod.route('/<district_name>/update/ad/computers', methods=['POST'])
     def update_ad_computers(district_name):
         '''

@@ -2,11 +2,11 @@ import json
 
 import requests
 
+from .InteractionRepository import InteractionRepository
 from ..sc_common.functions import reformat_computer_name, extract_unit_from_name
-from .ServiceAbstract import ServiceAbstract
 
 
-class PuppetService(ServiceAbstract):
+class PuppetRepository(InteractionRepository):
 
     def __init__(self, district, main_config, specific_data) -> None:
         super().__init__(district, main_config, specific_data)

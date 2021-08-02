@@ -1,7 +1,9 @@
 from typing import Any
 
+from backend.src.sc_repositories.BaseRepository import BaseRepository
 
-class ServiceAbstract:
+
+class InteractionRepository(BaseRepository):
 
     DISABLED = 'disabled'
     INACTIVE = 'inactive'

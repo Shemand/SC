@@ -2,10 +2,10 @@ from datetime import datetime
 
 
 # ----- public function
-from .computers import get_or_create_computer
-from .ip import get_ip_all, get_or_create_ip
-from .os import get_or_create_os
-from ..sc_database.model.Puppets import Puppets
+from .ComputersService import get_or_create_computer
+from .IpService import get_ip_all, get_or_create_ip
+from .OsService import get_or_create_os
+from ..sc_repositories.DatabaseModels.Puppets import Puppets
 
 
 def get_puppet_computers(database):

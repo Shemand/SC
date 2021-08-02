@@ -1,13 +1,13 @@
-from .ActiveDirectoryService import ActiveDirectoryService
-from .DallasLockService import DallasLockService
-from .KasperskyService import KasperskyService
-from .PuppetServices import PuppetService
+from .ActiveDirectoryRepository import ActiveDirectoryRepository
+from .DallasLockRepository import DallasLockRepository
+from .KasperskyRepository import KasperskyRepository
+from .PuppetRepository import PuppetRepository
 
 _services_relations = {
-    'active_directory' : ActiveDirectoryService,
-    'kaspersky' : KasperskyService,
-    'dallas_lock' : DallasLockService,
-    'puppet' : PuppetService
+    'active_directory' : ActiveDirectoryRepository,
+    'kaspersky' : KasperskyRepository,
+    'dallas_lock' : DallasLockRepository,
+    'puppet' : PuppetRepository
 }
 
 class ServiceFactory:

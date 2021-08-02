@@ -1,52 +1,65 @@
-import json
-
-import requests
-
-from ..sc_common.functions import reformat_computer_name
-from .ServiceAbstract import ServiceAbstract
+from datetime import datetime
 
 
-class DallasLockService(ServiceAbstract):
+# ----- public function
+from .ComputersService import get_or_create_computer
+from ..sc_repositories.DatabaseModels.DallasLock import DallasLock
 
-    def __init__(self, district, main_config, specific_data) -> None:
-        super().__init__(district, main_config, specific_data)
-        self.server = self.configuration['server']
+def get_dallas_computers(database):
+    return database.session.query(DallasLock).all()
 
-    def create_connection(self):
-        pass
+def create_computer_dallas_record(database, computer_row, dallas_record):
+    params = {
+        "Computers_id": computer_row.id,
+        "status": dallas_record['status'],
+        "server": dallas_record['server']
+    }
+    row = DallasLock(**params)
+    database.session.add(row)
+    # database.session.commit()
+    return row
 
-    def check_connection(self) -> bool:
-        req = requests.get(self._get_address_of_tree(), timeout=30)
-        if req.status_code == 200:
-            return True
-        return False
+# ----- update computers data -----
 
-    def get_address_of_root(self):
-        return f'http://{self._ip}:{self._port}/'
-
-    def _get_address_of_tree(self):
-        return f'http://{self._ip}:{self._port}/tree'
-
-    def __get_computers_raw(self):
-        assert self.check_connection(), f'Server ({self._ip}:{self._port}) is not available now.'
-        req = requests.get(self._get_address_of_tree())
-        data = req.content
-        data = json.loads(data)
-        if req.status_code == 200:
-            return data
+def update_computers_from_dallas(database, district):
+    records_dallas = _get_dallas_computer_records(database, district)
+    rows_dallas = rows_dallas = { row.Computers_id : row for row in get_dallas_computers(database) }
+    _inject_row_in_computer_records(database, records_dallas, rows_dallas)
+    for _, record in records_dallas.items():
+        if record['dallas_row'] == None:
+            record['dallas_row'] = create_computer_dallas_record(database, record['computer_row'], record)
         else:
-            return []
+            _update_computer_dallas_row(database, record['dallas_row'], record)
+    for computer_id, row in rows_dallas.items():
+        row.isDeleted = datetime.now()
+        row.updated = datetime.now()
+    database.session.commit()
+    return True
 
-    def get_computers(self):
-        records = self.__get_computers_raw()
-        computers = { reformat_computer_name(record['computer']) : {
-            "server": record['server'],
-            "name": reformat_computer_name(record['computer']),
-            "container": record['nodes'].pop(len(record['nodes']) - 1),
-            "status": record['status']
-        } for record in records}
-        # for computer_name, data in computers.items():
-        #     index = computer_name.find('[')
-        #     if index != -1:
-        #         computer['name'] = computer['name'][0:index].strip()
-        return computers
+
+def _get_dallas_computer_records(database, district):
+    records = {}
+    for service in district.services.get_dallas_lock_services():
+        records = {**records, **service.get_computers()}
+    return records
+
+
+def _inject_row_in_computer_records(database, records, rows_dallas):
+    for computer_name, record in records.items():
+        computer_row = get_or_create_computer(database, computer_name)
+        record['computer_row'] = computer_row
+        if computer_row.id in rows_dallas:
+            record['dallas_row'] = rows_dallas[computer_row.id]
+            del rows_dallas[computer_row.id]
+        else:
+            record['dallas_row'] = None
+
+
+def _update_computer_dallas_row(database, dallas_row, dallas_record):
+    if dallas_row.status != dallas_record['status']:
+        dallas_row.status = dallas_record['status']
+    if dallas_row.server != dallas_record['server']:
+        dallas_row.server = dallas_record['server']
+    if dallas_row.isDeleted is not None:
+        dallas_row.isDeleted = None
+    return dallas_row

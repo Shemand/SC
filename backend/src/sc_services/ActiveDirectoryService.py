@@ -1,148 +1,169 @@
-from typing import Any
+from datetime import datetime
 
-from ldap3 import Connection, Server, AUTO_BIND_NO_TLS, SUBTREE
+from .ComputersService import get_computers, create_computer, inject_row_in_computers_records
+from ..sc_common.functions import delete_from_list_by_hash
+from .UsersService import inject_row_in_users_records, get_users
+from ..sc_common.functions import reformat_computer_name
+from ..sc_repositories.DatabaseModels.Computers_ActiveDirectory import Computers_ActiveDirectory
+from ..sc_repositories.DatabaseModels.Users_ActiveDirectory import Users_ActiveDirectory
 
-from ..sc_common.functions import reformat_computer_name, transformate_time
-from .ServiceAbstract import ServiceAbstract
+
+# ----- public function
+
+def get_ad_user(database, user_name):
+    return database.session.query(Users_ActiveDirectory).filter_by(name=user_name).first()
 
 
-class ActiveDirectoryService(ServiceAbstract):
+def get_ad_users(database):
+    return database.session.query(Users_ActiveDirectory).all()
 
-    _catalog_path: str
-    _begin_node: str
-    _end_nodes: [str]
 
-    def __init__(self, district, main_config, specific_data) -> None:
-        super().__init__(district, main_config, specific_data)
-        self._catalog_path = self.configuration['path']
-        self._begin_node = self.configuration['begin_node']
-        self._end_nodes = self.configuration['end_nodes']
-        self._server = Server(self.ip,
-                              port=self.port,
-                              use_ssl=False)
+def delete_computer_from_ad(database, computer_id):
+    ad_computers = database.session.query(Computers_ActiveDirectory).filter_by(Computers_id=computer_id).all()
+    for computer in ad_computers:
+        computer.isDeleted = datetime.now()
+    database.session.commit()
 
-    def create_connection(self) -> Any:
-        print('creating connection with active directory')
-        self._connection = Connection(self._server,
-                                      auto_bind=AUTO_BIND_NO_TLS,
-                                      user=self.configuration['username'],
-                                      password=self.configuration['password'])
-        if self._connection and self._connection.result['description'] == 'success':
-            return self._connection
+
+def create_computer_ad_record(database, computer_row, ad_record):
+    params = {
+        "Computers_id": computer_row.id,
+        "last_visible": ad_record['last_logon'],
+        "registred": ad_record['whenCreated']
+    }
+    row = Computers_ActiveDirectory(**params)
+    database.session.add(row)
+    # database.session.commit()
+    return row
+
+
+def create_user_ad_record(database, ad_record):
+    params = {
+        "name": ad_record['account_name'],
+        "full_name": ad_record['name'],
+        "department": ad_record['department'],
+        "mail": ad_record['mail'],
+        "phone": ad_record['phone'],
+        "registred": ad_record['whenCreated'],
+        "last_logon": ad_record['last_logon'],
+        "isDisabled": datetime.now() if ad_record['disabled'] else None,
+        "isLocked": datetime.now() if ad_record['locked'] else None
+    }
+    row = Users_ActiveDirectory(**params)
+    database.session.add(row)
+    database.session.commit()
+    return row
+
+
+# ----- update computers data -----
+
+def update_computers_from_ad(database, district):
+    ad_services = district.services.get_active_directory_services()
+    ad_rows = _get_ad_computers_rows(database)
+    records_ad = []
+    for service in ad_services:
+        records_ad.extend(_get_ad_computer_records(database, service))
+    inject_row_in_computers_records(database, records_ad)
+    for record in records_ad:
+        required_ad_row = None
+        for row in ad_rows:
+            if row.Computers_id == record['computer'].id \
+                    and row.registred == record['whenCreated']:
+                required_ad_row = row
+                break
+        if not required_ad_row:
+            create_computer_ad_record(database, record['computer'], record)
         else:
-            raise ConnectionError(f'Could create new connection for Active Directory ({self._name})')
+            _update_computer_ad_record(database, required_ad_row, record)
+            delete_from_list_by_hash(ad_rows, required_ad_row)
+    for row in ad_rows:
+        row.isDeleted = datetime.now()
+    database.session.commit()
+    return True
 
-    def check_connection(self) -> bool:
-        try:
-            if self.create_connection():
-                return True
-            else:
-                return False
-        except:
-            return False
 
-    # Computers manipulations
+def _get_ad_computer_records(database, ad_service):
+    if ad_service.check_connection():
+        return ad_service.get_computers()
 
-    def _get_computers_raw(self, size_limit=0):
-        self.connection.search(search_base=self._catalog_path,
-                               search_filter='(objectClass=computer)',
-                               search_scope=SUBTREE,
-                               attributes=["name", "distinguishedName", "lastLogonTimestamp",
-                                           "objectGUID", "objectSid", "sAMAccountName",
-                                           "userAccountControl", "whenCreated"],
-                               size_limit=size_limit)
-        return self.connection.response
 
-    def get_computers(self):
-        raw_data = self._get_computers_raw()
-        computers = [ {
-            "name": reformat_computer_name(record['attributes']['name']),
-            "dn": [ list(reversed(dn.split('=')))[0] for dn in reversed(record['attributes']['distinguishedName'].split(',')) ],
-            "last_logon": transformate_time(record['attributes']['lastLogonTimestamp']),
-            "GUID": record['attributes']['objectGUID'],
-            "SID": record['attributes']['objectSid'],
-            "user_account_control": record['attributes']['userAccountControl'],
-            "locked" : record['attributes']['userAccountControl'] & 0x10,
-            "disabled" : record['attributes']['userAccountControl'] & 0x2,
-            "whenCreated": transformate_time(record['attributes']['whenCreated']),
-        } for record in raw_data]
-        return computers
+def _get_ad_computers_rows(database):
+    return database.session.query(Computers_ActiveDirectory).all()
 
-# Users manipulations
 
-    def _get_users_raw(self, size_limit=0):
-        self.connection.search(search_base=self._catalog_path,
-                               search_filter=' (sAMAccountType=805306368)', # or (&(objectCategory=person)(objectClass=user))
-                               search_scope=SUBTREE,
-                               attributes=["name", "sAMAccountName", "distinguishedName", "badPasswordTime",
-                                           "lastLogonTimestamp", "mail", "mailNickname",
-                                           "objectGUID", "objectSid", "sAMAccountName",
-                                           "telephoneNumber", "targetAddress", "userAccountControl",
-                                           "whenCreated", "department"],
-                               size_limit=size_limit)
-        return self.connection.response
+def _update_computer_ad_record(database, ad_row, ad_record):
+    if ad_row.last_visible != ad_record['last_logon']:
+        ad_row.last_visible = ad_record['last_logon']
+    if not ad_row.isActive != ad_record['disabled']:
+        ad_row.isActive = not ad_record['disabled']
+    # database.session.commit()
+    return ad_row
 
-    def get_users(self):
-        raw_data = self._get_users_raw()
-        users = [ {
-            "name": record['attributes']['name'],
-            "account_name" : record['attributes']['sAMAccountName'].lower(),
-            "dn": [ list(reversed(dn.split('=')))[0] for dn in reversed(record['attributes']['distinguishedName'].split(',')) ],
-            "last_logon": transformate_time(record['attributes']['lastLogonTimestamp']),
-            "bad_password_time" : transformate_time(record['attributes']['badPasswordTime']),
-            "mail" : record['attributes']['mail'] if 'mail' in record['attributes'] else None,
-            "phone" : record['attributes']['telephoneNumber'] if 'telephoneNumber' in record['attributes'] else None,
-            "address" : record['attributes']['targetAddress'] if 'targetAddress' in record['attributes'] else None,
-            "department" : record['attributes']['department'] if 'department' in record['attributes'] else None,
-            "GUID": record['attributes']['objectGUID'] if 'objectGUID' in record['attributes'] else None,
-            "SID": record['attributes']['objectSid'] if 'objectSid' in record['attributes'] else None,
-            "user_account_control": record['attributes']['userAccountControl']
-                                    if 'userAccountControl' in record['attributes']
-                                    else None,
-            "locked" : record['attributes']['userAccountControl'] & 0x10,
-            "disabled" : record['attributes']['userAccountControl'] & 0x2,
-            "whenCreated": transformate_time(record['attributes']['whenCreated']),
-        } for record in raw_data]
-        return users
 
-# Location manupulation
+def _computer_ad_record_in_list(database, ad_records, computer_row):
+    for ad_record in ad_records:
+        if computer_row.name == ad_record.name:
+            if computer_row['last_visible'] == ad_record['last_logon']:
+                return ad_record
+    return None
 
-    def _get_containers_raw(self, size_limit=0):
-        self.connection.search(search_base=self._catalog_path,
-                               search_filter='(objectCategory=organizationalUnit)',
-                               search_scope=SUBTREE,
-                               attributes=["*"],
-                               size_limit=size_limit)
-        return self.connection.response
 
-    def get_locations_tree(self):
-        raw_data = self._get_containers_raw()
-        locations_tree = {}
-        containers = [ (record['attributes']['name'],
-                        record['attributes']['objectGUID'],
-                        [ list(reversed(node.split('=')))[0]
-                          for node in list(reversed(record['attributes']['distinguishedName'].split(',')))]
-                        ) for record in raw_data
-                     ]
-        for container in containers:
-            name, guid, path = container
-            while path[0] != self._begin_node:
-                path.pop(0)
-            self._recursive_build(locations_tree, path)
-        return locations_tree
+# ----- update ad users -----
 
-    def _recursive_build(self, sub_tree, nodes):
-        node = nodes.pop(0).strip()
-        if node not in sub_tree:
-            sub_tree[node] = {}
-        if node in self._end_nodes:
-            return
-        if len(nodes) > 0:
-            self._recursive_build(sub_tree[node], nodes)
+def update_users_from_ad(database, district):
+    ad_services = district.services.get_active_directory_services()
+    ad_rows = get_ad_users(database)
+    records_ad = []
+    for service in ad_services:
+        records_ad.extend(_get_ad_users_records(database, service))
+    inject_row_in_users_records(database, records_ad)
+    for record in records_ad:
+        required_ad_row = None
+        for row in ad_rows:
+            if row.login == record['computer'].id \
+                    and row.registred == record['whenCreated']:
+                required_ad_row = row
+                break
+        if not required_ad_row:
+            create_computer_ad_record(database, record['computer'], record)
+        else:
+            _update_computer_ad_record(database, required_ad_row, record)
+            delete_from_list_by_hash(ad_rows, required_ad_row)
+    for row in ad_rows:
+        row.isDeleted = datetime.now()
+    database.session.commit()
+    return True
 
-    def authenticate_user(self, login: str, password: str) -> bool:
-        login = f'rosgvard\\{login}'
-        c = Connection(self._server, user=login, password=password)
-        if not c.bind():
-            return False
-        return True
+
+def _get_ad_users_records(database, ad_service):
+    if ad_service.check_connection():
+        return ad_service.get_users()
+
+
+def _update_user_ad_row(record):
+    row = record['ad_row']
+    if record['user_row'] is not None \
+            and record['user_row'].Users_ActiveDirectory_id != row.id:
+        record['user_row'].Users_ActiveDirectory_id = row.id
+    if row.isDeleted is not None:
+        row.isDeleted = None
+    if record['name'] != row.full_name:
+        row.full_name = record['name']
+    if record['account_name'] != row.name:
+        row.name = record['account_name']
+    if record['last_logon'] != row.last_logon:
+        row.last_logon = record['last_logon']
+    if record['mail'] != row.mail:
+        row.mail = record['mail']
+    if record['phone'] != row.phone:
+        row.phone = record['phone']
+    if record['department'] != row.department:
+        row.department = record['department']
+    if record['locked'] and row.isLocked is None:
+        row.isLocked = datetime.now()
+    elif row.isLocked and not record['locked']:
+        row.isLocked = None
+    if record['disabled'] and row.isDisabled is None:
+        row.isDisabled = datetime.now()
+    elif row.isDisabled and not record['disabled']:
+        row.isDisabled = None

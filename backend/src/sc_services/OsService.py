@@ -1,5 +1,5 @@
-from ..sc_database.model.Addresses import Addresses
-from ..sc_database.model.OperationSystems import OperationSystems
+from ..sc_repositories.DatabaseModels.Addresses import Addresses
+from ..sc_repositories.DatabaseModels.OperationSystems import OperationSystems
 
 
 def get_os_all(database):
@@ -38,10 +38,3 @@ def get_or_create_os(database, os_name):
     if os:
         return os
     return create_os(database, os_name)
-
-
-def is_exists_os(database, os_name):
-    os = get_os_by_name(database, os_name)
-    if os:
-        return True
-    return False

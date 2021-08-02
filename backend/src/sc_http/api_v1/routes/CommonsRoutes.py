@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from ....sc_actions.units import build_structure
+from ....sc_services.UnitsService import build_structure
 from .BlueprintAttacher import BlueprintAttacher
 
 

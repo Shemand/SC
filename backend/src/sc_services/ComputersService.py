@@ -1,7 +1,7 @@
-from .units import get_or_create_unit, get_unit_by_id, get_unit_by_name
+from .UnitsService import get_or_create_unit, get_unit_by_id, get_unit_by_name
 from ..sc_common.functions import reformat_computer_name, extract_unit_from_name, reformat_unit_name
-from ..sc_database.model.Computers import Computers
-from ..sc_database.model.Units import Units
+from ..sc_repositories.DatabaseModels.Computers import Computers
+from ..sc_repositories.DatabaseModels.Units import Units
 
 
 def get_computers(database):

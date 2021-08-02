@@ -1,7 +1,7 @@
-from ..sc_services.ActiveDirectoryService import ActiveDirectoryService
-from ..sc_services.DallasLockService import DallasLockService
-from ..sc_services.KasperskyService import KasperskyService
-from ..sc_services.PuppetServices import PuppetService
+from ..sc_repositories.ActiveDirectoryRepository import ActiveDirectoryRepository
+from ..sc_repositories.DallasLockRepository import DallasLockRepository
+from ..sc_repositories.KasperskyRepository import KasperskyRepository
+from ..sc_repositories.PuppetRepository import PuppetRepository
 
 
 class DistrictServices():
@@ -15,13 +15,13 @@ class DistrictServices():
         self.district = district
 
     def add_service(self, service):
-        if isinstance(service, ActiveDirectoryService):
+        if isinstance(service, ActiveDirectoryRepository):
             self.ad.append(service)
-        elif isinstance(service, KasperskyService):
+        elif isinstance(service, KasperskyRepository):
             self.kaspersky.append(service)
-        elif isinstance(service, DallasLockService):
+        elif isinstance(service, DallasLockRepository):
             self.dallas.append(service)
-        elif isinstance(service, PuppetService):
+        elif isinstance(service, PuppetRepository):
             self.puppet.append(service)
         else:
             raise RuntimeError('Unknown type of service')

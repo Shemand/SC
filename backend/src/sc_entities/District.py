@@ -2,12 +2,12 @@ import json
 import os
 from os.path import join as join_path
 
-from ..sc_database.database import DatabaseClass
+from ..sc_repositories.DatabaseRepository import DatabaseRepository
 from .CryptoGateway import CryptoGateway
 from .DistrictServices import DistrictServices
 from .DistrictUnit import DistrictUnit
-from ..sc_services.ActiveDirectoryService import ActiveDirectoryService
-from ..sc_services.ServiceFactory import ServiceFactory
+from ..sc_repositories.ActiveDirectoryRepository import ActiveDirectoryRepository
+from ..sc_repositories.ServiceFactory import ServiceFactory
 
 SERVICES = 'services.json'
 UNITS = 'new_unit.json'
@@ -63,7 +63,7 @@ class District:
                 if name in self._get_available_containers(unit_name)}
 
     def get_active_directory_services(self):
-        return [service for service in self.services if isinstance(service, ActiveDirectoryService)]
+        return [service for service in self.services if isinstance(service, ActiveDirectoryRepository)]
 # -------- READERS --------------
 
     def __read_json_config(self, config_name):
@@ -159,7 +159,7 @@ class District:
         return district_services
 
     def __load_database(self, config_dict):
-        return DatabaseClass(self, database_config=config_dict)
+        return DatabaseRepository(self, database_config=config_dict)
 
     def __load_crypto_gateways(self, crypto_gateways):
         district_cg = {}

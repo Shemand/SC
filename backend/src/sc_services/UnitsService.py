@@ -1,4 +1,4 @@
-from ..sc_database.model.Units import Units
+from ..sc_repositories.DatabaseModels.Units import Units
 
 def get_default_unit(database):
     return get_unit_by_name(database, 'UNKNOWN')

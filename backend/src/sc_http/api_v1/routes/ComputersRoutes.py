@@ -2,10 +2,10 @@ import json
 
 from flask import g, request
 
-from ....sc_actions.computers import get_computers, get_or_create_computer
-from ....sc_actions.computers_frame import get_computers_frame, FROM_ACTIVE_DIRECTORY, FROM_PUPPET, FROM_KASPERSKY, FROM_DALLAS_LOCK
-from ....sc_actions.functions import rows_to_dicts
-from ....sc_actions.kaspersky import update_computers_from_kaspersky
+from ....sc_services.ComputersService import get_computers, get_or_create_computer
+from ....sc_services.ComputersFrameService import get_computers_frame, FROM_ACTIVE_DIRECTORY, FROM_PUPPET, FROM_KASPERSKY, FROM_DALLAS_LOCK
+from ....sc_common.functions import rows_to_dicts
+from ....sc_services.KasperskyService import update_computers_from_kaspersky
 from ....sc_entities.Entities import Entities
 from ..functions import required_auth
 
