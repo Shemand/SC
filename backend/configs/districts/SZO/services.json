@@ -382,8 +382,8 @@
   {
     "owner" : "SZO",
     "connection_name" : "dallas_lock_001",
-    "connection_ip" : "",
-    "connection_port" : 0,
+    "connection_ip" : "10.3.128.251",
+    "connection_port" : 5000,
     "type" : "dallas_lock",
     "active" : true,
     "specific_data" : {
@@ -393,8 +393,8 @@
   {
     "owner" : "SZO",
     "connection_name" : "dallas_lock_002",
-    "connection_ip" : "",
-    "connection_port" : 0,
+    "connection_ip" : "10.3.128.253",
+    "connection_port" : 5000,
     "type" : "dallas_lock",
     "active" : true,
     "specific_data" : {
@@ -404,8 +404,8 @@
   {
     "owner" : "SZO",
     "connection_name" : "dallas_lock_TERO",
-    "connection_ip" : "",
-    "connection_port" : 0,
+    "connection_ip" : "10.3.128.234",
+    "connection_port" : 5000,
     "type" : "dallas_lock",
     "active" : true,
     "specific_data" : {

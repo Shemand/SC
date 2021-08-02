@@ -14,7 +14,7 @@ let columns = [
     {
         title: "AD статус",
         field: "ad_status",
-        align: "center",
+        hozAlign: "center",
         sorter: "datetime",
         formatter: "datetime",
         formatterParams: {
@@ -27,38 +27,37 @@ let columns = [
     {
         title: "KL статус",
         field: "kl_status",
-        align: "center",
+        hozAlign: "center",
         sorter: "string",
     },
     {
         title: "DL статус",
         field: "dl_status",
-        align: "center",
+        hozAlign: "center",
         sorter: "string",
     },
     {
         title: "PP статус",
         field: "pp_status",
-        align: "center",
+        hozAlign: "center",
         sorter: "string",
     },
     {
         title: "ОС",
         field: "os_status",
-        align: "center",
+        hozAlign: "center",
         sorter: "string",
     },
     {
         title: "AD Активен",
         field: "active_directory.isActive",
-        align: "center",
+        hozAlign: "center",
         sorter: "string",
-        formatter: "string",
         visible: false,
         download: true
     },
     {
-        title: "AD Удален", field: "active_directory.isDeleted", align: "center", formatter: "datetime",
+        title: "AD Удален", field: "active_directory.isDeleted", hozAlign: "center", formatter: "datetime",
         formatterParams: {
             outputFormat: "DD/MM/YY HH:mm",
             timezone: "Europe/Moscow",
@@ -68,7 +67,7 @@ let columns = [
     {
         title: "AD Последнее появление",
         field: "active_directory.last_visible",
-        align: "center",
+        hozAlign: "center",
         formatter: "datetime",
         formatterParams: {
             outputFormat: "DD/MM/YY HH:mm",
@@ -82,13 +81,13 @@ let columns = [
     {
         title: "DL Сервер",
         field: "dallas_lock.server",
-        align: "center",
+        hozAlign: "center",
         sorter: "string",
         visible: false,
         download: true
     },
     {
-        title: "DL Удален", field: "dallas_lock.isDeleted", align: "center", formatter: "datetime",
+        title: "DL Удален", field: "dallas_lock.isDeleted", hozAlign: "center", formatter: "datetime",
         formatterParams: {
             outputFormat: "DD/MM/YY HH:mm",
             timezone: "Europe/Moscow",
@@ -98,7 +97,7 @@ let columns = [
     {
         title: "KL IP",
         field: "kaspersky.kl_ip",
-        align: "center",
+        hozAlign: "center",
         sorter: "string",
         visible: false,
         download: true
@@ -106,7 +105,7 @@ let columns = [
     {
         title: "KL ОС",
         field: "kaspersky.kl_os",
-        align: "center",
+        hozAlign: "center",
         sorter: "string",
         visible: false,
         download: true
@@ -114,7 +113,7 @@ let columns = [
     {
         title: "KL Сервер",
         field: "kaspersky.server",
-        align: "center",
+        hozAlign: "center",
         sorter: "string",
         visible: false,
         download: true
@@ -122,7 +121,7 @@ let columns = [
     {
         title: "PP Мат.Плата",
         field: "puppet.board_serial_number",
-        align: "center",
+        hozAlign: "center",
         sorter: "string",
         visible: false,
         download: true
@@ -130,7 +129,7 @@ let columns = [
     {
         title: "PP Апдейт астры",
         field: "puppet.astra_update",
-        align: "center",
+        hozAlign: "center",
         sorter: "string",
         visible: false,
         download: true
@@ -138,7 +137,7 @@ let columns = [
     {
         title: "PP Окружение",
         field: "puppet.environment",
-        align: "center",
+        hozAlign: "center",
         sorter: "string",
         visible: false,
         download: true
@@ -146,7 +145,7 @@ let columns = [
     {
         title: "PP KESL",
         field: "puppet.kesl_version",
-        align: "center",
+        hozAlign: "center",
         sorter: "string",
         visible: false,
         download: true
@@ -154,7 +153,7 @@ let columns = [
     {
         title: "PP klnagent",
         field: "puppet.klnagent_version",
-        align: "center",
+        hozAlign: "center",
         sorter: "string",
         visible: false,
         download: true
@@ -162,7 +161,7 @@ let columns = [
     {
         title: "PP MAC",
         field: "puppet.mac",
-        align: "center",
+        hozAlign: "center",
         sorter: "string",
         visible: false,
         download: true
@@ -170,7 +169,7 @@ let columns = [
     {
         title: "PP IP",
         field: "puppet.puppet_ip",
-        align: "center",
+        hozAlign: "center",
         sorter: "string",
         visible: false,
         download: true
@@ -178,7 +177,7 @@ let columns = [
     {
         title: "PP ОС",
         field: "puppet.puppet_os",
-        align: "center",
+        hozAlign: "center",
         sorter: "string",
         visible: false,
         download: true
@@ -186,7 +185,7 @@ let columns = [
     {
         title: "PP Serial Number",
         field: "puppet.serial_number",
-        align: "center",
+        hozAlign: "center",
         sorter: "string",
         visible: false,
         download: true
@@ -194,7 +193,7 @@ let columns = [
     {
         title: "PP Uptime(sec)",
         field: "puppet.uptime_seconds",
-        align: "center",
+        hozAlign: "center",
         sorter: "string",
         visible: false,
         download: true
@@ -265,6 +264,7 @@ function create_computers_table(context) {
             pagination: "local",
             index: "name",
             paginationSize: 25,
+            reactiveData: true,
             dataFiltered: makeFunctionDataFiltered(context),
             initialSort: [{column: "name", dir: "asc"}],
             rowFormatter: formatterOfRows,

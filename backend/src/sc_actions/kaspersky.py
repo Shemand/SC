@@ -13,11 +13,9 @@ def update_computers_from_kaspersky(database, district):
     records_kaspersky = {}
     updated_servers = []
     for service in kaspersky_services:
-        try:
-            records_kaspersky = {**records_kaspersky, **_get_kaspersky_records_from_service(database, service)}
-            updated_servers.append(service.server)
-        except Exception:
-            continue
+        from_service = _get_kaspersky_records_from_service(database, service)
+        records_kaspersky = {**records_kaspersky, **from_service}
+        updated_servers.append(service.server)
     inject_row_in_computers_records(database, records_kaspersky)
     for _, record in records_kaspersky.items():
         required_kaspersky_row = None

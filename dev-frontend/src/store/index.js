@@ -85,6 +85,7 @@ export default new Vuex.Store({
                 withCredentials : true
             });
             if (res.status === 200) {
+                console.log(res.data)
                 commit('update_computers', res.data.data.computers)
                 return res.status
             } else {

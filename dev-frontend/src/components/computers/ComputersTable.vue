@@ -82,8 +82,8 @@ export default {
 
   },
   mounted() {
-    this.tabulator = create_computer_table(this)
     this.tableData = []
+    this.tabulator = create_computer_table(this)
     this.$store.dispatch('updateComputers').then((status) => {
       if (status === 200) {
         console.log('Data about computers was loaded write!')

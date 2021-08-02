@@ -17,8 +17,5 @@ class Computers(BaseModel):
     created = Column(DateTime, nullable=False, default=datetime.now())
     Units_id = Column(Integer, ForeignKey('Units.id'), nullable=False)
 
-    # addresses = relationship('Adapters', back_populates='computer')
-    # logons = relationship('Logons', back_populates='computer')
-
     def __repr__(self):
         return f'<Computers (name: {self.name})>'

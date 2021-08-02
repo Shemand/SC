@@ -90,11 +90,8 @@ def attach_update_routes(mod): #todo edit the handlers
         district = res.district
         database = district.database
         build_structure(database, district.structure)
-        try:
-            update_computers_from_kaspersky(database, district)
-        except Exception as e:
-            print(e)
-            res.error().get()
+        update_computers_from_kaspersky(database, district)
+            # res.error().get()
         return res.success().get()
 
     @mod.route('/<district_name>/update/computers', methods=['POST'])

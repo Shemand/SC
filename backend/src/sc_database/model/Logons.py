@@ -14,8 +14,5 @@ class Logons(BaseModel):
     OperationSystems_id = Column(Integer, ForeignKey('OperationSystems.id'))
     created = Column(DateTime, nullable=False, default=datetime.now())
 
-    # user = relationship('Users', back_populates='logons')
-    # computer = relationship('Computers', back_populates='logons')
-
     def __repr__(self):
         return f'<Logons ({self.computer.name} - {self.user.username})>'

@@ -152,6 +152,10 @@ class KasperskyService(ServiceAbstract):
         return data
 
     def _compare_duplicates(self, current_record, new_record):
+        if not current_record:
+            return new_record
+        if not new_record:
+            return current_record
         current_visible = current_record['last_visible']
         new_visible = new_record['last_visible']
         if current_visible and new_visible and current_visible < new_visible:

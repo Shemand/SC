@@ -18,7 +18,5 @@ class Computers_ActiveDirectory(BaseModel):
     updated = Column(DateTime, nullable=False, default=datetime.now())
     created = Column(DateTime, nullable=False, default=datetime.now())
 
-    # computer = relationship('Computers', backref='active_directory')
-
     def __repr__(self):
         return f'<Computers_ActiveDirectory ({self.computer.name})>'

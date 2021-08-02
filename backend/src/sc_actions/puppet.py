@@ -106,7 +106,10 @@ def __inject_computer_in_records(database, record, computer_name):
 
 def __inject_os_in_records(database, record):
     if 'os' in record and record['os']:
-        os_name = record['os']['name'] + ' ' + record['os']['distro']['description']
+        if 'distro' in record['os'] and 'description' in record['os']['distro']:
+            os_name = record['os']['name'] + ' ' + record['os']['distro']['description']
+        else:
+            os_name = record['os']['name']
         record['os_row'] = get_or_create_os(database, os_name)
     else:
         record['os_row'] = None

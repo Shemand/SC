@@ -22,7 +22,7 @@ def create_computer_dallas_record(database, computer_row, dallas_record):
 # ----- update computers data -----
 
 def update_computers_from_dallas(database, district):
-    records_dallas = {record['name'] : record for record in _get_dallas_computer_records(database, district)}
+    records_dallas = _get_dallas_computer_records(database, district)
     rows_dallas = rows_dallas = { row.Computers_id : row for row in get_dallas_computers(database) }
     _inject_row_in_computer_records(database, records_dallas, rows_dallas)
     for _, record in records_dallas.items():
@@ -38,9 +38,9 @@ def update_computers_from_dallas(database, district):
 
 
 def _get_dallas_computer_records(database, district):
-    records = []
+    records = {}
     for service in district.services.get_dallas_lock_services():
-        records.extend(service.get_computers())
+        records = {**records, **service.get_computers()}
     return records
 
 

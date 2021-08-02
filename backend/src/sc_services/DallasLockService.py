@@ -39,14 +39,14 @@ class DallasLockService(ServiceAbstract):
 
     def get_computers(self):
         records = self.__get_computers_raw()
-        computers = [{
+        computers = { reformat_computer_name(record['computer']) : {
             "server": record['server'],
             "name": reformat_computer_name(record['computer']),
             "container": record['nodes'].pop(len(record['nodes']) - 1),
             "status": record['status']
-        } for record in records]
-        for computer in computers:
-            index = computer['name'].find('[')
-            if index != -1:
-                computer['name'] = computer['name'][0:index].strip()
+        } for record in records}
+        # for computer_name, data in computers.items():
+        #     index = computer_name.find('[')
+        #     if index != -1:
+        #         computer['name'] = computer['name'][0:index].strip()
         return computers

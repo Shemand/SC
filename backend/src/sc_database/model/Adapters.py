@@ -17,8 +17,5 @@ class Adapters(BaseModel):
     updated = Column(DateTime, default=datetime.now())
     created = Column(DateTime, default=datetime.now())
 
-    # computer = relationship('Computers', back_populates='addresses')
-    # address = relationship('Addresses', back_populates='computers')
-
     def __repr__(self):
         return f'<Adapters (Computers_id: {self.Computers_id})>'

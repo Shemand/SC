@@ -106,23 +106,22 @@ export default {
       let total_rows = this.table.getRows();
       active_rows.forEach((elem) => {
         let tmpData = elem.getData();
+
         this.statistics.all_computers.active_value++;
-        if (tmpData.active_directory.registred != null)
-          this.statistics.in_domain.active_value++;
-        if (tmpData.kaspersky.agent_version != null)
-          this.statistics.with_agent.active_value++;
-        if (tmpData.kaspersky.security_version != null)
-          this.statistics.with_security.active_value++;
-        if (tmpData.puppet.puppet_os != null)
-          this.statistics.with_puppet.active_value++;
-        if (tmpData.dallas_lock.server != null)
-          this.statistics.with_dl.active_value++;
-        if(tmpData.os_status === "Windows")
-          this.statistics.windows.active_value++;
-        else if(tmpData.os_status === "Linux")
-          this.statistics.linux.active_value++;
-        else
-          this.statistics.unknown.active_value++;
+
+        if (tmpData.active_directory.registred != null) this.statistics.in_domain.active_value++;
+
+        if (tmpData.kaspersky.agent_version != null) this.statistics.with_agent.active_value++;
+
+        if (tmpData.kaspersky.security_version != null) this.statistics.with_security.active_value++;
+
+        if (tmpData.puppet.puppet_os != null) this.statistics.with_puppet.active_value++;
+
+        if (tmpData.dallas_lock.server != null) this.statistics.with_dl.active_value++;
+
+        if(tmpData.os_status === "Windows") this.statistics.windows.active_value++;
+        else if(tmpData.os_status === "Linux") this.statistics.linux.active_value++;
+        else this.statistics.unknown.active_value++;
       });
       total_rows.forEach((elem) => {
         let tmpData = elem.getData();
@@ -146,7 +145,7 @@ export default {
       });
     },
     downloadTableXLSX() {
-      this.table.download("xlsx", "data.xlsx", {sheetName:"MyData"});j
+      this.table.download("xlsx", "data.xlsx", {sheetName:"MyData"});
     }
   },
   watch : {

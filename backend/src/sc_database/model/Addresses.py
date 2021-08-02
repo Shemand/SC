@@ -12,7 +12,5 @@ class Addresses(BaseModel):
     ipv4 = Column(String(16), nullable=False, unique=True, index=True)
     isAllowed = Column(DateTime)
 
-    # computers = relationship('Adapters', back_populates='address')
-
     def __repr__(self):
         return f'<Addresses (ip: {self.ipv4})>'

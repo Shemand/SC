@@ -30,8 +30,6 @@ class Puppets(BaseModel):
     updated = Column(DateTime, nullable=False, default=datetime.now())
     created = Column(DateTime, nullable=False, default=datetime.now())
 
-    # computer = relationship('Computers', backref='puppet')
-
     def __repr__(self):
         return f'<Puppets ({self.computer.name})>'
 

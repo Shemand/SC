@@ -47,11 +47,20 @@ def inject_row_in_computers_records(database, records, name_field='name'):
                 computers[computer_name] = create_computer(database, computer_name)
             record['computer'] = computers[computer_name]
     elif isinstance(records, dict):
+        to_remove = []
         for computer_name, d in records.items():
+            computer_name = reformat_computer_name(computer_name)
             print(computer_name)
+            if records[computer_name] == None:
+                to_remove.append(computer_name)
+                continue
             if not computer_name in computers:
                 computers[computer_name] = create_computer(database, computer_name)
-            d['computer'] = computers[computer_name]
+                records[computer_name] = computers[computer_name]
+            else:
+                d['computer'] = computers[computer_name]
+        for computer_name in to_remove:
+            del records[computer_name]
     else:
         raise RuntimeError('computers.inject_row_in_computers_records isn\'t dict or list')
 

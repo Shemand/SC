@@ -17,7 +17,5 @@ class DallasLock(BaseModel):
     updated = Column(DateTime, nullable=False, default=datetime.now())
     created = Column(DateTime, nullable=False, default=datetime.now())
 
-    # computer = relationship('Computers', backref='dallas_lock')
-
     def __repr__(self):
         return f'<DallasLock ({self.computer.name})>'

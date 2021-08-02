@@ -43,7 +43,7 @@
               <td>{{ puppet.klnagent_version }}</td>
             </tr>
             <tr>
-              <td class="param_name"></td>
+              <td class="param_name">Касперский защита:</td>
               <td>{{ puppet.kesl_version }}</td>
             </tr>
             <tr>
