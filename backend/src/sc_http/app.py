@@ -1,23 +1,23 @@
 from flask import Blueprint
 
-from .api_v1.routes.CommonsRoutes import attach_common_routes
-from .api_v1.routes.ComputersRoutes import attach_computer_routes
-from .api_v1.routes.CryptoGatewaysRoutes import attach_crypto_gateway_routes
-from .api_v1.routes.DevicesRoutes import attach_device_routes
-from .api_v1.routes.LogsRoutes import attach_log_routes
-from .api_v1.routes.StatisticsRoutes import attach_statistic_routes
-from .api_v1.routes.UpdatesRoutes import attach_update_routes
-from .api_v1.routes.UsersRoutes import attach_user_rotes
-from .api_v1.routes.before_request import attach_before_request
+from .flask.CommonsRoutes import mod as common_mod
+from .flask.ComputersRoutes import mod as computers_mod
+from .flask.CryptoGatewaysRoutes import mod as crypto_gateways_mod
+from .flask.DevicesRoutes import mod as devices_mod
+from .flask.LogsRoutes import mod as logs_mod
+from .flask.StatisticsRoutes import mod as statistics_mod
+from .flask.UpdatesRoutes import mod as updates_mod
+from .flask.UsersRoutes import mod as users_mod
+from .flask.before_request import attach_before_request
 
-api_v1_mod = Blueprint('apiv1', __name__, url_prefix='/api/v1/')
 
-attach_before_request(api_v1_mod, mod_path='/api/v1/')
-attach_common_routes(api_v1_mod)
-attach_computer_routes(api_v1_mod)
-attach_crypto_gateway_routes(api_v1_mod)
-attach_device_routes(api_v1_mod)
-attach_log_routes(api_v1_mod)
-attach_statistic_routes(api_v1_mod)
-attach_update_routes(api_v1_mod)
-attach_user_rotes(api_v1_mod)
+def initialize_flask_routes(app):
+    attach_before_request(app)
+    app.register_blueprint(common_mod)
+    app.register_blueprint(computers_mod)
+    app.register_blueprint(crypto_gateways_mod)
+    app.register_blueprint(devices_mod)
+    app.register_blueprint(logs_mod)
+    app.register_blueprint(statistics_mod)
+    app.register_blueprint(updates_mod)
+    app.register_blueprint(users_mod)

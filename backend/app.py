@@ -3,7 +3,8 @@ from datetime import date
 from flask.json import JSONEncoder
 
 from flask import Flask, render_template
-from src.sc_http.app import api_v1_mod
+from src.sc_http.app import api_v1_mod, initialize_flask_routes
+
 
 class CustomJSONEncoder(JSONEncoder):
     def default(self, obj):
@@ -22,8 +23,8 @@ def create_app():
                 static_folder="./frontend/static",
                 template_folder="./frontend")
     app.config['SECRET_KEY'] = 'ccb711f092ac8ef1805b5045fab7e8a6189cb97ad04565e21b5fbcfc9e542e42'
-    app.register_blueprint(api_v1_mod)
     app.json_encoder = CustomJSONEncoder
+    initialize_flask_routes(app)
     return app
 
 

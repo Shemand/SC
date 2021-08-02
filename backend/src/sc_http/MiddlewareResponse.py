@@ -3,12 +3,12 @@ import json
 from flask import jsonify
 from sqlalchemy.sql.functions import user
 
-from ...sc_services.UnitsService import get_unit_by_id, get_available_units_id
-from ...sc_services.UsersService import get_user_by_id
-from ...sc_common.authenticate import read_token
-from ...sc_repositories.DatabaseModels.Users import Users
-from ...sc_entities.District import District
-from ...sc_entities.Entities import Entities
+from ..sc_services.UnitsService import get_unit_by_id, get_available_units_id
+from ..sc_services.UsersService import get_user_by_id
+from ..sc_common.authenticate import read_token
+from ..sc_repositories.DatabaseModels.Users import Users
+from ..sc_entities.District import District
+from ..sc_entities.Entities import Entities
 
 
 class EntityUser():
@@ -64,8 +64,8 @@ class EntityUser():
         return json.dumps(self.get())
 
 
-class MiddlewareResponse():
-    def __init__(self, district_name, route_name, user_id):
+class MiddlewareResponse(): #todo from this
+    def __init__(self, route_name, user_id):
     # request data
         self.district = None
         self.group_name = None

@@ -31,16 +31,11 @@ def __extract_token(request):
     return auth_data
 
 
-def attach_before_request(mod, mod_path):
-    @mod.before_request
+def attach_before_request(app):
+    @app.before_request
     def before_req():
-        path = __split_and_extract_path(request.path, mod_path)
-        if path is None:
-            return g.response.error(message='unknown path of mod').get()
-        if len(path) < 2:
-            return g.response.error(message='response must have district and group. Example: "/api/v1/SZO/computers"').get()
         token_data = __extract_token(request)
         if 'user_id' in token_data:
-            g.response = MiddlewareResponse(path[_DISTRICT_NAME], path[_GROUP_NAME], token_data['user_id'])
+            g.middleware = MiddlewareResponse(token_data['user_id'])
         else:
-            g.response = MiddlewareResponse(path[_DISTRICT_NAME], path[_GROUP_NAME], None)
+            g.middleware = MiddlewareResponse(None)
