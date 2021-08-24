@@ -2,8 +2,8 @@ from datetime import date
 
 from flask.json import JSONEncoder
 
-from flask import Flask, render_template
-from src.sc_http.app import api_v1_mod, initialize_flask_routes
+from flask import Flask
+from src.sc_http.app import initialize_flask_routes
 
 
 class CustomJSONEncoder(JSONEncoder):
@@ -34,9 +34,8 @@ app = create_app()
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def catch_all(path):
-    return render_template("index.html")
+    return '{"error" : "Not found"}'
 
 
 if __name__ == '__main__':
-    # create_app()
-    app.run(host='0.0.0.0', port=7598)
+    app.run(host='0.0.0.0', port=8000)

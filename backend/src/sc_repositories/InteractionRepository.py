@@ -1,6 +1,6 @@
 from typing import Any
 
-from backend.src.sc_repositories.BaseRepository import BaseRepository
+from .BaseRepository import BaseRepository
 
 
 class InteractionRepository(BaseRepository):

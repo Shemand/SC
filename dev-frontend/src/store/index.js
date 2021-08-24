@@ -61,7 +61,7 @@ export default new Vuex.Store({
         login({commit}, user) {
             return new Promise((resolve, reject) => {
                 commit('auth_request')
-                axios({url: '/api/v1/SZO/users/auth', data: user, method: 'POST'})
+                axios({url: '/api/users/auth', data: user, method: 'POST'})
                     .then(resp => {
                         const token = resp.data.data.Bearer
                         localStorage.setItem('token', token)
@@ -77,7 +77,7 @@ export default new Vuex.Store({
         },
         async updateComputers({commit}) {
             let res = await axios({
-                url : "/api/v1/SZO/computers?puppet=[]&kaspersky=[]&dallas_lock=[]&active_directory=[]",
+                url : "/api/computers?puppet=[]&kaspersky=[]&dallas_lock=[]&active_directory=[]",
                 method : 'GET',
                 headers: {
                     'content-type': 'application/x-www-form-urlencoded;charset=utf-8'

@@ -1,6 +1,6 @@
 from flask import Blueprint, g
 
-from backend.src.sc_http.handlers.CryptoGatewaysHandlers import get_crypto_gateways_handler
+from ..handlers.CryptoGatewaysHandlers import get_crypto_gateways_handler
 
 mod = Blueprint('CryptoGateways', __name__, url_prefix='/crypto_gateways/')
 

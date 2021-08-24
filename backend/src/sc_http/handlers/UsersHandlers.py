@@ -8,8 +8,7 @@ from ...sc_common.authenticate import generate_token
 
 
 def get_users_from_ad_handler(middleware):
-    res = g.response
-    ad_users = get_ad_users(res.database)
+    ad_users = get_ad_users(middleware.database)
     response_users = []
     for user in ad_users:
         response_users.append({
@@ -25,34 +24,32 @@ def get_users_from_ad_handler(middleware):
             "updated": user.updated,
             "created": user.created,
         })
-    res.set_data('users', response_users)
-    return res.success().get()
+    middleware.set_data('users', response_users)
+    return middleware.success().get()
 
 
 def get_user_role_handler(middleware):
     '''Function for getting information about computers in districts according'''
-    res = g.response
-    for service in res.district.services.get_active_directory_services():
+    for service in middleware.district.services.get_active_directory_services():
         service.create_connection()
         x = service.get_users()
     return '{}'
 
 
 def authenticate_handler(middleware):
-    res = g.response
-    data = json.loads(request.data)
+    data = middleware.body
     if isinstance(data, dict)\
         and 'login' in data\
         and 'password' in data:
-        if res.district.services.authenticate_user(data['login'], data['password']):
-            user = get_user(res.database, data['login'])
+        if middleware.district.services.authenticate_user(data['login'], data['password']):
+            user = get_user(middleware.database, data['login'])
             if not user:
                 user = add_user(data['login'], get_ad_user(g.response.database, data['login']))
                 g.response.database.session.commit()
-            res.success()
-            res.set_data('Bearer', generate_token(user.id))
-            return res.get()
-    return res.unauth().get()
+            middleware.success()
+            middleware.set_data('Bearer', generate_token(user.id))
+            return middleware.get()
+    return middleware.unauth().get()
 
 
 def registration_handler(middleware):

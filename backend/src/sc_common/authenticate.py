@@ -1,6 +1,9 @@
-import jwt
+import os
 
-SECRET_KEY = "isASeCreatkEy#00"
+import jwt
+import os
+
+SECRET_KEY = os.environ.get('SC_SECRET_KEY')
 
 def generate_token(user_id):
     try:

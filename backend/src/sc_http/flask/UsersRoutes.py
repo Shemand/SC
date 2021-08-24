@@ -5,7 +5,7 @@ from flask import g, request, Blueprint
 from ..handlers.UsersHandlers import get_users_from_ad_handler, get_user_role_handler, authenticate_handler, \
     registration_handler
 
-mod = Blueprint('Users', __name__, url_prefix='/Users/')
+mod = Blueprint('Users', __name__, url_prefix='/users')
 
 
 @mod.route('/ad', methods=['GET'])

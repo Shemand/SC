@@ -1,4 +1,4 @@
-from backend.src.sc_repositories.StorageRepository import StorageRepository
+from .StorageRepository import StorageRepository
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 

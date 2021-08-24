@@ -65,16 +65,17 @@ class EntityUser():
 
 
 class MiddlewareResponse(): #todo from this
-    def __init__(self, route_name, user_id):
+    def __init__(self, user_id, body):
     # request data
         self.district = None
         self.group_name = None
         self.user = None
         self.loggined = False
         self.database = None
-        self._set_district(district_name)
-        self._set_route_group(route_name)
+        self._set_district('SZO') # todo remove this
+        self._set_route_group('computers') # todo remove this
         self._set_user(user_id)
+        self.body = body
     # response data
         self.status_code = None
         self.messages = []

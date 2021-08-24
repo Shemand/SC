@@ -1,7 +1,7 @@
 from flask import g, request
 
-from ....sc_common.authenticate import read_token
-from ..api_Response import MiddlewareResponse
+from ...sc_common.authenticate import read_token
+from ..MiddlewareResponse import MiddlewareResponse
 
 _DISTRICT_NAME = 0
 _GROUP_NAME = 1
@@ -36,6 +36,6 @@ def attach_before_request(app):
     def before_req():
         token_data = __extract_token(request)
         if 'user_id' in token_data:
-            g.middleware = MiddlewareResponse(token_data['user_id'])
+            g.middleware = MiddlewareResponse(token_data['user_id'], request.json)
         else:
-            g.middleware = MiddlewareResponse(None)
+            g.middleware = MiddlewareResponse(None, request.json)
