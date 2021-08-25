@@ -4,3 +4,4 @@
 /backend/dist/
 /backend/.idea/
 /.idea/
+/backend/.env

@@ -1,12 +1,6 @@
 from flask import g
 from functools import wraps
 
-# ----- COMMON FUNCTIONS -----
-
-
-
-# ----- DECORATORS -----
-
 
 def required_auth(func):
     @wraps(func)

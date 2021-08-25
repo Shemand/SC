@@ -6,12 +6,11 @@ from ..handlers.ComputersHandlers import get_computers_info_handler, lock_comput
     change_computer_type_handler, unlock_computer_handler, set_computer_comment_handler
 from ..functions import required_auth
 
-mod = Blueprint('computers', __name__, url_prefix='/computers/')
+mod = Blueprint('computers', __name__, url_prefix='/computers')
 
 
-@mod.route('/', methods=['GET'])
-@required_auth
-def get_computers_info(district_name):
+@mod.route('', methods=['GET'])
+def get_computers_info():
     middleware = g.middleware
     return get_computers_info_handler(middleware)
 

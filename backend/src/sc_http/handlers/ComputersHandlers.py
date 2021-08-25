@@ -7,7 +7,7 @@ from ...sc_services.ComputersFrameService import get_computers_frame, FROM_ACTIV
 
 def get_computers_info_handler(middleware):
     """Function for getting all information about computer"""
-    res = g.response
+    res = g.middleware
     units = res.user.available_units
     args = request.args
     puppet = args['puppet'] if 'puppet' in args else None

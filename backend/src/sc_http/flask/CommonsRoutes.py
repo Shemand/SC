@@ -17,6 +17,7 @@ def os_notificate(computer_name):
     #     database.Patches.attach_patch(computername, patch)
     return os_notificate_handler
 
+
 @mod.route('/now', methods=['GET'])
 def get_now():
     middleware = g.middleware

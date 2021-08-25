@@ -1,10 +1,12 @@
+import os
 from datetime import date
 
 from flask.json import JSONEncoder
 
 from flask import Flask
+from flask_cors import CORS
 from src.sc_http.app import initialize_flask_routes
-
+from dotenv import load_dotenv
 
 class CustomJSONEncoder(JSONEncoder):
     def default(self, obj):
@@ -22,6 +24,8 @@ def create_app():
     app = Flask(__name__,
                 static_folder="./frontend/static",
                 template_folder="./frontend")
+    CORS(app)
+    load_dotenv()
     app.config['SECRET_KEY'] = 'ccb711f092ac8ef1805b5045fab7e8a6189cb97ad04565e21b5fbcfc9e542e42'
     app.json_encoder = CustomJSONEncoder
     initialize_flask_routes(app)
