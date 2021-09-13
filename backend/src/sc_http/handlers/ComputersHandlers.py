@@ -7,8 +7,7 @@ from ...sc_services.ComputersFrameService import get_computers_frame, FROM_ACTIV
 
 def get_computers_info_handler(middleware):
     """Function for getting all information about computer"""
-    res = g.middleware
-    units = res.user.available_units
+    units = middleware.user.available_units
     args = request.args
     puppet = args['puppet'] if 'puppet' in args else None
     active_directory = args['active_directory'] if 'active_directory' in args else None
@@ -23,11 +22,11 @@ def get_computers_info_handler(middleware):
         sources[FROM_KASPERSKY] = json.loads(kaspersky)
     if dallas_lock:
         sources[FROM_DALLAS_LOCK] = json.loads(dallas_lock)
-    data = get_computers_frame(res.database,
+    data = get_computers_frame(middleware.database,
                                units,
                                sources=sources)
-    res.set_data('computers', data)
-    return res.success().get()
+    middleware.set_data('computers', data)
+    return middleware.success().get()
 
 def set_computer_comment_handler(middleware, computer_id):
     """Function for changing comment of computer"""

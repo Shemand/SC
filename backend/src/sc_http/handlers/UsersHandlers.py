@@ -2,8 +2,7 @@ import json
 
 from flask import g, request
 
-from ...sc_services.ActiveDirectoryService import get_ad_user, get_ad_users
-from ...sc_services.UsersService import get_user, add_user
+
 from ...sc_common.authenticate import generate_token
 
 

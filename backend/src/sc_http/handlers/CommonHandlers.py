@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from ...sc_services.UnitsService import build_structure
 
 
 def os_notificate_handler(middleware):

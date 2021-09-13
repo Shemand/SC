@@ -3,7 +3,7 @@ from flask import Blueprint, g
 from ..handlers.DevicesHandlers import change_device_type_handler, remove_device_handler, \
     add_device_handler, get_devices_handler
 
-mod = Blueprint('Devices', __name__, url_prefix='/devices/')
+mod = Blueprint('Devices', __name__, url_prefix='/devices')
 
 
 @mod.route('/devices', methods=['GET'])

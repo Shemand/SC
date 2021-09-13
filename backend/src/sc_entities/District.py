@@ -159,7 +159,7 @@ class District:
         return district_services
 
     def __load_database(self, config_dict):
-        return DatabaseRepository(self, database_config=config_dict)
+        return DatabaseRepository(database_config=config_dict)
 
     def __load_crypto_gateways(self, crypto_gateways):
         district_cg = {}

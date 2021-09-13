@@ -2,7 +2,7 @@ from flask import Blueprint, g
 from ..handlers.StatisticsHandlers import make_snapshot_handler, get_snapshot_dates_handler, \
     update_statistics_handler, get_statistics_handler
 
-mod = Blueprint('Statistics', __name__, url_prefix='/statistics/')
+mod = Blueprint('Statistics', __name__, url_prefix='/statistics')
 
 
 @mod.route('/', methods=['GET'])

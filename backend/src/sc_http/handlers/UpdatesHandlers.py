@@ -1,11 +1,5 @@
 from flask import g
 
-from ...sc_services.ActiveDirectoryService import update_computers_from_ad, update_users_from_ad as upd_ad_users
-from ...sc_services.ComputersService import update_computers_unit
-from ...sc_services.DallasLockService import update_computers_from_dallas
-from ...sc_services.KasperskyService import update_computers_from_kaspersky
-from ...sc_services.PuppetService import update_computers_from_puppet
-from ...sc_services.UnitsService import build_structure
 
 
 def update_ad_computers_handler(middleware):
@@ -15,10 +9,9 @@ def update_ad_computers_handler(middleware):
     RU:Функция обноления данных из всех сервисов Active Directory.
 
     '''
-    res = g.response
-    district = res.district
-    update_computers_from_ad(res.database, district)
-    return res.success().get()
+    district = middleware.district
+    update_computers_from_ad(middleware.database, district)
+    return middleware.success().get()
 
 def update_ad_users_handler(middleware):
     '''
@@ -27,10 +20,9 @@ def update_ad_users_handler(middleware):
     RU:Функция обноления данных из всех сервисов Active Directory.
 
     '''
-    res = g.response
-    district = res.district
-    upd_ad_users(res.database, district)
-    return res.success().get()
+    district = middleware.district
+    upd_ad_users(middleware.database, district)
+    return middleware.success().get()
 
 def update_puppet_computers_handler(middleware):
     '''
@@ -39,10 +31,9 @@ def update_puppet_computers_handler(middleware):
     RU:Функция обноления данных из всех сервисов dallas lock.
 
     '''
-    res = g.response
-    district = res.district
-    update_computers_from_puppet(res.database, district)
-    return res.success().get()
+    district = middleware.district
+    update_computers_from_puppet(middleware.database, district)
+    return middleware.success().get()
 
 
 def update_dallas_computers_handler(middleware):
@@ -52,10 +43,9 @@ def update_dallas_computers_handler(middleware):
     RU:Функция обноления данных из всех сервисов dallas lock.
 
     '''
-    res = g.response
-    district = res.district
-    update_computers_from_dallas(res.database, district)
-    return res.success().get()
+    district = middleware.district
+    update_computers_from_dallas(middleware.database, district)
+    return middleware.success().get()
 
 def reset_ad_structure_handler(middleware):
     '''
@@ -64,12 +54,11 @@ def reset_ad_structure_handler(middleware):
     RU:Функция сброка структуры подразделений в соответсвии с описанной в конфигурационном файле округа (district).
 
     '''
-    res = g.response
-    district = res.district
+    district = middleware.district
     database = district.database
     build_structure(database, district.structure)
     update_computers_unit(database)
-    return res.success().get()
+    return middleware.success().get()
 
 def update_kaspersky_computers_handler(middleware):
     '''
@@ -78,13 +67,12 @@ def update_kaspersky_computers_handler(middleware):
     RU:Функция обноления данных из всех активных сервисов Касперского.
 
     '''
-    res = g.response
-    district = res.district
+    district = middleware.district
     database = district.database
     build_structure(database, district.structure)
     update_computers_from_kaspersky(database, district)
         # res.error().get()
-    return res.success().get()
+    return middleware.success().get()
 
 def update_computers_handler(middleware):
     try:

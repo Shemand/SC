@@ -3,13 +3,13 @@ from datetime import datetime
 from sqlalchemy import select, and_, or_
 from sqlalchemy.testing import in_
 
-from ..sc_repositories.DatabaseModels.Addresses import Addresses
-from ..sc_repositories.DatabaseModels.Computers import Computers
+from ..sc_repositories.DatabaseModels.AddressesTable import AddressesTable
+from ..sc_repositories.DatabaseModels.ComputersTable import ComputersTable
 from ..sc_repositories.DatabaseModels.Computers_ActiveDirectory import Computers_ActiveDirectory
-from ..sc_repositories.DatabaseModels.Puppets import PuppetView
-from ..sc_repositories.DatabaseModels.Kaspersky import  KasperskyView
-from ..sc_repositories.DatabaseModels.DallasLock import DallasLock
-from ..sc_repositories.DatabaseModels.Units import Units
+from ..sc_repositories.DatabaseModels.PuppetsTable import PuppetView
+from ..sc_repositories.DatabaseModels.KasperskyTable import  KasperskyView
+from ..sc_repositories.DatabaseModels.DallasLockTable import DallasLockTable
+from ..sc_repositories.DatabaseModels.UnitsTable import UnitsTable
 
 """"
 
@@ -31,11 +31,11 @@ FROM_ACTIVE_DIRECTORY ='active_directory'
 FROM_DALLAS_LOCK = 'dallas_lock'
 
 MAIN_FIELDS = {
-    "id" : Computers.id,
-    "name" : Computers.name,
-    "comment" : Computers.comment,
-    "created": Computers.created,
-    "unit": Units.name.label('unit')
+    "id" : ComputersTable.id,
+    "name" : ComputersTable.name,
+    "comment" : ComputersTable.comment,
+    "created": ComputersTable.created,
+    "unit": UnitsTable.name.label('unit')
 }
 
 SOURCES = {
@@ -67,11 +67,11 @@ SOURCES = {
         "kl_created": KasperskyView.created.label('kl_created')
     },
     FROM_DALLAS_LOCK: {
-        "status": DallasLock.status,
-        "server": DallasLock.server,
-        "isDeleted": DallasLock.isDeleted,
-        "dl_updated": DallasLock.updated.label('dl_updated'),
-        "dl_created": DallasLock.created.label('dl_created')
+        "status": DallasLockTable.status,
+        "server": DallasLockTable.server,
+        "isDeleted": DallasLockTable.isDeleted,
+        "dl_updated": DallasLockTable.updated.label('dl_updated'),
+        "dl_created": DallasLockTable.created.label('dl_created')
     },
     FROM_ACTIVE_DIRECTORY: {
         "isDeleted": Computers_ActiveDirectory.isDeleted,
@@ -83,12 +83,12 @@ SOURCES = {
     }
 }
 
-def get_computers_frame(database, units, sources=[], with_fields=[Computers]):
-    from_tables = Computers.__table__
+def get_computers_frame(database, units, sources=[], with_fields=[ComputersTable]):
+    from_tables = ComputersTable.__table__
     query = select(_build_select(sources))
     sources_names = [source_name for source_name in sources]
     query = query.select_from(_build_from(sources))
-    where_expression = Units.id.in_(units)
+    where_expression = UnitsTable.id.in_(units)
     if where_expression is not None:
         query = query.where(where_expression)
     computers = database.engine.execute(query)
@@ -125,19 +125,19 @@ def _build_select(sources):
 
 
 def _build_from(sources):
-    from_tables = Computers.__table__
+    from_tables = ComputersTable.__table__
 
     for source in sources:
         if not source in SOURCES:
             continue
         if source == FROM_PUPPET:
 
-            from_tables = from_tables.join(PuppetView, Computers.id == PuppetView.Computers_id, isouter=True)
+            from_tables = from_tables.join(PuppetView, ComputersTable.id == PuppetView.Computers_id, isouter=True)
         if source == FROM_DALLAS_LOCK:
-            from_tables = from_tables.join(DallasLock, Computers.id == DallasLock.Computers_id, isouter=True)
+            from_tables = from_tables.join(DallasLockTable, ComputersTable.id == DallasLockTable.Computers_id, isouter=True)
         if source == FROM_ACTIVE_DIRECTORY:
-            from_tables = from_tables.join(Computers_ActiveDirectory, Computers.id == Computers_ActiveDirectory.Computers_id, isouter=True)
+            from_tables = from_tables.join(Computers_ActiveDirectory, ComputersTable.id == Computers_ActiveDirectory.Computers_id, isouter=True)
         if source == FROM_KASPERSKY:
-            from_tables = from_tables.join(KasperskyView, Computers.id == KasperskyView.Computers_id, isouter=True)
-    from_tables = from_tables.join(Units, Computers.Units_id == Units.id, isouter=True)
+            from_tables = from_tables.join(KasperskyView, ComputersTable.id == KasperskyView.Computers_id, isouter=True)
+    from_tables = from_tables.join(UnitsTable, ComputersTable.Units_id == UnitsTable.id, isouter=True)
     return from_tables

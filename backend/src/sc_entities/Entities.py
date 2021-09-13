@@ -24,7 +24,7 @@ class Entities:
             raise RuntimeError(f'Entities.get_user haven\'t district with name - "{district_name}"')
         district = self.get_district(district_name)
         if isinstance(user_id, int):
-            district.database.Users
+            district.database.UsersTable
         elif isinstance(user_name, str):
             pass
         else:

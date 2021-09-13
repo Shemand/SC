@@ -3,10 +3,9 @@ import json
 from flask import jsonify
 from sqlalchemy.sql.functions import user
 
-from ..sc_services.UnitsService import get_unit_by_id, get_available_units_id
-from ..sc_services.UsersService import get_user_by_id
+
 from ..sc_common.authenticate import read_token
-from ..sc_repositories.DatabaseModels.Users import Users
+from ..sc_repositories.DatabaseModels.UsersTable import UsersTable
 from ..sc_entities.District import District
 from ..sc_entities.Entities import Entities
 
@@ -39,7 +38,7 @@ class EntityUser():
         if user_id is None:
             self._user = None
             return
-        user = self.database.session.query(Users).filter_by(id=user_id).first()
+        user = self.database.session.query(UsersTable).filter_by(id=user_id).first()
         if user:
             self._user = user
         else:

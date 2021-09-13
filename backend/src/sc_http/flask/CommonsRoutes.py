@@ -3,7 +3,7 @@ from flask import g, Blueprint
 
 from ..handlers.CommonHandlers import get_now_handler, os_notificate_handler
 
-mod = Blueprint('common', __name__, url_prefix='/common/')
+mod = Blueprint('common', __name__, url_prefix='/common')
 
 
 @mod.route('/os_notificate/<computer_name>/', methods=['POST'])  # todo

@@ -5,8 +5,9 @@ from flask.json import JSONEncoder
 
 from flask import Flask
 from flask_cors import CORS
-from src.sc_http.app import initialize_flask_routes
+from .src.sc_http.app import initialize_flask_routes
 from dotenv import load_dotenv
+
 
 class CustomJSONEncoder(JSONEncoder):
     def default(self, obj):
@@ -19,6 +20,7 @@ class CustomJSONEncoder(JSONEncoder):
         else:
             return list(iterable)
         return JSONEncoder.default(self, obj)
+
 
 def create_app():
     app = Flask(__name__,

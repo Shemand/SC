@@ -4,7 +4,7 @@ from ..handlers.UpdatesHandlers import update_ad_users_handler, update_ad_comput
     update_puppet_computers_handler, update_dallas_computers_handler, reset_ad_structure_handler, \
     update_kaspersky_computers_handler, update_computers_handler
 
-mod = Blueprint('Updates', __name__, url_prefix='/update/')
+mod = Blueprint('Updates', __name__, url_prefix='/update')
 
 
 @mod.route('/ad/computers', methods=['POST'])

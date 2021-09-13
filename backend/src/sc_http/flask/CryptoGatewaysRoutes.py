@@ -2,7 +2,7 @@ from flask import Blueprint, g
 
 from ..handlers.CryptoGatewaysHandlers import get_crypto_gateways_handler
 
-mod = Blueprint('CryptoGateways', __name__, url_prefix='/crypto_gateways/')
+mod = Blueprint('CryptoGateways', __name__, url_prefix='/crypto_gateways')
 
 
 def attach_crypto_gateway_routes(mod):
