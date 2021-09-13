@@ -3,10 +3,10 @@ from datetime import datetime
 from sqlalchemy import Column, Integer, ForeignKey, String, DateTime
 from sqlalchemy.orm import relationship
 
-from .BaseModel import BaseModel
+from .BaseModel import BaseTableModel
 
 
-class Users_ActiveDirectory(BaseModel):
+class Users_ActiveDirectory(BaseTableModel):
     __tablename__ = 'Users_ActiveDirectory'
 
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)

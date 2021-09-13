@@ -3,12 +3,12 @@ from datetime import datetime
 from sqlalchemy import Column, Integer, String, ForeignKey, Text, DateTime
 from sqlalchemy.orm import relationship
 
-from .Adapters import Adapters
-from .BaseModel import BaseModel
+from .AdaptersTable import AdaptersTable
+from .BaseModel import BaseTableModel
 from .Logons import Logons
 
 
-class Computers(BaseModel):
+class ComputersTable(BaseTableModel):
     __tablename__ = 'Computers'
 
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)

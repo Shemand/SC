@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 from .BaseModel import BaseModel
 
 
-class Addresses(BaseModel):
+class AddressesTable(BaseModel):
     __tablename__ = 'Addresses'
 
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)

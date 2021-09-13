@@ -3,10 +3,10 @@ from datetime import datetime
 from sqlalchemy import Column, Integer, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 
-from .BaseModel import BaseModel
+from .BaseModel import BaseTableModel
 
 
-class Logons(BaseModel):
+class LogonsTable(BaseTableModel):
     __tablename__ = 'Logons'
 
     Computers_id = Column(Integer, ForeignKey('Computers.id'), primary_key=True, nullable=False)

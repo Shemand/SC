@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 from .BaseModel import BaseModel
 
 
-class Adapters(BaseModel):
+class AdaptersTable(BaseModel):
     __tablename__ = 'Adapters'
 
     Addresses_id = Column(Integer, ForeignKey('Addresses.id'), primary_key=True, nullable=False)

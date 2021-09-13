@@ -4,12 +4,12 @@ from sqlalchemy import Column, Integer, ForeignKey, DateTime, String, Boolean, s
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils import create_view
 
-from .Addresses import Addresses
-from .BaseModel import BaseModel
-from .OperationSystems import OperationSystems
+from .AddressesTable import AddressesTable
+from .BaseModel import BaseTableModel
+from .OperationSystemsTable import OperationSystemsTable
 
 
-class Puppets(BaseModel):
+class PuppetsTable(BaseTableModel):
     __tablename__ = 'Puppets'
 
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
@@ -37,29 +37,29 @@ class Puppets(BaseModel):
 
 
 # provides an ORM interface to the view
-class PuppetView(BaseModel):
+class PuppetView(BaseTableModel):
     _create_query = select([
-        Puppets.id.label('id'),
-        Puppets.Computers_id.label('Computers_id'),
-        Addresses.ipv4.label('puppet_ip'),
-        OperationSystems.name.label('puppet_os'),
-        Puppets.board_serial_number.label('board_serial_number'),
-        Puppets.astra_update.label('astra_update'),
-        Puppets.environment.label('environment'),
-        Puppets.domain.label('domain'),
-        Puppets.serial_number.label('serial_number'),
-        Puppets.isVirtual.label('isVirtual'),
-        Puppets.mac.label('mac'),
-        Puppets.kesl_version.label('kesl_version'),
-        Puppets.klnagent_version.label('klnagent_version'),
-        Puppets.uptime_seconds.label('uptime_seconds'),
-        Puppets.isDeleted.label('isDeleted'),
-        Puppets.updated.label('updated'),
-        Puppets.created.label('created')
-    ]).select_from(Puppets.__table__.join(Addresses, Puppets.Addresses_id == Addresses.id, isouter=True)
-                          .join(OperationSystems, Puppets.OperationSystems_id == OperationSystems.id, isouter=True))
+        PuppetsTable.id.label('id'),
+        PuppetsTable.Computers_id.label('Computers_id'),
+        AddressesTable.ipv4.label('puppet_ip'),
+        OperationSystemsTable.name.label('puppet_os'),
+        PuppetsTable.board_serial_number.label('board_serial_number'),
+        PuppetsTable.astra_update.label('astra_update'),
+        PuppetsTable.environment.label('environment'),
+        PuppetsTable.domain.label('domain'),
+        PuppetsTable.serial_number.label('serial_number'),
+        PuppetsTable.isVirtual.label('isVirtual'),
+        PuppetsTable.mac.label('mac'),
+        PuppetsTable.kesl_version.label('kesl_version'),
+        PuppetsTable.klnagent_version.label('klnagent_version'),
+        PuppetsTable.uptime_seconds.label('uptime_seconds'),
+        PuppetsTable.isDeleted.label('isDeleted'),
+        PuppetsTable.updated.label('updated'),
+        PuppetsTable.created.label('created')
+    ]).select_from(PuppetsTable.__table__.join(AddressesTable, PuppetsTable.Addresses_id == AddressesTable.id, isouter=True)
+                   .join(OperationSystemsTable, PuppetsTable.OperationSystems_id == OperationSystemsTable.id, isouter=True))
     __tablename__ = 'puppet_view'
-    __table__ = create_view('puppet_view', _create_query, BaseModel.metadata)
+    __table__ = create_view('puppet_view', _create_query, BaseTableModel.metadata)
 
 # At this point running the following yields 0, as expected,
 # indicating that the view has been constructed on the server 

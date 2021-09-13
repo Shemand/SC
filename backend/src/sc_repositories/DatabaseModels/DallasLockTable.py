@@ -3,10 +3,10 @@ from datetime import datetime
 from sqlalchemy import Column, Integer, ForeignKey, String, DateTime
 from sqlalchemy.orm import relationship
 
-from .BaseModel import BaseModel
+from .BaseModel import BaseTableModel
 
 
-class DallasLock(BaseModel):
+class DallasLockTable(BaseTableModel):
     __tablename__ = 'DallasLock'
 
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)

@@ -1,9 +1,9 @@
 from sqlalchemy import Column, Integer, String, Boolean
 
-from .BaseModel import BaseModel
+from .BaseModel import BaseTableModel
 
 
-class OperationSystems(BaseModel):
+class OperationSystemsTable(BaseTableModel):
     __tablename__ = 'OperationSystems'
 
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)

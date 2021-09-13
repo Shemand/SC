@@ -1,9 +1,9 @@
 from sqlalchemy import Column, Integer, ForeignKey, String
 
-from .BaseModel import BaseModel
+from .BaseModel import BaseTableModel
 
 
-class CryptoGateways(BaseModel):
+class CryptoGatewaysTable(BaseTableModel):
     __tablename__ = 'CryptoGateways'
 
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)

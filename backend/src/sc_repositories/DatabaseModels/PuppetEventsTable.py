@@ -2,10 +2,10 @@ from datetime import datetime
 
 from sqlalchemy import Column, Integer, ForeignKey, String, Text, DateTime
 
-from .BaseModel import BaseModel
+from .BaseModel import BaseTableModel
 
 
-class PuppetEvents(BaseModel):
+class PuppetEvents(BaseTableModel):
     __tablename__ = 'PuppetEvents'
 
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)

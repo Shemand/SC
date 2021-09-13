@@ -2,10 +2,10 @@ from datetime import datetime
 
 from sqlalchemy import Column, Integer, String
 
-from .BaseModel import BaseModel
+from .BaseModel import BaseTableModel
 
 
-class Units(BaseModel):
+class Units(BaseTableModel):
     __tablename__ = 'Units'
 
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)

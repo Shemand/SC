@@ -3,11 +3,11 @@ from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 
-from .BaseModel import BaseModel
+from .BaseModel import BaseTableModel
 # from backend.sc_database.model.Logons import Logons
 
 
-class Users(BaseModel):
+class Users(BaseTableModel):
     __tablename__ = 'Users'
 
     id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
