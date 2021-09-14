@@ -1,5 +1,4 @@
 from .ServicesInterfaces import ServiceAbstract
-from ..sc_repositories.DatabaseModels.UnitsTable import UnitsTable
 
 class UnitsService(ServiceAbstract):
 

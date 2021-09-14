@@ -2,8 +2,6 @@ from sqlalchemy import select, update, insert, delete
 
 from backend.src.sc_entities.CryptoGateway import CryptoGateway
 from backend.src.sc_entities.models import CryptoGateway
-from backend.src.sc_repositories.DatabaseModels.CryptoGatewaysTable import CryptoGatewaysTable
-from backend.src.sc_repositories.DatabaseModels.UnitsTable import UnitsTable
 from backend.src.sc_services.ServicesInterfaces import ServiceAbstract
 
 

@@ -3,7 +3,6 @@ from datetime import datetime
 from sqlalchemy import select, update, insert
 
 from backend.src.sc_entities.models import ADUser
-from backend.src.sc_repositories.DatabaseModels.Users_ActiveDirectoryTable import Users_ActiveDirectoryTable
 from backend.src.sc_services.ServicesInterfaces import ServiceAbstract
 
 
@@ -26,7 +25,7 @@ class UsersActiveDirectoryService(ServiceAbstract):
 
     # -- users
     def get(self, user_name):
-        columns = Users_ActiveDirectoryTable
+        columns = self.db.ad_users.c
         fields = [columns.name, columns.full_name, columns.department, columns.mail, columns.phone, columns.registred,
                   columns.last_logon, columns.isDeleted, columns.isDisabled, columns.isLocked]
         query = select(fields).where(columns.name == user_name)
@@ -34,7 +33,7 @@ class UsersActiveDirectoryService(ServiceAbstract):
         return ADUser(**type(self)._return_model_fields(row))
 
     def all(self):
-        columns = Users_ActiveDirectoryTable
+        columns = self.db.ad_users.c
         fields = [columns.name, columns.full_name, columns.department, columns.mail, columns.phone, columns.registred,
                   columns.last_logon, columns.isDeleted, columns.isDisabled, columns.isLocked]
         query = select(fields)

@@ -1,6 +1,4 @@
 from .ServicesInterfaces import ServiceAbstract
-from ..sc_repositories.DatabaseModels.UsersTable import UsersTable
-from ..sc_repositories.DatabaseModels.Users_ActiveDirectoryTable import Users_ActiveDirectoryTable
 
 
 class UsersService(ServiceAbstract):

@@ -1,12 +1,117 @@
 from datetime import datetime
 
-
+from sqlalchemy import select, insert, update
 # ----- public function
 from .ServicesInterfaces import ServiceAbstract
-from ..sc_repositories.DatabaseModels.PuppetsTable import PuppetsTable
+from ..sc_entities.models import Puppet
 
 
 class UpdatePuppetComputers(ServiceAbstract):
+    @staticmethod
+    def _return_model_fields(row):
+        return {
+            "computer": {
+                "name": row['Computers_name'],
+                "unit": {
+                    "name": row['Units_name'],
+                }
+            },
+            "os": {
+                "name": row['OperationSystems_name'],
+                "isUnix": row['OperationSystems_isUnix']
+            } if row['OperationSystems_name'] else None,
+            "ip": {
+                "ipv4": row['Addresses_ipv4'],
+                "isAllowed": row['Addresses_isAllowed']
+            } if row['Addresses_ipv4'] else None,
+            "board_serial": row['board_serial'],
+            "astra_update": row['astra_update'],
+            "environment": row['environment'],
+            "domain": row['domain'],
+            "serial_number": row['serial_number'],
+            "isVirtual": row['isVirtual'],
+            "mac": row['mac'],
+            "kesl": row['kesl_version'],
+            "kl_agent": row['klnagent_version'],
+            "update_seconds": row['update_secords'],
+            "isDeleted": row['isDeleted'],
+        }
+
+    def _return_db_fields(self):
+        return [self.db.puppets.c.board_serial_number,
+                self.db.puppets.c.astra_update,
+                self.db.puppets.c.environment,
+                self.db.puppets.c.domain,
+                self.db.puppets.c.serial_number,
+                self.db.puppets.c.isVirtual,
+                self.db.puppets.c.mac,
+                self.db.puppets.c.kesl_version,
+                self.db.puppets.c.klnagent_version,
+                self.db.puppets.c.uptime_seconds,
+                self.db.puppets.c.isDeleted,
+                self.db.computers.c.name.label('Computers_name'),
+                self.db.units.c.name.label('Units_name'),
+                self.db.os.c.name.label('OperationSystems_name'),
+                self.db.os.c.isUnix.label('OperationSystems_isUnix'),
+                self.db.ip.c.ipv4.label('Addresses_ipv4'),
+                self.db.ip.c.isAllowed.label('Addresses_isAllowed')]
+
+
+    def create(self, model: Puppet):
+        params = {
+            "Computers_id": select([self.db.computers.c.id]).where(self.db.computers.name == model.computer.name).limit(1),
+            "OperationSystems_id": self.db.get_id_os(model.os.name) if model.os else None,
+            "Addresses_id": self.db.get_id_ip(model.ip.ipv4) if model.ip else None,
+            "board_serial": model.board_serial,
+            "astra_update": model.astra_update,
+            "environment": model.environment,
+            "domain": model.domain,
+            "serial_number": model.serial_number,
+            "isVirtual": model.isVirtual,
+            "mac": model.mac,
+            "kesl_version": model.kesl,
+            "klnagent_version": model.klnagent,
+            "update_seconds": model.update_seconds,
+            "isDeleted": model.isDeleted,
+        }
+        query = insert(self.db.puppets).values(**params)
+        self.db.engine.execute(query)
+        return True
+
+    def delete(self, computer_name):
+        query = update(self.db.puppets).values(isDeleted=datetime.now()) \
+            .join(self.db.computers, self.db.computers.c.id == self.db.puppets.c.Computers_id, isouter=True)\
+            .where(self.db.computers.c.name == computer_name)
+        self.db.engine.execute(query)
+
+    def recovery(self, computer_name):
+        query = update(self.db.puppets).values(isDeleted=None)\
+            .join(self.db.computers, self.db.computers.c.id == self.db.puppets.c.Computers_id, isouter=True)\
+            .where(self.db.computers.c.name == computer_name)
+        self.db.engine.execute(query)
+
+    def get(self, computer_name):
+        fields = self._return_db_fields()
+        query = select(fields) \
+            .join(self.db.computers, self.db.computers.c.id == self.db.puppets.c.Computers_id, isouter=True) \
+            .join(self.db.units, self.db.units.c.id == self.db.computers.c.Units_id, isouter=True) \
+            .join(self.db.ip, self.db.ip.c.id == self.db.kapsersky.c.Addresses_id, isouter=True) \
+            .join(self.db.os, self.db.os.c.id == self.db.kaspersky.c.OperationSystems_id, isouter=True) \
+            .where(self.db.computers.c.name == computer_name).limit(1)
+        row = self.db.engine.execute(query).fetchone()
+        if not row:
+            return None
+        return Puppet(**type(self)._return_model_fields(row))
+
+    def all(self):
+        fields = self._return_db_fields()
+        query = select(fields) \
+            .join(self.db.computers, self.db.computers.c.id == self.db.puppets.c.Computers_id, isouter=True) \
+            .join(self.db.units, self.db.units.c.id == self.db.computers.c.Units_id, isouter=True) \
+            .join(self.db.ip, self.db.ip.c.id == self.db.kaspersky.c.Addresses_id, isouter=True) \
+            .join(self.db.os, self.db.os.c.id == self.db.kaspersky.c.OperationSystems_id, isouter=True)
+        rows = self.db.engine.execute(query).fetchall()
+        return [Puppet(**type(self)._return_model_fields(row)) for row in rows]
 
     def get_puppet_computers(database):
         return database.session.query(PuppetsTable).all()

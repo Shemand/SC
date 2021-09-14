@@ -4,10 +4,7 @@ from sqlalchemy import update, select, delete, insert
 
 # ----- public function
 from .ServicesInterfaces import ServiceAbstract
-from ..sc_repositories.DatabaseModels.ComputersTable import ComputersTable
 from ..sc_entities.models import Dallas
-from ..sc_repositories.DatabaseModels.DallasLockTable import DallasLockTable
-from ..sc_repositories.DatabaseModels.UnitsTable import UnitsTable
 
 
 class DallasLockService(ServiceAbstract):
@@ -57,7 +54,6 @@ class DallasLockService(ServiceAbstract):
         return Dallas(**type(self)._return_model_fields(row))
 
     def all(self):
-        table = DallasLockTable
         fields = [self.db.dallas.c.status,
                   self.db.dallas.c.server,
                   self.db.dallas.c.isDeleted,

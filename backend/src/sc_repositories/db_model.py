@@ -3,14 +3,20 @@ from datetime import datetime
 
 
 class DBmodels():
-    def __init__(self, metadata):
+    def __new__(cls, metadata):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(DBmodels, cls).__new__(cls)
+            cls.instance.__initialize_tables(metadata)
+        return cls.instance
+
+    def __initialize_tables(self, metadata):
         self.users = Table('users', metadata,
             Column('id', Integer, primary_key=True, nullable=False, autoincrement=True),
             Column('login', String(256), nullable=False, unique=True, index=True),
             Column('privileges', Integer, nullable=False, default=1),  # 0 - is blocked, 1 - is active,
             Column('created', DateTime, nullable=False, default=datetime.now()),
-            Column('Users_ActiveDirectory', Integer, ForeignKey('Users_ActiveDirectory.id')),
-            Column('Units_id', Integer, ForeignKey('Units.id'), nullable=False),
+            Column('Users_ActiveDirectory', Integer, ForeignKey('active_directory_users.id')),
+            Column('Units_id', Integer, ForeignKey('units.id'), nullable=False),
         )
 
         self.active_directory_users = Table('active_directory_users', metadata,
@@ -31,9 +37,9 @@ class DBmodels():
 
         self.kaspersky = Table('kaspersky', metadata,
             Column('id', Integer, primary_key=True, nullable=False, autoincrement=True),
-            Column('Computers_id', Integer, ForeignKey('Computers.id'), nullable=False),
-            Column('OperationSystems_id', Integer, ForeignKey('OperationSystems.id')),
-            Column('Addresses_id', Integer, ForeignKey('Addresses.id')),
+            Column('Computers_id', Integer, ForeignKey('computers.id'), nullable=False),
+            Column('OperationSystems_id', Integer, ForeignKey('os.id')),
+            Column('Addresses_id', Integer, ForeignKey('ip.id')),
             Column('agent_version', String(32)),
             Column('security_version', String(32)),
             Column('server', String(32), nullable=False),
@@ -50,7 +56,7 @@ class DBmodels():
 
         self.puppet_events = Table('puppet_events', metadata,
             Column('id', Integer, primary_key=True, nullable=False, autoincrement=True),
-            Column('Puppets_id', Integer, ForeignKey('Puppets.id'), nullable=False),
+            Column('Puppets_id', Integer, ForeignKey('puppets.id'), nullable=False),
             Column('title', String(256), nullable=False, index=True),
             Column('message', Text),
             Column('created', DateTime, nullable=False, default=datetime.now()),
@@ -58,9 +64,9 @@ class DBmodels():
 
         self.puppets = Table('puppets', metadata,
             Column('id', Integer, primary_key=True, nullable=False, autoincrement=True),
-            Column('Computers_id', Integer, ForeignKey('Computers.id'), nullable=False),
-            Column('Addresses_id', Integer, ForeignKey('Addresses.id')),
-            Column('OperationSystems_id', Integer, ForeignKey('OperationSystems.id')),
+            Column('Computers_id', Integer, ForeignKey('computers.id'), nullable=False),
+            Column('Addresses_id', Integer, ForeignKey('ip.id')),
+            Column('OperationSystems_id', Integer, ForeignKey('os.id')),
             Column('board_serial_number', String(128)),
             Column('astra_update', String(32)),
             Column('environment', String(64), nullable=False),
@@ -84,7 +90,7 @@ class DBmodels():
 
         self.dallas = Table('dallas', metadata,
             Column('id', Integer, primary_key=True, nullable=False, autoincrement=True),
-            Column('Computers_id', Integer, ForeignKey('Computers.id'), nullable=False),
+            Column('Computers_id', Integer, ForeignKey('computers.id'), nullable=False),
             Column('status', Integer, nullable=False),
             Column('server', String(64), nullable=False),
             Column('isDeleted', DateTime),
@@ -94,8 +100,8 @@ class DBmodels():
 
         self.devices = Table('devices', metadata,
             Column('id', Integer, primary_key=True, nullable=False, autoincrement=True),
-            Column('Addresses_id', Integer, ForeignKey('Addresses.id')),
-            Column('Units_id', Integer, ForeignKey('Units.id'), nullable=False),
+            Column('Addresses_id', Integer, ForeignKey('ip.id')),
+            Column('Units_id', Integer, ForeignKey('units.id'), nullable=False),
             Column('name', String(128), nullable=False),
             Column('comment', Text),
             Column('updated', DateTime, nullable=False, default=datetime.now()),
@@ -103,15 +109,15 @@ class DBmodels():
         )
 
         self.logons = Table('logons', metadata,
-            Column('Computers_id', Integer, ForeignKey('Computers.id'), primary_key=True, nullable=False),
-            Column('Users_id', Integer, ForeignKey('Users.id'), primary_key=True, nullable=False),
-            Column('OperationSystems_id', Integer, ForeignKey('OperationSystems.id')),
+            Column('Computers_id', Integer, ForeignKey('computers.id'), primary_key=True, nullable=False),
+            Column('Users_id', Integer, ForeignKey('users.id'), primary_key=True, nullable=False),
+            Column('OperationSystems_id', Integer, ForeignKey('os.id')),
             Column('created', DateTime, nullable=False, default=datetime.now()),
         )
 
         self.crypto_gateways = Table('crypto_gateways', metadata,
             Column('id', Integer, primary_key=True, nullable=False, autoincrement=True),
-            Column('Units_id', Integer, ForeignKey('Units.id'), nullable=False),
+            Column('Units_id', Integer, ForeignKey('units.id'), nullable=False),
             Column('address', String(16), nullable=False),
             Column('mask', Integer, nullable=False),
             Column('caption', String(128), nullable=False),
@@ -123,12 +129,12 @@ class DBmodels():
             Column('name', String(128), nullable=False, unique=True, index=True),
             Column('comment', Text),
             Column('created', DateTime, nullable=False, default=datetime.now()),
-            Column('Units_id', Integer, ForeignKey('Units.id'), nullable=False),
+            Column('Units_id', Integer, ForeignKey('units.id'), nullable=False),
         )
 
         self.active_directory_computers = Table('active_directory_computers', metadata,
             Column('id', Integer, primary_key=True, nullable=False, autoincrement=True),
-            Column('Computers_id', Integer, ForeignKey('Computers.id'), nullable=False),
+            Column('Computers_id', Integer, ForeignKey('computers.id'), nullable=False),
             Column('isDeleted', DateTime),
             Column('last_visible', DateTime),
             Column('isActive', Boolean, default=True),
@@ -139,14 +145,14 @@ class DBmodels():
 
         self.ip = Table('ip', metadata,
             Column('id', Integer, primary_key=True, nullable=False, autoincrement=True),
-            Column('CryptoGateways_id', Integer, ForeignKey('CryptoGateways.id')),
+            Column('CryptoGateways_id', Integer, ForeignKey('crypto_gateways.id')),
             Column('ipv4', String(16), nullable=False, unique=True, index=True),
             Column('isAllowed', Boolean, default=True),
         )
 
         self.adapters = Table('adapters', metadata,
-                Column('Computers_id', Integer, ForeignKey('Computers.id'), primary_key=True, nullable=False),
-                Column('Users_id', Integer, ForeignKey('Users.id'), primary_key=True, nullable=False),
-                Column('OperationSystems_id', Integer, ForeignKey('OperationSystems.id')),
+                Column('Computers_id', Integer, ForeignKey('computers.id'), primary_key=True, nullable=False),
+                Column('Users_id', Integer, ForeignKey('users.id'), primary_key=True, nullable=False),
+                Column('OperationSystems_id', Integer, ForeignKey('os.id')),
                 Column('created', DateTime, nullable=False, default=datetime.now()),
             )

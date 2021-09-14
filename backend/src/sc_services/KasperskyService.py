@@ -34,9 +34,9 @@ class KasperskyService(ServiceAbstract):
 
     def create(self, model: Kaspersky):
         params = {
-            "Computers_id": select([self.db.computers.c.id]).where(self.db.computers.name == model.computer.name).limit(1),
-            "OperationSystems_id": select([self.db.os.c.id]).where(self.db.os.c.name == model.os.name).limit(1) if model.os else None,
-            "Addresses_id": select([self.db.ip.c.id]).where(self.db.ip.c.ipv4 == model.ip.ipv4).limit(1) if model.ip else None,
+            "Computers_id": select([self.db.computers.c.id]).where(self.db.computers.c.name == model.computer.name).limit(1),
+            "OperationSystems_id": self.db.get_id_os(model.os.name) if model.os else None,
+            "Addresses_id": self.db.get_id_ip(model.ip.ipv4) if model.ip else None,
             "agent_version": model.agent,
             "security_version": model.security,
             "server": model.server,
@@ -64,16 +64,15 @@ class KasperskyService(ServiceAbstract):
         query = select(fields) \
             .join(self.db.computers, self.db.computers.c.id == self.db.kaspersky.c.Computers_id, isouter=True) \
             .join(self.db.units, self.db.units.c.id == self.db.computers.c.Units_id, isouter=True) \
-            .join(self.db.ip, self.db.ip.c.id == self.db.kapsersky.c.Addresses_id, isouter=True) \
+            .join(self.db.ip, self.db.ip.c.id == self.db.kaspersky.c.Addresses_id, isouter=True) \
             .join(self.db.os, self.db.os.c.id == self.db.kaspersky.c.OperationSystems_id, isouter=True) \
-            .where(self.db.compuers.c.name == computer_name).limit(1)
+            .where(self.db.computers.c.name == computer_name).limit(1)
         row = self.db.engine.execute(query).fetchone()
         if not row:
             return None
         return Kaspersky(**type(self)._return_model_fields(row))
 
     def all(self):
-        table = KasperskyTable
         fields = [self.db.kaspersky.c.server,
                   self.db.kaspersky.c.agent_version,
                   self.db.kaspersky.c.security_version,

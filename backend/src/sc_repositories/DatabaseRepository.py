@@ -13,6 +13,7 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy_utils import create_view
 
 from .db_model import DBmodels
+from ..sc_entities.models import Unit
 
 
 class DatabaseRepository(StorageRepository):
@@ -48,7 +49,7 @@ class DatabaseRepository(StorageRepository):
         self.dallas = self._models.dallas
         self.adapters = self._models.adapters
         self.__metadata.create_all(self.engine)
-        self.engine.execute("")
+        # self.engine.execute("")
 
     @property
     def engine(self) -> Engine:
@@ -77,3 +78,26 @@ class DatabaseRepository(StorageRepository):
         query = select([self.os.c.id]).where(self.os.c.name == os_name)
         id = self.engine.execute(query).fetchone()['id']
         return id
+
+
+    # def get_unit(self, unit_name):
+    #     query = select(self.db.units).where(name=unit_name).limit(1)
+    #     row = self.engine.execute(query).fetchone()
+    #     if row:
+    #         return Unit(name=)
+    #     query = select([self.ip.c.id]).where(self.ip.c.ipv4 == ip)
+    #     id = self.engine.execute(query).fetchone()['id']
+    #     return id
+    #
+    # def get_computer(self, computer_name):
+    #     def _extract_unit(computer_name):
+    #         if os_name.lower().find('win') != -1:
+    #             return False
+    #         return True
+    #
+    #     query = insert(self.os).values(name=computer_name, unit_id=_extract_os_type(os_name)).on_conflict_do_nothing(
+    #         index_elements=['name'])
+    #     self.engine.execute(query)
+    #     query = select([self.os.c.id]).where(self.os.c.name == os_name)
+    #     id = self.engine.execute(query).fetchone()['id']
+    #     return id

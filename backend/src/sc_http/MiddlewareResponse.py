@@ -5,7 +5,6 @@ from sqlalchemy.sql.functions import user
 
 
 from ..sc_common.authenticate import read_token
-from ..sc_repositories.DatabaseModels.UsersTable import UsersTable
 from ..sc_entities.District import District
 from ..sc_entities.Entities import Entities
 
@@ -38,6 +37,7 @@ class EntityUser():
         if user_id is None:
             self._user = None
             return
+        UsersTables = None # todo remove <---
         user = self.database.session.query(UsersTable).filter_by(id=user_id).first()
         if user:
             self._user = user

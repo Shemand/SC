@@ -4,9 +4,6 @@ from .ServicesInterfaces import ServiceAbstract
 from ..sc_common.functions import delete_from_list_by_hash
 from ..sc_common.functions import reformat_computer_name
 from ..sc_entities.models import ADUser, ADComputer
-from ..sc_repositories.DatabaseModels.ComputersTable import ComputersTable
-from ..sc_repositories.DatabaseModels.Computers_ActiveDirectory import Computers_ActiveDirectory
-from ..sc_repositories.DatabaseModels.UnitsTable import UnitsTable
 
 from sqlalchemy import select, update, insert
 
@@ -62,7 +59,7 @@ class ComputersActiveDirectoryService(ServiceAbstract):
                   self.db.ad_computers.c.registred]
         query = select(fields) \
             .join(self.db.computers, self.db.computers.c.id == self.db.ad_computers.c.Computers_id, isouter=True)\
-            .join(self.db.units, self.db.computers.c.Units_id == self.db.c.units.id, isouter=True)\
+            .join(self.db.units, self.db.computers.c.Units_id == self.db.units.c.id, isouter=True)\
             .where(self.db.computers.c.name == computer_name).limit(1)
         row = self.db.engine.execute(query).fetchone()
         if not row:
@@ -71,14 +68,14 @@ class ComputersActiveDirectoryService(ServiceAbstract):
 
     def all(self):
         fields = [self.db.computers.c.name.label('Computers_name'),
-                  UnitsTable.name.label('Units_name'),
+                  self.db.units.c.name.label('Units_name'),
                   self.db.ad_computers.c.isDeleted,
                   self.db.ad_computers.c.last_visible,
                   self.db.ad_computers.c.isActive,
                   self.db.ad_computers.c.registred]
         query = select(fields) \
-            .join(self.db.computers, self.db.computers.c.id == self.db.ad_computers.Computers_id, isouter=True) \
-            .join(self.db.units, self.db.computers.c.Units_id == self.db.units.id, isouter=True)
+            .join(self.db.computers, self.db.computers.c.id == self.db.ad_computers.c.Computers_id, isouter=True) \
+            .join(self.db.units, self.db.computers.c.Units_id == self.db.units.c.id, isouter=True)
         rows = self.db.engine.execute(query).fetchall()
         return [ADComputer(**type(self)._return_model_fields(row)) for row in rows]
 

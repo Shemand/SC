@@ -1,5 +1,4 @@
 from . import ComputersActiveDirectoryService
-from . import ComputersFrameService
 from . import ComputersService
 from . import DallasLockService
 from . import KasperskyService

@@ -2,8 +2,6 @@ from .ServicesInterfaces import ServiceAbstract
 from ..sc_common.functions import reformat_computer_name, extract_unit_from_name, reformat_unit_name
 from ..sc_config.config import config
 from ..sc_entities.models import Computer, ComputerBase
-from ..sc_repositories.DatabaseModels.ComputersTable import ComputersTable
-from ..sc_repositories.DatabaseModels.UnitsTable import UnitsTable
 
 from sqlalchemy import select, update, delete, insert
 
@@ -24,13 +22,13 @@ class ComputersService(ServiceAbstract):
         fields = [self.db.computers.c.name,
                   self.db.units.c.name.label('Units_name'),
                   self.db.computers.c.comment]
-        query = select(fields).join(UnitsTable, ComputersTable.Units_id == UnitsTable.id, isouter=True)
+        query = select(fields).join(self.db.units, self.db.computers.c.Units_id == self.db.units.c.id, isouter=True)
         rows = self.db.engine.execute(query).fetchall()
         computers = [Computer(**type(self)._return_model_fields(row)) for row in rows]
         return computers
 
     def get(self, computer_name):
-        fields = [self.db.computerc.c.name,
+        fields = [self.db.computers.c.name,
                   self.db.units.c.name.label('Units_name'),
                   self.db.computers.c.comment]
         query = select(fields) \
