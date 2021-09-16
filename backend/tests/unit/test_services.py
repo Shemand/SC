@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from backend.src.sc_entities.models import CryptoGateway, Dallas, Ip, Kaspersky
+from backend.src.sc_entities.models import CryptoGateway, Dallas, Ip, Kaspersky, User, Unit
 from backend.src.sc_entities.models import ADUser, ADComputer, Computer
 from backend.src.sc_services.ComputersActiveDirectoryService import ComputersActiveDirectoryService
 from backend.src.sc_services.ComputersService import ComputersService
@@ -8,6 +8,8 @@ from backend.src.sc_services.CryptoGatewaysService import CryptoGatewaysService
 from backend.src.sc_services.DallasLockService import DallasLockService
 from backend.src.sc_services.KasperskyService import KasperskyService
 from backend.src.sc_services.UsersActiveDirectoryService import UsersActiveDirectoryService
+from backend.src.sc_services.UsersService import UsersService
+
 
 def test_database_repository_functions(test_database_repository):
     test_database_repository.get_id_ip('10.3.128.160')
@@ -166,3 +168,21 @@ def test_kaspersky_service(test_database_repository):
 
     kapserskies = service.all()
     service.delete(computer_name)
+
+
+def test_users_service(test_database_repository):
+    db = test_database_repository
+    service = UsersService([], db)
+    ad_service = UsersActiveDirectoryService([], db)
+    user_name = 'tsarievae'
+    # if service.is_exists(computer_name):
+    #     service.delete(computer_name)
+
+
+    ad_user = ad_service.get(user_name)
+    unit = Unit(name='SZO')
+    user = User(login=user_name, privileges=1, ad=ad_user, unit=unit)
+    status = service.create(user)
+
+    # service.delete(computer_name)
+    # assert not service.is_exists(computer_name), 'Computer wasn\'t deleted'

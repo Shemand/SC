@@ -80,14 +80,14 @@ class DatabaseRepository(StorageRepository):
         return id
 
 
-    # def get_unit(self, unit_name):
-    #     query = select(self.db.units).where(name=unit_name).limit(1)
-    #     row = self.engine.execute(query).fetchone()
-    #     if row:
-    #         return Unit(name=)
-    #     query = select([self.ip.c.id]).where(self.ip.c.ipv4 == ip)
-    #     id = self.engine.execute(query).fetchone()['id']
-    #     return id
+    def get_unit(self, unit_name):
+        query = select([self.units.c.]).where(name=unit_name).limit(1)
+        row = self.engine.execute(query).fetchone()
+        if row:
+            return Unit(name=)
+        query = select([self.ip.c.id]).where(self.ip.c.ipv4 == ip)
+        id = self.engine.execute(query).fetchone()['id']
+        return id
     #
     # def get_computer(self, computer_name):
     #     def _extract_unit(computer_name):

@@ -15,7 +15,7 @@ class DBmodels():
             Column('login', String(256), nullable=False, unique=True, index=True),
             Column('privileges', Integer, nullable=False, default=1),  # 0 - is blocked, 1 - is active,
             Column('created', DateTime, nullable=False, default=datetime.now()),
-            Column('Users_ActiveDirectory', Integer, ForeignKey('active_directory_users.id')),
+            Column('Users_ActiveDirectory_id', Integer, ForeignKey('active_directory_users.id')),
             Column('Units_id', Integer, ForeignKey('units.id'), nullable=False),
         )
 
