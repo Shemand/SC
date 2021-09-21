@@ -9,8 +9,8 @@ class UsersService(ServiceAbstract):
     @staticmethod
     def _return_model_fields(row):
         return {
-            "login": row['name'],
-            "privileges": row['full_name'],
+            "login": row['login'],
+            "privileges": row['privileges'],
             "unit": {
                 "name": row['units_name']
             },

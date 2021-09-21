@@ -113,10 +113,6 @@ class UpdatePuppetComputers(ServiceAbstract):
         rows = self.db.engine.execute(query).fetchall()
         return [Puppet(**type(self)._return_model_fields(row)) for row in rows]
 
-    def get_puppet_computers(database):
-        return database.session.query(PuppetsTable).all()
-
-
     def create_computer_puppet_record(database, record):
         params = {
             "Computers_id": record['computer_row'].id,

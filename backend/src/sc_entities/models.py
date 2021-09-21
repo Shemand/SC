@@ -6,7 +6,8 @@ from sqlalchemy.cresultproxy import BaseRow
 
 
 class UnitBase(BaseModel):
-    name: str
+    id_: Optional[int]
+    name: str = Field()
 
 
 class Unit(UnitBase):
@@ -22,11 +23,13 @@ class CryptoGateway(BaseModel):
 
 
 class Os(BaseModel):
+    id_: Optional[int]
     name: str
     isUnix: bool
 
 
 class Ip(BaseModel):
+    id_: Optional[int]
     ipv4: str
     isAllowed: Optional[datetime]
 
@@ -55,6 +58,7 @@ class User(UserBase):
 
 
 class ComputerBase(BaseModel):
+    id_: Optional[int]
     name: str
     unit: UnitBase
 

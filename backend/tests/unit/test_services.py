@@ -12,8 +12,8 @@ from backend.src.sc_services.UsersService import UsersService
 
 
 def test_database_repository_functions(test_database_repository):
-    test_database_repository.get_id_ip('10.3.128.160')
-    test_database_repository.get_id_os('Azure')
+    test_database_repository.get_ip('10.3.128.160')
+    test_database_repository.get_os('Azure')
 
 def test_users_active_directory_service(test_database_repository):
     db = test_database_repository

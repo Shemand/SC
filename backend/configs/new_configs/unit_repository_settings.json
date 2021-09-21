@@ -49,8 +49,19 @@
   },
   "6932": {
     "dallas_containers" : ["6832"],
-    "active_directory_containers" : ["6832"],
-    "services" : ["kaspersky_6832"]
+    "active_directory_containers" : ["6832"]
+  },
+  "5565": {
+    "dallas_containers" : [],
+    "active_directory_containers" : []
+  },
+  "6832": {
+    "dallas_containers" : [],
+    "active_directory_containers" : []
+  },
+  "3693": {
+    "dallas_containers" : [],
+    "active_directory_containers" : []
   },
   "5402": {
     "dallas_containers" : ["5402"],

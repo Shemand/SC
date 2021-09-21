@@ -1,64 +1,64 @@
 from pydantic import BaseModel
 
 
-class SpecDataServiceConfig(BaseModel):
+class SpecDataRepositoryConfig(BaseModel):
     ...
 
 
-class ServiceConfig(BaseModel):
+class RepositoryConfig(BaseModel):
     name: str
     ip: str
     port: str
     type: str
     active: bool
-    specific_data: SpecDataServiceConfig
+    specific_data: SpecDataRepositoryConfig
 
 
-class SpecADConfig(SpecDataServiceConfig):
+class SpecADConfig(SpecDataRepositoryConfig):
     username: str
     password: str
     path: str
     begin_node: str
-    end_nodes: [str]
+    end_nodes: list
 
 
-class SpecPuppetConfig(SpecDataServiceConfig):
-    fields: [str]
-    prefixes: [str]
+class SpecPuppetConfig(SpecDataRepositoryConfig):
+    fields: list
+    prefixes: list
 
 
-class SpecKasperskyConfig(SpecDataServiceConfig):
+class SpecKasperskyConfig(SpecDataRepositoryConfig):
     username: str
     password: str
     server: str
 
 
-class SpecDallasConfig(SpecDataServiceConfig):
+class SpecDallasConfig(SpecDataRepositoryConfig):
     server: str
 
 
-class SpecDatabaseConfig(SpecDataServiceConfig):
+class SpecDatabaseConfig(SpecDataRepositoryConfig):
     database: str
     driver: str
     username: str
     password: str
 
 
-class ADServiceConfig(ServiceConfig):
+class ADRepositoryConfig(RepositoryConfig):
     specific_data: SpecADConfig
 
 
-class PuppetServiceConfig(ServiceConfig):
+class PuppetRepositoryConfig(RepositoryConfig):
     specific_data: SpecPuppetConfig
 
 
-class KasperskyServiceConfig(ServiceConfig):
+class KasperskyRepositoryConfig(RepositoryConfig):
     specific_data: SpecKasperskyConfig
 
 
-class DallasServiceConfig(ServiceConfig):
+class DallasRepositoryConfig(RepositoryConfig):
     specific_data: SpecDallasConfig
 
 
-class DatabaseServiceConfig(ServiceConfig):
+class DatabaseRepositoryConfig(RepositoryConfig):
     specific_data: SpecDatabaseConfig

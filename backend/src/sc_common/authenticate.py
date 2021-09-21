@@ -4,9 +4,9 @@ import jwt
 import os
 
 
-def generate_token(user_id):
+def generate_token(user_name):
     try:
-        return jwt.encode({"user_id": user_id}, os.environ.get('JWT_SECRET_KEY'), algorithm="HS256")
+        return jwt.encode({"user_name": user_name}, os.environ.get('JWT_SECRET_KEY'), algorithm="HS256")
     except Exception:
         return None
 

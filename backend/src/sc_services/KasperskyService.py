@@ -34,9 +34,9 @@ class KasperskyService(ServiceAbstract):
 
     def create(self, model: Kaspersky):
         params = {
-            "Computers_id": select([self.db.computers.c.id]).where(self.db.computers.c.name == model.computer.name).limit(1),
-            "OperationSystems_id": self.db.get_id_os(model.os.name) if model.os else None,
-            "Addresses_id": self.db.get_id_ip(model.ip.ipv4) if model.ip else None,
+            "Computers_id": self.db.get_computer(model.computer.name).id_,
+            "OperationSystems_id": self.db.get_os(model.os.name).id_ if model.os else None,
+            "Addresses_id": self.db.get_ip(model.ip.ipv4).id_ if model.ip else None,
             "agent_version": model.agent,
             "security_version": model.security,
             "server": model.server,

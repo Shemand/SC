@@ -27,7 +27,7 @@
         "children" : {}
       },
       "3644" : {
-        "caption" : "Воинская часть 6944",
+        "caption" : "Воинская часть 3644",
         "dallas_containers" : ["3644"],
         "active_directory_containers" : ["3644"],
         "services" : ["kaspersky_3644"],

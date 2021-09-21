@@ -1,9 +1,9 @@
 [
   {
     "owner" : "SZO",
-    "connection_name" : "ad_one",
-    "connection_ip" : "10.3.128.4",
-    "connection_port" : 389,
+    "name" : "ad_one",
+    "ip" : "10.3.128.4",
+    "port" : 389,
     "type" : "active_directory",
     "active" : true,
     "specific_data" : {
@@ -18,9 +18,9 @@
   },
   {
     "owner" : "SZO",
-    "connection_name" : "puppet_one",
-    "connection_ip" : "10.2.202.203",
-    "connection_port" : 8080,
+    "name" : "puppet_one",
+    "ip" : "10.2.202.203",
+    "port" : 8080,
     "type" : "puppet",
     "active" : true,
     "specific_data" : {
@@ -35,9 +35,9 @@
   },
   {
     "owner" : "2659",
-    "connection_name" : "kaspersky_2659",
-    "connection_ip" : "10.3.130.4",
-    "connection_port" : 13299,
+    "name" : "kaspersky_2659",
+    "ip" : "10.3.130.4",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -48,9 +48,9 @@
   },
   {
     "owner" : "3526",
-    "connection_name" : "kaspersky_3526",
-    "connection_ip" : "10.3.132.7",
-    "connection_port" : 13299,
+    "name" : "kaspersky_3526",
+    "ip" : "10.3.132.7",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -61,9 +61,9 @@
   },
   {
     "owner" : "3644",
-    "connection_name" : "kaspersky_3644",
-    "connection_ip" : "10.3.138.132",
-    "connection_port" : 13299,
+    "name" : "kaspersky_3644",
+    "ip" : "10.3.138.132",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : false,
     "specific_data" : {
@@ -74,9 +74,9 @@
   },
   {
     "owner" : "3705",
-    "connection_name" : "kaspersky_3705",
-    "connection_ip" : "11.196.4.140",
-    "connection_port" : 13299,
+    "name" : "kaspersky_3705",
+    "ip" : "11.196.4.140",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -87,9 +87,9 @@
   },
   {
     "owner" : "3798",
-    "connection_name" : "kaspersky_3798",
-    "connection_ip" : "10.3.138.87",
-    "connection_port" : 13299,
+    "name" : "kaspersky_3798",
+    "ip" : "10.3.138.87",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -100,9 +100,9 @@
   },
   {
     "owner" : "5134",
-    "connection_name" : "kaspersky_5134",
-    "connection_ip" : "10.3.137.7",
-    "connection_port" : 13299,
+    "name" : "kaspersky_5134",
+    "ip" : "10.3.137.7",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -113,9 +113,9 @@
   },
   {
     "owner" : "6716",
-    "connection_name" : "kaspersky_6716",
-    "connection_ip" : "10.3.134.250",
-    "connection_port" : 13299,
+    "name" : "kaspersky_6716",
+    "ip" : "10.3.134.250",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -126,9 +126,9 @@
   },
   {
     "owner" : "6717",
-    "connection_name" : "kaspersky_6717",
-    "connection_ip" : "11.196.3.130",
-    "connection_port" : 13299,
+    "name" : "kaspersky_6717",
+    "ip" : "11.196.3.130",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : false,
     "specific_data" : {
@@ -138,9 +138,9 @@
     }
   },
   {
-    "connection_name" : "kaspersky_6821",
-    "connection_ip" : "10.3.133.132",
-    "connection_port" : 13299,
+    "name" : "kaspersky_6821",
+    "ip" : "10.3.133.132",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : false,
     "specific_data" : {
@@ -150,9 +150,9 @@
     }
   },
   {
-    "connection_name" : "kaspersky_6832",
-    "connection_ip" : "10.3.136.6",
-    "connection_port" : 13299,
+    "name" : "kaspersky_6832",
+    "ip" : "10.3.136.6",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : false,
     "specific_data" : {
@@ -163,9 +163,9 @@
   },
   {
     "owner" : "6944",
-    "connection_name" : "kaspersky_6944",
-    "connection_ip" : "10.3.131.73",
-    "connection_port" : 13299,
+    "name" : "kaspersky_6944",
+    "ip" : "10.3.131.73",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -176,9 +176,9 @@
   },
   {
     "owner" : "T210",
-    "connection_name" : "kaspersky_T210",
-    "connection_ip" : "10.222.110.187",
-    "connection_port" : 13299,
+    "name" : "kaspersky_T210",
+    "ip" : "10.222.110.187",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -189,9 +189,9 @@
   },
   {
     "owner" : "T211",
-    "connection_name" : "kaspersky_T211",
-    "connection_ip" : "10.222.111.240",
-    "connection_port" : 13299,
+    "name" : "kaspersky_T211",
+    "ip" : "10.222.111.240",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -202,9 +202,9 @@
   },
   {
     "owner" : "T229",
-    "connection_name" : "kaspersky_T229",
-    "connection_ip" : "10.222.129.98",
-    "connection_port" : 13299,
+    "name" : "kaspersky_T229",
+    "ip" : "10.222.129.98",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -215,9 +215,9 @@
   },
   {
     "owner" : "T235",
-    "connection_name" : "kaspersky_T235",
-    "connection_ip" : "10.222.135.106",
-    "connection_port" : 13299,
+    "name" : "kaspersky_T235",
+    "ip" : "10.222.135.106",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -228,9 +228,9 @@
   },
   {
     "owner" : "T239",
-    "connection_name" : "kaspersky_T239",
-    "connection_ip" : "10.3.134.250",
-    "connection_port" : 13299,
+    "name" : "kaspersky_T239",
+    "ip" : "10.3.134.250",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -241,9 +241,9 @@
   },
   {
     "owner" : "T251",
-    "connection_name" : "kaspersky_T251-1",
-    "connection_ip" : "10.222.151.201",
-    "connection_port" : 13299,
+    "name" : "kaspersky_T251-1",
+    "ip" : "10.222.151.201",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -254,9 +254,9 @@
   },
   {
     "owner" : "T253",
-    "connection_name" : "kaspersky_T253",
-    "connection_ip" : "10.222.153.8",
-    "connection_port" : 13299,
+    "name" : "kaspersky_T253",
+    "ip" : "10.222.153.8",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -267,9 +267,9 @@
   },
   {
     "owner" : "T278",
-    "connection_name" : "kaspersky_T278",
-    "connection_ip" : "10.222.198.4",
-    "connection_port" : 13299,
+    "name" : "kaspersky_T278",
+    "ip" : "10.222.198.4",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -280,9 +280,9 @@
   },
   {
     "owner" : "T278",
-    "connection_name" : "kaspersky_UVO",
-    "connection_ip" : "10.222.235.200",
-    "connection_port" : 13299,
+    "name" : "kaspersky_UVO",
+    "ip" : "10.222.235.200",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -292,9 +292,9 @@
     }
   },
   {
-    "connection_name" : "kaspersky_T283",
-    "connection_ip" : "10.222.183.3",
-    "connection_port" : 13299,
+    "name" : "kaspersky_T283",
+    "ip" : "10.222.183.3",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -305,9 +305,9 @@
   },
   {
     "owner" : "T260",
-    "connection_name" : "kaspersky_T260",
-    "connection_ip" : "10.222.60.8",
-    "connection_port" : 13299,
+    "name" : "kaspersky_T260",
+    "ip" : "10.222.60.8",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -318,9 +318,9 @@
   },
   {
     "owner" : "6931",
-    "connection_name" : "kaspersky_6931",
-    "connection_ip" : "10.3.141.4",
-    "connection_port" : 13299,
+    "name" : "kaspersky_6931",
+    "ip" : "10.3.141.4",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -331,9 +331,9 @@
   },
   {
     "owner" : "SZO",
-    "connection_name" : "kaspersky_SZO",
-    "connection_ip" : "10.3.128.28",
-    "connection_port" : 13299,
+    "name" : "kaspersky_SZO",
+    "ip" : "10.3.128.28",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -344,9 +344,9 @@
   },
   {
     "owner" : "5402",
-    "connection_name" : "kaspersky_5402",
-    "connection_ip" : "10.3.140.77",
-    "connection_port" : 13299,
+    "name" : "kaspersky_5402",
+    "ip" : "10.3.140.77",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -357,9 +357,9 @@
   },
   {
     "owner" : "T251",
-    "connection_name" : "kaspersky_T251-2",
-    "connection_ip" : "11.198.152.172",
-    "connection_port" : 13299,
+    "name" : "kaspersky_T251-2",
+    "ip" : "11.198.152.172",
+    "port" : 13299,
     "type" : "kaspersky",
     "active" : true,
     "specific_data" : {
@@ -370,10 +370,10 @@
   },
   {
     "owner" : "SZO",
-    "connection_name" : "dallas_lock_vch",
-    "connection_ip" : "10.3.128.233",
-    "connection_port" : 5000,
-    "type" : "dallas_lock",
+    "name" : "dallas_lock_vch",
+    "ip" : "10.3.128.233",
+    "port" : 5000,
+    "type" : "dallas",
     "active" : true,
     "specific_data" : {
       "server" : "vch"
@@ -381,10 +381,10 @@
   },
   {
     "owner" : "SZO",
-    "connection_name" : "dallas_lock_001",
-    "connection_ip" : "10.3.128.251",
-    "connection_port" : 5000,
-    "type" : "dallas_lock",
+    "name" : "dallas_lock_001",
+    "ip" : "10.3.128.251",
+    "port" : 5000,
+    "type" : "dallas",
     "active" : true,
     "specific_data" : {
       "server" : "001"
@@ -392,10 +392,10 @@
   },
   {
     "owner" : "SZO",
-    "connection_name" : "dallas_lock_002",
-    "connection_ip" : "10.3.128.253",
-    "connection_port" : 5000,
-    "type" : "dallas_lock",
+    "name" : "dallas_lock_002",
+    "ip" : "10.3.128.253",
+    "port" : 5000,
+    "type" : "dallas",
     "active" : true,
     "specific_data" : {
       "server" : "002"
@@ -403,10 +403,10 @@
   },
   {
     "owner" : "SZO",
-    "connection_name" : "dallas_lock_TERO",
-    "connection_ip" : "10.3.128.234",
-    "connection_port" : 5000,
-    "type" : "dallas_lock",
+    "name" : "dallas_lock_TERO",
+    "ip" : "10.3.128.234",
+    "port" : 5000,
+    "type" : "dallas",
     "active" : true,
     "specific_data" : {
       "server" : "TERO"
@@ -414,9 +414,9 @@
   },
   {
     "owner" : "SZO",
-    "connection_name" : "main_database",
-    "connection_ip" : "localhost",
-    "connection_port" : 5432,
+    "name" : "main_database",
+    "ip" : "localhost",
+    "port" : 5432,
     "type" : "database",
     "active" : true,
     "specific_data" : {
@@ -425,6 +425,5 @@
       "username": "shemand",
       "password": "qwerty"
     }
-
   }
 ]
