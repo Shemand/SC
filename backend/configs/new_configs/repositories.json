@@ -411,5 +411,20 @@
     "specific_data" : {
       "server" : "TERO"
     }
+  },
+  {
+    "owner" : "SZO",
+    "connection_name" : "main_database",
+    "connection_ip" : "localhost",
+    "connection_port" : 5432,
+    "type" : "database",
+    "active" : true,
+    "specific_data" : {
+      "database": "sc",
+      "driver": "postgresql+psycopg2",
+      "username": "shemand",
+      "password": "qwerty"
+    }
+
   }
 ]

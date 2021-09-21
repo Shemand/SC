@@ -37,6 +37,13 @@ class SpecDallasConfig(SpecDataServiceConfig):
     server: str
 
 
+class SpecDatabaseConfig(SpecDataServiceConfig):
+    database: str
+    driver: str
+    username: str
+    password: str
+
+
 class ADServiceConfig(ServiceConfig):
     specific_data: SpecADConfig
 
@@ -51,3 +58,7 @@ class KasperskyServiceConfig(ServiceConfig):
 
 class DallasServiceConfig(ServiceConfig):
     specific_data: SpecDallasConfig
+
+
+class DatabaseServiceConfig(ServiceConfig):
+    specific_data: SpecDatabaseConfig
