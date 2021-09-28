@@ -1,8 +1,10 @@
 import json
 import os
+from typing import Optional
 
 from backend.src.sc_config.repositories_models import DatabaseRepositoryConfig, PuppetRepositoryConfig, \
-    DallasRepositoryConfig, KasperskyRepositoryConfig, ADRepositoryConfig
+    DallasRepositoryConfig, KasperskyRepositoryConfig, ADRepositoryConfig, RepositoryConfig
+from backend.src.sc_entities.models import Unit
 
 
 class JsonConfigurationStorage:
@@ -19,8 +21,21 @@ class JsonConfigurationStorage:
             return file.write(json.dumps(data))
 
 
-class Configuration: # todo validation unit services and end the services list
-    def __init__(self):
+class Configuration:  # todo validation unit services and end the services list
+    def __new__(cls, *args, **kwargs):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(Configuration, cls).__new__(cls)
+            cls.instance.load()
+        return cls.instance
+
+    def load(self):
+        self.types = {  # todo load types from any config file
+            "active_directory": ADRepositoryConfig,
+            "dallas": DallasRepositoryConfig,
+            "puppet": PuppetRepositoryConfig,
+            "database": DatabaseRepositoryConfig,
+            "kaspersky": KasperskyRepositoryConfig
+        }
         path = os.getcwd()
         path = os.path.join(path, 'configs')
         path = os.path.join(path, 'new_configs')
@@ -31,12 +46,40 @@ class Configuration: # todo validation unit services and end the services list
         unit_repository_settings_path = os.path.join(path, 'unit_repository_settings.json')
         unit_repositories_path = os.path.join(path, 'unit_repositories.json')
 
-        self.units = UnitsConfiguration(units_path, structure_path, unit_repositories_path,
-                                        unit_repository_settings_path)
+        self._units = UnitsConfiguration(units_path, structure_path, unit_repositories_path,
+                                         unit_repository_settings_path)
 
-        self.repositories = RepositoriesConfiguration(repositories_path)
+        self._repositories = RepositoriesConfiguration(repositories_path, self.types)
 
         self._system = JsonConfigurationStorage(system_path)
+        self._validate_services_names()
+
+    def _validate_services_names(self):
+        repositories = self._repositories.names
+        for unit_name, repos in self._units.repositories.items():
+            for repo in repos:
+                if not repo in repositories:
+                    raise Exception(f'Unit ({unit_name}) have unknown repository - ({repo}). Check the file')
+
+    @property
+    def database(self) -> DatabaseRepositoryConfig:
+        return self._repositories.active_db
+
+    @property
+    def repositories(self) -> dict:
+        return self._repositories.all
+
+    def unit(self, unit_name) -> Unit:
+        return self._units.get(unit_name)
+
+    def repository(self, repository_name) -> RepositoryConfig:
+        return self._repositories.get(repository_name)
+
+    def get_active_repos(self, repos_type) -> []:
+        return {repo_name: repo
+                for repo_name, repo in self._repositories.all.items()
+                if repo.type == repos_type and repo.active is True
+                }
 
 
 class UnitsConfiguration:
@@ -59,6 +102,41 @@ class UnitsConfiguration:
         self._validate_repository_settings()
 
         self.unit_names = [unit_name for unit_name in self.main]
+
+        self.cache = self.Cache()
+
+    class Cache:
+        def __init__(self):
+            self.units = {}
+
+        def get(self, unit_name):
+            if not unit_name in self.units:
+                return None
+            return self.units[unit_name]
+
+        def set(self, unit_name, model):
+            self.units[unit_name] = model
+
+    def get(self, unit_name) -> (Optional[Unit], list):
+        if not unit_name in self.unit_names:
+            raise TypeError(f"You attempted get not exists unit (unit name: {unit_name}")
+
+        cached = self.cache.get(unit_name)
+        if cached:
+            return cached
+
+        repositories = []
+        repositories.extend(self.repositories[unit_name])
+        children = []
+        for child, parent in self.structure.items():
+            if parent == unit_name:
+                unit, repos = self.get(child)
+                repositories.extend(repos)
+                children.append(unit)
+
+        unit = Unit(name=unit_name, children=children, repositories=repositories)
+        self.cache.set(unit_name, unit)
+        return unit, repositories
 
     def _validate_structure(self):
         structure = self.structure
@@ -83,7 +161,8 @@ class UnitsConfiguration:
             if caption is None:
                 UnitNameException(f"Unit with name ({unit_name}) must have caption string")
             if not isinstance(caption, str):
-                UnitNameException(f'Unit with name ({unit_name}) don\'t have parameter of string. Please edit configuration file.')
+                UnitNameException(
+                    f'Unit with name ({unit_name}) don\'t have parameter of string. Please edit configuration file.')
         if not default:
             UnitNameException('Units config must have "DEFAULT" section with any value')
 
@@ -93,7 +172,8 @@ class UnitsConfiguration:
             if unit_name == 'DEFAULT':
                 continue
             if not unit_name in repositories:
-                raise UnitRepositoriesException(f"Unit with name '{unit_name}' haven't record in unit repositories config")
+                raise UnitRepositoriesException(
+                    f"Unit with name '{unit_name}' haven't record in unit repositories config")
             if not isinstance(repositories[unit_name], list):
                 raise UnitRepositoriesException(f"Record with name ({unit_name}) of unit repositories not a list")
 
@@ -103,53 +183,107 @@ class UnitsConfiguration:
             if unit_name == 'DEFAULT':
                 continue
             if not unit_name in repository_settings:
-                raise UnitRepositorySettingsException(f"Unit with name '{unit_name}' haven't record in repository settings config")
+                raise UnitRepositorySettingsException(
+                    f"Unit with name '{unit_name}' haven't record in repository settings config")
             if not isinstance(repository_settings[unit_name], dict):
-                raise UnitRepositorySettingsException(f"Record with name ({unit_name}) of repository settings not a list")
-            if not 'dallas_containers' in repository_settings[unit_name]\
+                raise UnitRepositorySettingsException(
+                    f"Record with name ({unit_name}) of repository settings not a list")
+            if not 'dallas_containers' in repository_settings[unit_name] \
                     or not isinstance(repository_settings[unit_name]['dallas_containers'], list):
                 raise UnitRepositorySettingsException(f"Record with name ({unit_name}) hasn't 'dallas_container'")
             if not 'active_directory_containers' in repository_settings[unit_name] \
                     or not isinstance(repository_settings[unit_name]['active_directory_containers'], list):
-                raise UnitRepositorySettingsException(f"Record with name ({unit_name}) hasn't 'active_directory_containers'")
+                raise UnitRepositorySettingsException(
+                    f"Record with name ({unit_name}) hasn't 'active_directory_containers'")
 
 
 class RepositoriesConfiguration:
-    def __init__(self, repositories_path):
+    def __init__(self, repositories_path, types):
         config = JsonConfigurationStorage(repositories_path)
-        self.active, self.inactive = self._transform_to_models(config)
 
-    def _transform_to_models(self, repositories):
-        active = {
-            "kaspersky": [],
-            "dallas": [],
-            "puppet": [],
-            "database": [],
-            "active_directory": []
+        self.types = types
+        self._repositories = self._transform_to_models(config)
+        self._validate_duplicates()
+        self._validate_database()
+
+    @property
+    def all(self):
+        repos = {}
+        for t in self.types:
+            for repo_name, repo in self._repositories[t].items():
+                repos[repo_name] = repo
+        return repos
+
+    @property
+    def active_db(self):
+        active_databases = [repo for _, repo in self.database.items() if repo.active is True]
+        if len(active_databases) > 1 or len(active_databases) == 0:
+            raise RepositoriesConfigException("can't get active database because it's not equal 1")
+        return active_databases[0]
+
+    @property
+    def active(self):
+        return {repo_name: repo for repo_name, repo in self.all.items() if repo.active is True}
+
+    @property
+    def inactive(self):
+        return {repo_name: repo for repo_name, repo in self.all.items() if repo.active is False}
+
+    @property
+    def names(self):
+        return [repo_name for repo_name in self.all]
+
+    def __getattr__(self, key):
+        if not key in self.types:
+            raise AttributeError(f'RepositoryConfiguration haven\'t attribute {key}')
+        return self._repositories[key]
+
+    def __getitem__(self, key):
+        for t in self.types:
+            if key in self._repositories[t]:
+                return self._repositories[t][key]
+        raise KeyError(f"RepositoryConfiguration haven't repository ({key})")
+
+    def get(self, repository_name):
+        if not repository_name in self.repository_names:
+            return None
+        return self.repository_names
+
+    def _validate_duplicates(self):
+        names = []
+        for repo_name in self.all:
+            if repo_name in names:
+                raise RepositoriesConfigException("repo.name duplicated in config file.")
+            names.append(repo_name)
+
+    def _validate_database(self):
+        databases = [db_name for db_name, db in self.database.items() if db.active == True]
+        if len(databases) > 1:
+            raise RepositoryTypeException("Config have more then 1 active database repository.")
+        if len(databases) == 0:
+            raise RepositoryTypeException("Repository Config must have 1 active database.")
+
+    def _transform_to_models(self, repositories):  # todo automate choice the type
+        repositories_storage = {
         }
-        inactive = {**active}
+        for t in self.types:
+            repositories_storage[t] = {}
         for repo in repositories.data:
             r_type = repo['type']
-            actived = repo['active']
-            if r_type == 'active_directory':
-                if actived: active['active_directory'].append(ADRepositoryConfig(**repo))
-                else: inactive['active_directory'].append(ADRepositoryConfig(**repo))
-            elif r_type == 'kaspersky':
-                if actived: active['kaspersky'].append(KasperskyRepositoryConfig(**repo))
-                else: inactive['kaspersky'].append(KasperskyRepositoryConfig(**repo))
-            elif r_type == 'dallas':
-                if actived: active['dallas'].append(DallasRepositoryConfig(**repo))
-                else: inactive['dallas'].append(DallasRepositoryConfig(**repo))
-            elif r_type == 'puppet':
-                if actived: active['puppet'].append(PuppetRepositoryConfig(**repo))
-                else: inactive['puppet'].append(PuppetRepositoryConfig(**repo))
-            elif r_type == 'database':
-                if actived: active['database'].append(DatabaseRepositoryConfig(**repo))
-                else: inactive['database'].append(DatabaseRepositoryConfig(**repo))
-            else:
-                raise RepositoriesTransformException(f"Repository with name {repo['connection_name']} has unknown type.")
-        return active, inactive
+            repositories_storage[r_type][repo['name']] = self._get_repo_type(r_type)(**repo)
+            if not r_type in self.types:
+                raise RepositoriesTransformException(
+                    f"Repository with name {repo['name']} has unknown type.")
+        return repositories_storage
+
+    def _get_repo_type(self, repository_type):
+        if not repository_type in self.types:
+            raise RepositoryTypeException("Repositories config have some wrong type.")
+        return self.types[repository_type]
+
+
 # ----- EXCEPTIONS --------
+
 
 class UnitConfigException(Exception):
     pass
@@ -176,4 +310,8 @@ class RepositoriesConfigException(Exception):
 
 
 class RepositoriesTransformException(RepositoriesConfigException):
+    pass
+
+
+class RepositoryTypeException(RepositoriesConfigException):
     pass

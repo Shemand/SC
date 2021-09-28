@@ -1,3 +1,4 @@
+from __future__ import annotations
 from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
@@ -11,7 +12,8 @@ class UnitBase(BaseModel):
 
 
 class Unit(UnitBase):
-    root: Optional[UnitBase]
+    children: list
+    repositories: list
 
 
 class CryptoGateway(BaseModel):
@@ -19,7 +21,6 @@ class CryptoGateway(BaseModel):
     caption: str
     address: str
     mask: int
-    unit: UnitBase
 
 
 class Os(BaseModel):

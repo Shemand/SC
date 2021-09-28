@@ -1,5 +1,6 @@
 import os
 
+from backend.src.sc_config.Configuration import Configuration
 from backend.src.sc_repositories.DatabaseRepository import DatabaseRepository
 
 
@@ -11,14 +12,9 @@ class RepositoryController:
         return cls.instance
 
     def __initialization(self):
-        config = {
-            "ip": "localhost",
-            "port": 5432,
-            "database": "sc",
-            "driver": "postgresql+psycopg2",
-            "username": "shemand",
-            "password": "qwerty"
-        }
+        config = Configuration()
+        repositories_config = config.repositories
+        units_config = config.repositories
         self.db = DatabaseRepository(config)
         ...
 

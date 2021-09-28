@@ -31,6 +31,6 @@ class Configuration:
             "right_security": configuration['kaspersky']['right_security_versions'],
         }
 
-config = Configuration()
+#config = Configuration()
 
 JSON_str = str
